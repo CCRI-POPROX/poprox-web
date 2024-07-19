@@ -35,7 +35,7 @@ if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 
-URL_PREFIX = env.get("URL_PREFIX", "")
+URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY")
@@ -207,7 +207,11 @@ def topics():
     ]
 
     def get_pref(topic):
-        return request.form.get(topic.replace(" ", "_") + "_pref", None)
+        pref_score = request.form.get(topic.replace(" ", "_") + "_pref", None)
+        if pref_score:
+            return int(pref_score)
+        else:
+            return None
 
     updated = False
     onboarding = False
@@ -221,15 +225,17 @@ def topics():
                 entity_id = repo.lookup_entity_by_name(topic)
                 if entity_id is None:
                     continue
-                topic_prefs.append(
-                    AccountInterest(
-                        account_id=account_id,
-                        entity_id=entity_id,
-                        entity_name=topic,
-                        preference=get_pref(topic),
-                        frequency=None,
+                score = get_pref(topic)
+                if score is not None:
+                    topic_prefs.append(
+                        AccountInterest(
+                            account_id=account_id,
+                            entity_id=entity_id,
+                            entity_name=topic,
+                            preference=score,
+                            frequency=None,
+                        )
                     )
-                )
 
             repo.insert_topic_preferences(account_id, topic_prefs)
             conn.commit()
