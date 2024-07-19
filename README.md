@@ -2,8 +2,9 @@
 
 ## How to run the project on your local system
 
-If you just want to run the project, you need to have conda installed.
-We recommend that you create a new conda environment with the following command:
+#### Python Dependencies
+
+If you want to run the project, you'll need python installed on your computer. We recommend setting up a virtual environment. The easiest way to do this is with conda:
 
 ```bash
 conda create -n myenv python=3.11
@@ -17,33 +18,17 @@ conda activate myenv
 
 To install all the required packages -
 
-Setup database requirement:
-
 ```bash
-pip install -r poprox-db/requirements-dev.txt
+pip install -r requirements.txt
 ```
 
-Setup serverless requirement:
+#### Other dependencies
 
-```bash
-pip install -r poprox-serverless/poprox_serverless/requirements.txt
-```
+You will also need the poprox-storage project for a development database. See instructions there on setup and execution.
 
-Setup web requirement:
+Additionally you will need an `.env` file. A template of this is available, but some settings must be gotten from other developers.
 
-```bash
-pip install -r poprox-web/requirements.txt
-```
-
-Also, install docker if not there yet. You can verify if you have docker setup correctly by running
-
-```bash
-sudo service docker start
-sudo docker run hello-world
-```
-
-Now you are ready to run the application.
-
+#### Running
 You can run it like any other Flask app
 ```bash
 python poprox-web/app.py
