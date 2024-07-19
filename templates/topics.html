@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="column box">
+	{% if updated %}
+	<div class="pref-updated-flash">
+		<p>
+			<strong>Your preferences have been updated.</strong>
+		</p>
+	</div>
+	{% endif %}
+	<form action="/topics" method="POST">
+		<div class="block content">
+			<p><strong>
+					1. Please mark your initial preference by selecting the your
+					level of interest in the following topics.
+				</strong></p>
+			<div>
+				{% for topic in topics %}
+				{% set input_name = topic|replace(' ', '_') + "_pref" %}
+				<div class="columns pref-item-block is-mobile box">
+					<div class="column">
+						<p><strong>{{topic}}</strong></p>
+					</div>
+					{% for intlvl in intlvls %}
+					<div class="column topic-radio-container">
+						<label class="radio">
+							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}" />
+							<p>{{intlvl[0]}}</p>
+						</label>
+					</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<input class="button is-primary" type="submit" value="Submit">
+	</form>
+</div>
+{% endblock %}

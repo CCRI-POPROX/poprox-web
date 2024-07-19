@@ -1,0 +1,85 @@
+service: poprox-website
+frameworkVersion: "3"
+useDotenv: true
+
+plugins:
+  - serverless-lift
+  - serverless-wsgi
+  - serverless-python-requirements
+  - serverless-domain-manager
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    useDownloadCache: false
+    useStaticCache: false
+    slim: true
+    strip: false
+    slimPatterns:
+      - "**/*.csv"
+      # This libopenblas belongs to numpy and might increase size of lambda unnecessarily
+      - "**/libopenblasp-*.dynlib*"
+  customDomain:
+    domainName: www.poprox.ai
+    basePath: ''
+    apiType: http
+    endpointType: REGIONAL
+    createRoute53Record: false
+    createRoute53IPv6Record: false
+    securityPolicy: tls_1_2
+
+  wsgi:
+    app: app.app
+    packRequirements: false
+
+package:
+  patterns:
+    - "!venv/**"
+    - "!models/**"
+    - "!node_modules/**"
+    - "!tests/**"
+    - "**.py"
+    - "**.html"
+
+provider:
+  name: aws
+  runtime: python3.11
+  versionFunctions: false
+  region: ${opt:region, "us-east-1"}
+  stage: ${opt:stage, "prod"}
+  environment:
+    env: ${stage}
+    region: ${region}
+    log_level: "INFO"
+    POPROX_DB_HOST: ${cf:poprox-datasources-stack-dev.RDSDatabaseEndpointAddress}
+    POPROX_DB_PORT: 5432
+    POPROX_DB_NAME: poprox
+    POPROX_DB_USER: ${ssm:/poprox/database/username}
+    POPROX_DB_PASSWORD: ${ssm:/poprox/database/password}
+    POPROX_HMAC_KEY: ${ssm:/poprox/hmac_key}
+    URL_PREFIX: "/user"
+    AUTH0_CLIENT_ID: rpXLtR41mbEVLLcpUXuYxsA1HlIVEHiq
+    AUTH0_CLIENT_SECRET: ${ssm:/poprox/web/auth0/secret}
+    AUTH0_DOMAIN: dev-kgf5ffezmmbm4slh.us.auth0.com
+    APP_SECRET_KEY: ${ssm:/poprox/web/app_secret}
+  memorySize: 512
+  timeout: 900
+  architecture: x86_64
+
+  vpc:
+    securityGroupIds:
+      - ${cf:poprox-datasources-stack-dev.LambdaSecurityGroup}
+    subnetIds:
+      - ${cf:poprox-datasources-stack-dev.PrivateSubnet1a}
+      - ${cf:poprox-datasources-stack-dev.PrivateSubnet1b}
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    timeout: 30
+    events:
+      - httpApi:
+          method: '*'
+          path: /
+      - httpApi:
+          method: '*'
+          path: /{proxy+}

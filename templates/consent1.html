@@ -1,0 +1,345 @@
+{% extends "layout.html" %}
+{% block header %}
+<script>
+	const precheck = new Array("agree1", "agree2", "agree3", "agree4", "agree5");
+	let checklist = {};
+
+	function slidetoggle(evt) {
+		const headerEle = ['DIV', 'H2'].includes(evt.target.tagName) ?
+			evt.target.parentElement : evt.target;
+		const targetId = headerEle.getAttribute("target-panel");
+		const headerIcon = headerEle.getElementsByClassName("minmax-icon")[0];
+		const txtPanel = document.getElementById(targetId);
+		if (txtPanel) {
+			const cheight = txtPanel.clientHeight;
+			const sheight = txtPanel.scrollHeight;
+			const noHeight = !txtPanel.style && !txtPanel.style.height;
+
+			txtPanel.style.height = (!cheight || noHeight ? sheight : 0) + "px";
+			if (txtPanel.style.height === "0px") headerIcon.setAttribute("state-lbl", "+");
+			else headerIcon.setAttribute("state-lbl", "-");
+			if (noHeight) return slidetoggle.call(this);
+		}
+	}
+
+	function update(evt) {
+		const checkbox = evt.target;
+		const header = document.getElementById(checkbox.getAttribute("header-id"));
+		if (checkbox.checked) {
+			if (header.classList.contains("error")) header.classList.remove("error");
+			header.classList.add("checked");
+			checklist[checkbox.id] = true;
+			header.dispatchEvent(new MouseEvent('click')); // collapse current block
+
+			// expand the next section by clicking on the next header
+			header.nextElementSibling.nextElementSibling.dispatchEvent(new MouseEvent('click'));
+		} else {
+			header.classList.remove("checked");
+			checklist[checkbox.id] = false;
+		}
+		const checktest = precheck.filter(checkid => checklist[checkid]);
+		const finalNote = document.getElementById("consent-final");
+		const submitBtn = document.getElementById("submit-btn");
+
+		if (checktest.length === precheck.length) {
+			finalNote.style.height = finalNote.scrollHeight + "px";
+			submitBtn.disabled = false;
+			// if (submitBtn.disabled) !submitBtn.disabled;
+			// submitbtn.hasAttribute("disabled") && submitbtn.removeAttribute("disabled");
+		} else {
+			finalNote.style.height = "0px";
+			submitBtn.disabled = true;
+			// !submitbtn.hasAttribute("disabled") && submitbtn.setD;
+			// if (!submitBtn.disabled) !submitBtn.disabled;
+		}
+	}
+
+	window.addEventListener('DOMContentLoaded', function () {
+		const accHeaders = document.getElementsByClassName("accordion-header");
+		const checkboxes = document.getElementsByTagName("input");
+		const ctSections = document.getElementsByClassName("consent-section");
+
+		document.getElementById("submit-btn").disabled = true;
+
+		Array.from(accHeaders).forEach((ele) =>
+			ele.addEventListener('click', slidetoggle));
+
+		Array.from(checkboxes).filter(inp => inp.type === 'checkbox')
+			.forEach((ele) =>
+				ele.addEventListener('change', update));
+
+		// Initializing a style parameter to avoid an initial jitter
+		Array.from(ctSections).forEach((ele, idx) =>
+			ele.style.height = (idx === 0 ? ele.scrollHeight : 0) + "px");
+	})
+</script>
+{% endblock %}
+{% block content %}
+<div class="column box">
+	<h1>POPROX News Subscriber Consent Form</h1>
+	<p>
+		(a copy of this form can be downloaded
+		<a href="/static/Subscriber_Agreement_v1.pdf">here</a>; it will be
+		emailed to you if you consent)
+	</p>
+	{% if error %}
+	<div class="error-flash">
+		<p>{{ error }}</p>
+	</div>
+	{% endif %}
+	<form id="content" method="GET" action="/consent2">
+		<header id="consent-header-1" class="accordion-header {% if 'agree1' in missing %}error{% endif %}"
+			target-panel="consent-section-1">
+			<h2>1. Introduction</h2>
+			<div class="minmax-icon" state-lbl="-"></div>
+		</header>
+		<section id="consent-section-1" class="consent-section">
+			<h3>1.1 Overview</h3>
+			<p>
+				POPROX News is a daily newsletter operated by a research team from five universities. Our goal
+				is to support experiments (run by others as well as ourselves) that test ways to improve the
+				newsletter experience. Such experiments may include personalization, new interfaces, and other
+				attempts to make the newsletter more pleasing and useful. This consent form explains how we will
+				study POPROX News subscribers, your right to withdraw from being studied at any time, and other
+				information to help you decide whether to proceed.
+			</p>
+
+			<h3> 1.2 Eligibility</h3>
+			<p>
+				You must be at least 18-years old and living in the U.S. to be eligible to enroll in this
+				platform.
+			</p>
+
+			<h3>1.3 Consent Process</h3>
+			<p>
+				By accepting this agreement, you give us consent to observe and study your usage of POPROX News.
+			</p>
+
+			<h4> 1.3.1 Contact Information.</h4>
+			<p>
+				If you have any questions, feel free to check out the FAQ page or contact our team at <a
+					href="mailto:support@poprox.ai">support@poprox.ai</a>. Furthermore, you may also contact the
+				research subjects protection lines at the University of Minnesota Institutional Review Board
+				(IRB) (phone: 612-625-1650, email: <a href="mailto:irb@umn.edu">irb@umn.edu</a>) or at our
+				external institutional review board <a href="https://www.advarra.com/contact-us/">Advarra</a>
+				(phone: 410.884.2900, email: <a href="mailto:institutions@advarra.com">institutions@advarra.com</a>)
+				directly if you have
+				any objections to this consent form. We may also hold periodic info sessions or office hours to
+				address more specific questions.
+			</p>
+
+			<h4> 1.3.2 Withdraw Consent.</h4>
+			<p>
+				If you do not wish to participate in POPROX any longer, you can
+				either inform us via the contact email, or click the “unsubscribe” button contained in every
+				newsletter email. As part of unsubscribing, you may choose to remove your contact information
+				from the system so we have no way to contact you or associate any data with you in the future.
+			</p>
+
+			<h4> 1.3.3 Updates.</h4>
+			<p>
+				If substantial changes occur, we will inform you and seek your consent to continue participating.
+			</p>
+
+			<h4> 1.3.4 Copy of your Consent.</h4>
+			<p>
+				We will email a copy of this consent form to you after you finish reading and signing it.
+			</p>
+
+			<h3>1.4 Overview</h3>
+			<h4> 1.4.1 What is POPROX?</h4>
+			<p>
+				POPROX is a personalized email newsletter. It is also a research project where we study how to
+				personalize news.
+			</p>
+			<h4> 1.4.2 Usage Tracking.</h4>
+			<p>
+				We keep track of what we send you and record what you read. We occasionally ask you questions.
+			</p>
+			<h4> 1.4.3 Experiments.</h4>
+			<p>
+				One of the major purposes of POPROX is to enable experiments. We invite researchers from around
+				the world to try out their ideas on POPROX subscribers and measure how successful their
+				different newsletters are. That means you will get different versions of personalized
+				newsletters based on different experiment buckets you are assigned into.
+			</p>
+
+			<h4> 1.4.4 No Harm.</h4>
+			<p>
+				All experiments proposed by researchers are guided to be benevolent based on a detailed rule
+				set. The POPROX core team and advisory board will thoroughly review and approve all experiments
+				before enrolling users. Researchers also must have their experiments reviewed by their
+				institutional review board (IRB) responsible for research with human participants.
+			</p>
+
+			<div class="consent">
+				<input type="checkbox" name="agree1" value="yes" id="agree1" header-id="consent-header-1" required>
+				<label for="agree1">I understand my eligibility, the consent procedure, and the nature of POPROX
+					as an experimental research platform.</label>
+			</div>
+		</section>
+
+		<header id="consent-header-2" class="accordion-header {% if 'agree2' in missing %}error{% endif %}"
+			target-panel="consent-section-2">
+			<h2>2. Experiments</h2>
+			<div class="minmax-icon" state-lbl="-"></div>
+		</header>
+		<section id="consent-section-2" class="consent-section">
+			<h4>2.1 What is an experiment?</h4>
+			<p>
+				An experiment is defined as a variant of either a newsletter, a survey, a new interface, etc.
+			</p>
+
+			<h4>2.1 Source of experiments.</h4>
+			<p>
+				Experiments come from researchers with review by their institutions and POPROX-required
+				standards.
+			</p>
+
+			<h4>2.1 Special Study Consent.</h4>
+			<p>
+				In some cases, researchers may ask us to run a study containing potential risks. Some examples
+				may include deception or content selected for reasons that don't match your interests. In those
+				cases, you will be asked whether you agree to participate in that study separately, and informed
+				of the nature and risks of the study. You will always have the option to opt out of a particular
+				study and return to the normal POPROX newsletter.
+			</p>
+			<h4>2.1 Opting out of a specific experiment.</h4>
+			<p>
+				Any time you're receiving an experimental newsletter, there will be an option (at the bottom of
+				the newsletter) allowing you to opt out of that experiment. You cannot opt out of being selected
+				for future experiments except by unsubscribing from POPROX News entirely, but will always be
+				able to opt out once you are part of an experiment.
+			</p>
+			<div class="consent">
+				<input type="checkbox" name="agree2" value="yes" id="agree2" header-id="consent-header-2" required>
+				<label for="agree2">
+					I understand the definition of POPROX experiment and opt-out options.
+				</label>
+			</div>
+		</section>
+
+		<header id="consent-header-3" class="accordion-header {% if 'agree3' in missing %}error{% endif %}"
+			target-panel="consent-section-3">
+			<h2>3. POPROX Platform</h2>
+			<div class="minmax-icon" state-lbl="-"></div>
+		</header>
+		<section id="consent-section-3" class="consent-section">
+			<h3>3.1 Data Collection</h3>
+			<h4>3.1.1 How You Are Identified?</h4>
+			<p>
+				We need to know your email address to be able to send you the newsletter, and to contact you if
+				necessary. We will keep your personal contact information separate from all other data, and will
+				not share that with researchers conducting studies using the POPROX system. We also explicitly
+				prohibit these researchers from contacting you separately or from trying to figure out your
+				identity.
+			</p>
+
+			<h4>3.1.2 What we Log?</h4>
+			<p>
+				We will collect your usage log data, including: 1) open of newsletter, click of articles, session
+				time when reading individual articles, etc. 2) survey responses and demographic data; 3) pop-up
+				window feedback, including reactions to articles or short in-line feedback.
+			</p>
+
+			<h4>3.1.3 How We Store and Protect Your Data?</h4>
+			<p>
+				First, we protect your data by storing it separate from any personally identifying information.
+				The data is kept on secure servers, both at the University of Minnesota and in the cloud. To
+				further protect your data, access is only provided to researchers who have contractually agreed
+				to protect the privacy of data and not attempt to re-identify you or any other participants.
+			</p>
+
+			<h4>3.1.4How We Share The Data?</h4>
+			<p>We share your data in two ways:</p>
+			<ul>
+				<li>
+					<b>3.1.4.1 </b>Experiment data is available only to the researchers conducting a particular
+					experiment; they are bound by a legal contract to not re-distribute any data with third
+					parties or for non-experiment purpose.
+				</li>
+				<li>
+					<b>3.1.4.2 </b>Collections of data (without any identifying information) will be distributed
+					as a Public research dataset. Researchers may obtain access to this dataset by agreeing to a
+					data usage license that prevents attempts to re-identify or contact POPROX users. None of
+					these datasets include your contact information.
+				</li>
+			</ul>
+
+			<h3>3.2 Withdraw and Disenroll</h3>
+			<h4>3.2.1 Withdraw Data For Future Use.</h4>
+			<p>
+				If you quit POPROX, you also may choose to withdraw your data from our database. We cannot recall
+				data that has already been shared with researchers (though none of this data is associated with
+				your email or other identifying information), but we can ensure that future researchers do not
+				see your data. If you wish to withdraw your data, you must do it while we still have your
+				contact information - after you've withdrawn contact information we can no longer tell which
+				data was yours.
+			</p>
+
+			<h4>3.2.2 Disenroll.</h4>
+			<p>We reserve the right to disenroll a user if:</p>
+			<ul>
+				<ul><b>3.2.2.1 </b>The newsletter bounces repeatedly from the provided email address.</ul>
+				<ul><b>3.2.2.2 </b>No interaction is logged with the newsletter for a sustained period.</ul>
+				<ul><b>3.2.2.3 </b>We observed behaviors harmful to the POPROX platform or experiments.</ul>
+			</ul>
+			<div class="consent">
+				<input type="checkbox" name="agree3" value="yes" id="agree3" header-id="consent-header-3" required>
+				<label for="agree3">
+					I understand the data collection and withdraw / disenroll policies of the
+					POPROX platform.
+				</label>
+			</div>
+		</section>
+
+		<header id="consent-header-4" class="accordion-header {% if 'agree4' in missing %}error{% endif %}"
+			target-panel="consent-section-4">
+			<h2>4. Compensation</h2>
+			<div class="minmax-icon" state-lbl="-"></div>
+		</header>
+		<section id="consent-section-4" class="consent-section">
+			<h3></h3>
+			<p>Some experiments may provide modest compensation for your time. We may also provide modest
+				compensation as a reward for participation and/or longevity. We will ask you to select from
+				compensation options that you can change later when you are ready to get paid.</p>
+			<div class="consent">
+				<input type="checkbox" name="agree4" value="yes" id="agree4" header-id="consent-header-4" required>
+				<label for="agree4">I understand the compensation opportunity of the POPROX platform.
+				</label>
+			</div>
+		</section>
+
+		<header id="consent-header-5" class="accordion-header {% if 'agree5' in missing %}error{% endif %}"
+			target-panel="consent-section-5">
+			<h2>Final Confirmation</h2>
+			<div class="minmax-icon" state-lbl="-"></div>
+		</header>
+		<section id="consent-section-5" class="consent-section">
+			<h3></h3>
+			<p>
+				If you have questions for us, you can reach us at <a
+					href="mail-to:support@poprox.ai">support@poprox.ai</a>. If you have no further questions and
+				would like to enroll in/subscribe to POPROX News, please click below and submit.
+			</p>
+
+			<div class="consent">
+				<input type="checkbox" name="agree5" value="yes" id="agree5" header-id="consent-header-5" required>
+				<label for="agree5">I have had an opportunity to review the agreement. I have no more questions
+					and agree to participate in POPROX.
+				</label>
+			</div>
+		</section>
+
+		<section id="consent-final">
+			<p>
+				Thanks for agreeing to use our platform. We look forward to recommending personalized news to you
+				soon!
+			</p>
+		</section>
+		<div class="consent">
+			<button id="submit-btn" class="button is-primary" type="submit">Submit Form</button>
+		</div>
+	</form>
+</div>
+{% endblock %}

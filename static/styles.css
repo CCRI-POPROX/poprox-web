@@ -1,0 +1,128 @@
+/*
+* css for topics.html
+*/
+.pref-updated-flash {
+	background-color: #22771133;
+	padding: 0.25em;
+	margin: -0.75em -0.75em 9px -0.75em;
+}
+
+.pref-item-block {
+	margin: -0.25em 0 0 0;
+}
+
+.topic-radio-container {
+	margin: -0.75em 0;
+	align-content: center;
+}
+
+.topic-radio-container label {
+	display: flex;
+}
+
+.topic-radio-container p {
+	margin-left: 0.75em;
+}
+
+/* end topics.html */
+
+/*
+* css for consent1.html
+*/
+h1 {
+	font-size: 2em;
+	text-align: center;
+	margin: 1rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+h3 {
+	margin-top: 0.5rem;
+	font-weight: bolder;
+	font-size: 1.25rem;
+}
+
+h4 {
+	font-weight: bolder;
+	display: inline;
+}
+
+h5 {
+	font-weight: bold;
+	display: inline;
+}
+
+h2~p,
+h3 {
+	margin-left: 2rem;
+}
+
+h3~p,
+h3~ul,
+h4 {
+	margin-left: 3rem;
+}
+
+h4~p,
+h4~ul,
+h5 {
+	margin-left: 4rem;
+}
+
+
+.consent {
+	margin: 2rem;
+}
+
+.minmax-icon {
+	font-size: 1.5rem;
+	margin-left: auto;
+	font-family: monospace;
+}
+
+.minmax-icon::after {
+	content: "[" attr(state-lbl) "]";
+}
+
+.accordion-header {
+	cursor: pointer;
+	background-color: #ececec;
+	display: flex;
+	padding: 1rem;
+	margin-bottom: 0.1rem;
+	margin-top: 0.1rem;
+}
+
+.accordion-header.checked {
+	background-color: #22771133;
+}
+
+.accordion-header.error {
+	background-color: #ef333363;
+}
+
+.consent-section {
+	overflow: hidden;
+	transition: height 0.5s;
+}
+
+#consent-final {
+	overflow: hidden;
+	height: 0;
+}
+
+#consent-final p {
+	margin: 2rem;
+}
+
+.error-flash {
+	background-color: #ececec;
+	color: #ef3333;
+	padding: 0.25em;
+	margin-top: 2rem;
+}
+
+/* end consent1.html */
