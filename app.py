@@ -47,8 +47,9 @@ def email_Redirect(path):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         account_repo.store_login(data)
+        conn.commit()
 
-    return redirect(url_for(data.endpoint, values=data.data))
+    return redirect(url_for(data.endpoint, **data.data))
 
 
 @app.route(f"{URL_PREFIX}/login")
