@@ -26,7 +26,6 @@ from poprox_concepts.api.tracking import LoginLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
-    UnsubscribeLinkData,
     from_hashed_base64,
 )
 
@@ -87,14 +86,11 @@ def unsubscribe():
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
 
 
-@app.route(f"{URL_PREFIX}/email_unsubscribe/<path>")
-def email_unsubscribe(path):
-    data = from_hashed_base64(path, HMAC_KEY, UnsubscribeLinkData)
-    # TODO -- log the newsletter_id from data.
-    auth.login_via_account_id(data.account_id)
+@app.route(f"{URL_PREFIX}/email_unsubscribe/<newsletter_id>")
+def email_unsubscribe(newsletter_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.end_subscription_for_account(data.account_id)
+        account_repo.end_subscription_for_account(auth.get_account_id())
         conn.commit()
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
 
