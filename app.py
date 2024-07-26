@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 from os import environ as env
 
 import sqlalchemy
@@ -9,32 +10,27 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_storage.repositories.account_interest_log import (  # noqa: E402
+from poprox_storage.repositories.account_interest_log import (
     DbAccountInterestRepository,
 )
-from poprox_storage.repositories.accounts import DbAccountRepository  # noqa: E402
+from poprox_storage.repositories.accounts import DbAccountRepository
 
-from auth import Auth  # noqa: E402
-from db.postgres_db import (  # noqa: E402
+from auth import Auth
+from db.postgres_db import (
     DB_ENGINE,
     finish_consent,
     finish_email_verification,
     finish_onboarding,
 )
-from poprox_concepts.domain import AccountInterest  # noqa: E402
-from poprox_concepts.domain.topics import GENERAL_TOPICS  # noqa: E402
-from poprox_concepts.internals import (  # noqa: E402
+from poprox_concepts.api.tracking import LoginLinkData
+from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain.topics import GENERAL_TOPICS
+from poprox_concepts.internals import (
     UnsubscribeLinkData,
     from_hashed_base64,
 )
 
 DEFAULT_SOURCE = "website"
-
-ENV_FILE = find_dotenv()
-if ENV_FILE:
-    load_dotenv(ENV_FILE)
-
-
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
@@ -42,6 +38,14 @@ app.secret_key = env.get("APP_SECRET_KEY")
 HMAC_KEY = env.get("POPROX_HMAC_KEY")
 
 auth = Auth(app)
+
+
+@app.route(f"{URL_PREFIX}/email_redirect/<path>")
+def email_Redirect(path):
+    data: LoginLinkData = from_hashed_base64(path, HMAC_KEY, LoginLinkData)
+    auth.login_via_account_id(data.account_id)
+    # TODO -- log the click.
+    return redirect(url_for(data.endpoint, values=data.data))
 
 
 @app.route(f"{URL_PREFIX}/login")
