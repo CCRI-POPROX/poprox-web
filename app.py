@@ -43,7 +43,11 @@ auth = Auth(app)
 def email_Redirect(path):
     data: LoginLinkData = from_hashed_base64(path, HMAC_KEY, LoginLinkData)
     auth.login_via_account_id(data.account_id)
-    # TODO -- log the click.
+
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        account_repo.store_login(data)
+
     return redirect(url_for(data.endpoint, values=data.data))
 
 
