@@ -24,7 +24,7 @@ from db.postgres_db import (  # noqa: E402
 from poprox_concepts.domain import AccountInterest  # noqa: E402
 from poprox_concepts.domain.topics import GENERAL_TOPICS  # noqa: E402
 from poprox_concepts.internals import (  # noqa: E402
-    Unsubscribe_Link_Data,
+    UnsubscribeLinkData,
     from_hashed_base64,
 )
 
@@ -85,7 +85,7 @@ def unsubscribe():
 
 @app.route(f"{URL_PREFIX}/email_unsubscribe/<path>")
 def email_unsubscribe(path):
-    data = from_hashed_base64(path, HMAC_KEY, Unsubscribe_Link_Data)
+    data = from_hashed_base64(path, HMAC_KEY, UnsubscribeLinkData)
     # TODO -- log the newsletter_id from data.
     auth.login_via_account_id(data.account_id)
     with DB_ENGINE.connect() as conn:
