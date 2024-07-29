@@ -19,12 +19,12 @@ custom:
       # This libopenblas belongs to numpy and might increase size of lambda unnecessarily
       - "**/libopenblasp-*.dynlib*"
   customDomain:
-    domainName: www.poprox.ai
+    domainName: user.poprox.ai
     basePath: ''
     apiType: http
     endpointType: REGIONAL
-    createRoute53Record: false
-    createRoute53IPv6Record: false
+    createRoute53Record: true
+    createRoute53IPv6Record: true
     securityPolicy: tls_1_2
 
   wsgi:
@@ -56,7 +56,7 @@ provider:
     POPROX_DB_USER: ${ssm:/poprox/database/username}
     POPROX_DB_PASSWORD: ${ssm:/poprox/database/password}
     POPROX_HMAC_KEY: ${ssm:/poprox/hmac_key}
-    URL_PREFIX: "/user"
+    URL_PREFIX: "/"
     AUTH0_CLIENT_ID: rpXLtR41mbEVLLcpUXuYxsA1HlIVEHiq
     AUTH0_CLIENT_SECRET: ${ssm:/poprox/web/auth0/secret}
     AUTH0_DOMAIN: dev-kgf5ffezmmbm4slh.us.auth0.com
