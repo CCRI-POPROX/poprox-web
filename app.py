@@ -40,7 +40,7 @@ auth = Auth(app)
 
 
 @app.route(f"{URL_PREFIX}/email_redirect/<path>")
-def email_Redirect(path):
+def email_redirect(path):
     data: LoginLinkData = from_hashed_base64(path, HMAC_KEY, LoginLinkData)
     auth.login_via_account_id(data.account_id)
 
