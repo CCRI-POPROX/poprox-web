@@ -1,14 +1,21 @@
+import json
+from datetime import datetime, timezone
 from functools import wraps
 from os import environ as env
 from typing import Optional
 from urllib.parse import quote_plus, urlencode
 
+import jinja2
 from authlib.integrations.flask_client import OAuth
 from flask import Flask, redirect, session, url_for
+from poprox_platform.aws import sqs
 from werkzeug.local import LocalProxy
 from werkzeug.wrappers import Response
 
 from db.postgres_db import get_account, get_or_make_account
+from poprox_concepts.api.tracking import SignUpToken, to_hashed_base64
+
+HMAC_KEY = env.get("POPROX_HMAC_KEY")
 
 oauth = OAuth()
 
@@ -51,7 +58,10 @@ class Auth:
         auth0 = self.__get_app()
         auth_token = auth0.authorize_access_token()
         session["auth0_info"] = auth_token
-        session["account"] = get_or_make_account(auth_token["userinfo"]["email"], source)
+        return self.enroll(auth_token["userinfo"]["email"], source)
+
+    def enroll(self, email, source) -> Response:
+        session["account"] = get_or_make_account(email, source)
         return redirect(url_for(STATUS_REDIRECTS.get(self.get_account_status(), "home")))
 
     def login_via_account_id(self, account_id):
@@ -128,3 +138,26 @@ class Auth:
 
     def fetch_is_email_verified(self):
         return self.__get_app().userinfo(token=session["auth0_info"])["email_verified"]
+
+    def send_enroll_token(self, source, email):
+        queue_url = env.get("SEND_EMAIL_QUEUE_URL")
+
+        token = SignUpToken(email=email, source=source, created_at=datetime.now(timezone.utc).astimezone())
+        token_signed = to_hashed_base64(token, HMAC_KEY)
+
+        jinja_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader("email_templates"),
+            autoescape=jinja2.select_autoescape(),
+        )
+
+        template = jinja_env.get_template("enroll_token_email.html")
+        html = template.render(enroll_link=token_signed)
+        message = json.dumps(
+            {
+                "email_to": email,
+                "email_subject": "Welcome to Poprox",
+                "email_body": html,
+            }
+        )
+
+        sqs.send_message(queue_url=queue_url, message_body=message)

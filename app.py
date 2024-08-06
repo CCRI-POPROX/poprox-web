@@ -1,4 +1,6 @@
 # ruff: noqa: E402
+import datetime
+from datetime import timedelta, timezone
 from os import environ as env
 
 import sqlalchemy
@@ -22,7 +24,7 @@ from db.postgres_db import (
     finish_email_verification,
     finish_onboarding,
 )
-from poprox_concepts.api.tracking import LoginLinkData
+from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
@@ -35,6 +37,8 @@ URL_PREFIX = env.get("URL_PREFIX", "/")
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY")
 HMAC_KEY = env.get("POPROX_HMAC_KEY")
+
+ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
 auth = Auth(app)
 
@@ -60,6 +64,35 @@ def login():
 @app.route(f"{URL_PREFIX}/register")
 def register():
     return auth.register(request.args.get("source", DEFAULT_SOURCE))
+
+
+@app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
+def pre_enroll_get():
+    source = request.args.get("source", DEFAULT_SOURCE)
+    return render_template("pre_enroll.html", source=source)
+
+
+@app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
+def pre_enroll_post():
+    source = request.form.get("source", DEFAULT_SOURCE)
+    legal_age = request.form.get("legal_age")
+    us_area = request.form.get("us_area")
+    email = request.form.get("email")
+    if (not legal_age) or (not us_area) or (not email):
+        return render_template("pre_enroll.html", source=source)
+    else:
+        auth.send_enroll_token(source, email)
+        return render_template("pre_enroll_sent.html")
+
+
+@app.route(f"{URL_PREFIX}/enroll/<token_raw>", methods=["GET"])
+def enroll_with_token(token_raw):
+    token: SignUpToken = from_hashed_base64(token_raw, HMAC_KEY, SignUpToken)
+    now = datetime.datetime.now(timezone.utc).astimezone()
+    if (not token) or (now - token.created_at > ENROLL_TOKEN_TIMEOUT):
+        return render_template("enroll_error.html", source=token.source)
+    else:
+        return auth.enroll(token.email, token.source)
 
 
 @app.route(f"{URL_PREFIX}/callback", methods=["GET", "POST"])
