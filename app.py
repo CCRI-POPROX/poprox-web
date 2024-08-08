@@ -21,7 +21,6 @@ from auth import Auth
 from db.postgres_db import (
     DB_ENGINE,
     finish_consent,
-    finish_email_verification,
     finish_onboarding,
 )
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
@@ -56,16 +55,6 @@ def email_redirect(path):
     return redirect(url_for(data.endpoint, **data.data))
 
 
-@app.route(f"{URL_PREFIX}/login")
-def login():
-    return auth.login()
-
-
-@app.route(f"{URL_PREFIX}/register")
-def register():
-    return auth.register(request.args.get("source", DEFAULT_SOURCE))
-
-
 @app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
 def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
@@ -95,21 +84,11 @@ def enroll_with_token(token_raw):
         return auth.enroll(token.email, token.source)
 
 
-@app.route(f"{URL_PREFIX}/callback", methods=["GET", "POST"])
-def callback():
-    # should only be passed from special registration URLS
-    source = request.args.get("source", DEFAULT_SOURCE)
-    error = request.args.get("error")
-    error_description = request.args.get("error_description")
-    if error is not None and error == "access_denied":
-        return redirect(url_for("logout", error_description=error_description))
-    return auth.callback(source)
-
-
 @app.route(f"{URL_PREFIX}/logout")
 def logout():
     error_description = request.args.get("error_description")
-    return redirect(auth.logout(error_description))
+    auth.logout(error_description)
+    return redirect(url_for("home"))
 
 
 @app.route(f"{URL_PREFIX}/unsubscribe")
@@ -146,27 +125,21 @@ def subscribe():
 
 
 @app.route(f"{URL_PREFIX}/consent1")
-@auth.requires_login_ignore_status
+@auth.requires_login
 def consent1():
-    if auth.get_account_status() == "new_account":
-        error = request.args.get("error")
-        missing = request.args.get("disagree")
-        if missing is None:
-            # this is so we can highlight the missing consent sections
-            # however, this should not happen since you cannot submit the form
-            # without agreeing to all sections
-            missing = []
+    error = request.args.get("error")
+    missing = request.args.get("disagree")
+    if missing is None:
+        # this is so we can highlight the missing consent sections
+        # however, this should not happen since you cannot submit the form
+        # without agreeing to all sections
+        missing = []
 
-        return render_template("consent1.html", error=error, missing=missing, auth=auth)
-    else:
-        # User may be in the wrong part of the workflow -- most commonly this
-        # is caused by the email which sends you here. go to the "next step"
-        # and let it redirect to home if that's wrong.
-        return redirect(url_for("await_email_verification"))
+    return render_template("consent1.html", error=error, missing=missing, auth=auth)
 
 
 @app.route(f"{URL_PREFIX}/consent2")
-@auth.requires_login_ignore_status
+@auth.requires_login_ignore_status  # part of new_account workflow.
 def consent2():
     if auth.get_account_status() != "new_account":
         return redirect(url_for("home"))
@@ -185,26 +158,12 @@ def consent2():
 
     else:
         finish_consent(auth.get_account_id(), "poprox_main_consent_v1")
-        return redirect(url_for("await_email_verification"))
-
-
-@app.route(f"{URL_PREFIX}/email_check")
-@auth.requires_login_ignore_status
-def await_email_verification():
-    if auth.get_account_status() not in [
-        "waiting_email_verification",
-        "pending_initial_preferences",
-    ]:
-        return redirect(url_for("home"))
-    elif auth.fetch_is_email_verified():
-        finish_email_verification(auth.get_account_id())
-        return redirect(url_for("topics", referrer="email_check"))
-    else:
-        return render_template("await_email_verification.html", auth=auth)
+        return redirect(url_for("topics"))
 
 
 @app.route(f"{URL_PREFIX}/")
 @app.route(f"{URL_PREFIX}")
+@auth.requires_login
 def home():
     error = request.args.get("error_description")
 
@@ -236,6 +195,8 @@ def home():
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])
 @auth.requires_login
 def topics():
+    onboarding = auth.get_account_status() == "pending_initial_preferences"
+
     interest_lvls = [
         ("Very interested", 5),
         ("Interested", 4),
@@ -252,13 +213,11 @@ def topics():
             return None
 
     updated = False
-    onboarding = False
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             account_id = auth.get_account_id()
             topic_prefs = []
-            onboarding = request.form.get("onboarding")
             for topic in GENERAL_TOPICS:
                 entity_id = repo.lookup_entity_by_name(topic)
                 if entity_id is None:
