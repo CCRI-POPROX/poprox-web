@@ -50,13 +50,6 @@ def finish_consent(account_id, consent_version):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         account_repo.record_consent(account_id, consent_version)
-        account_repo.update_status(account_id, "waiting_email_verification")
-        conn.commit()
-
-
-def finish_email_verification(account_id):
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
         account_repo.update_status(account_id, "pending_initial_preferences")
         conn.commit()
 

@@ -57,10 +57,9 @@ provider:
     POPROX_DB_PASSWORD: ${ssm:/poprox/database/password}
     POPROX_HMAC_KEY: ${ssm:/poprox/hmac_key}
     URL_PREFIX: "/"
-    AUTH0_CLIENT_ID: rpXLtR41mbEVLLcpUXuYxsA1HlIVEHiq
-    AUTH0_CLIENT_SECRET: ${ssm:/poprox/web/auth0/secret}
-    AUTH0_DOMAIN: dev-kgf5ffezmmbm4slh.us.auth0.com
     APP_SECRET_KEY: ${ssm:/poprox/web/app_secret}
+    SendEmailQueueArn: ${cf:poprox-serverless-interfaces-${self:provider.stage}.SendEmailQueueArn}
+
   memorySize: 512
   timeout: 900
   architecture: x86_64

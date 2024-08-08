@@ -2,7 +2,6 @@
 flask
 gunicorn
 python-dotenv
-authlib
 requests
 flask-sqlalchemy
 psycopg2-binary
@@ -10,3 +9,4 @@ tqdm
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git
+git+https://github.com/CCRI-POPROX/poprox-platform.git
