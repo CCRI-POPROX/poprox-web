@@ -9,7 +9,7 @@ plugins:
   - serverless-domain-manager
 custom:
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: false
     useDownloadCache: false
     useStaticCache: false
     slim: true
@@ -58,7 +58,7 @@ provider:
     POPROX_HMAC_KEY: ${ssm:/poprox/hmac_key}
     URL_PREFIX: "/"
     APP_SECRET_KEY: ${ssm:/poprox/web/app_secret}
-    SendEmailQueueArn: ${cf:poprox-serverless-interfaces-${self:provider.stage}.SendEmailQueueArn}
+    SEND_EMAIL_QUEUE_URL: ${cf:poprox-serverless-interfaces-${self:provider.stage}.SendEmailQueue}
 
   memorySize: 512
   timeout: 900
@@ -70,6 +70,20 @@ provider:
     subnetIds:
       - ${cf:poprox-datasources-stack-dev.PrivateSubnet1a}
       - ${cf:poprox-datasources-stack-dev.PrivateSubnet1b}
+
+  iam:
+    role:
+      # Add statements to the IAM role to give permissions to Lambda functions
+      statements:
+        - Effect: Allow
+          Action:
+            - "sqs:SendMessage"
+            - "sqs:ReceiveMessage"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "logs:*"
+          Resource: "*"
 
 functions:
   app:
