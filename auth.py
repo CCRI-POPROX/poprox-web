@@ -120,3 +120,29 @@ class Auth:
         else:
             logger.error("No email queue url is sent. This is OK in development.")
             logger.error("Email not sent: " + message)
+
+    def send_post_consent(self):
+        queue_url = env.get("SEND_EMAIL_QUEUE_URL")
+        email = self.get_email()
+
+        jinja_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader("email_templates"),
+            autoescape=jinja2.select_autoescape(),
+        )
+
+        template = jinja_env.get_template("enroll_post_consent.html")
+        html = template.render(
+            consent_form_link=url_for("static", filename="Subscriber_Agreement_v1.pdf", _external=True)
+        )
+        message = json.dumps(
+            {
+                "email_to": email,
+                "email_subject": "Poprox - Record of Consent",
+                "email_body": html,
+            }
+        )
+        if queue_url:
+            sqs.send_message(queue_url=queue_url, message_body=message)
+        else:
+            logger.error("No email queue url is sent. This is OK in development.")
+            logger.error("Email not sent: " + message)

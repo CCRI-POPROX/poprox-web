@@ -158,6 +158,7 @@ def consent2():
 
     else:
         finish_consent(auth.get_account_id(), "poprox_main_consent_v1")
+        auth.send_post_consent()
         return redirect(url_for("topics"))
 
 
@@ -241,10 +242,6 @@ def topics():
             if onboarding:
                 finish_onboarding(auth.get_account_id())
                 return redirect(url_for("home", error_description="You have been subscribed!"))
-
-    referrer = request.args.get("referrer")
-    if (referrer is not None) and (referrer == "email_check"):
-        onboarding = True
 
     return render_template(
         "topics.html",

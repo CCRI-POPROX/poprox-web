@@ -9,6 +9,12 @@
 	</div>
 	{% endif %}
 	<form action="/topics" method="POST">
+		<h2>Topic Selection survey</h2>
+		{% if onboarding %}
+		<p>
+			This survey is required to complete the enrollment process, but you are free to skip any question you prefer not to answer. Your responses will help the algorithms find articles that match your interests.
+		</p>
+		{% endif %}
 		<div class="block content">
 			<p><strong>
 					1. Please mark your initial preference by selecting the your
