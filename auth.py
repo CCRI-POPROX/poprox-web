@@ -1,57 +1,35 @@
+import json
+import logging
+from datetime import datetime, timezone
 from functools import wraps
 from os import environ as env
-from typing import Optional
-from urllib.parse import quote_plus, urlencode
 
-from authlib.integrations.flask_client import OAuth
-from flask import Flask, redirect, session, url_for
-from werkzeug.local import LocalProxy
+import jinja2
+from flask import Flask, redirect, request, session, url_for
+from poprox_platform.aws import sqs
 from werkzeug.wrappers import Response
 
 from db.postgres_db import get_account, get_or_make_account
+from poprox_concepts.api.tracking import SignUpToken, to_hashed_base64
 
-oauth = OAuth()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+HMAC_KEY = env.get("POPROX_HMAC_KEY")
+
 
 STATUS_REDIRECTS = {
     "new_account": "consent1",
-    "waiting_email_verification": "await_email_verification",
+    "pending_initial_preferences": "topics",
 }
 
 
 class Auth:
     def __init__(self, app: Flask) -> None:
-        oauth.init_app(app)
-        self.__registered_app = None
+        pass
 
-    def __get_app(self) -> Optional[LocalProxy]:
-        if self.__registered_app is None:
-            self.__registered_app = oauth.register(
-                "auth0",
-                client_id=env.get("AUTH0_CLIENT_ID"),
-                client_secret=env.get("AUTH0_CLIENT_SECRET"),
-                client_kwargs={
-                    "scope": "openid profile email update:users",
-                },
-                server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
-            )
-        return self.__registered_app
-
-    def login(self):
-        return self.__get_app().authorize_redirect(
-            redirect_uri=url_for("callback", _external=True),
-        )
-
-    def register(self, source):
-        return self.__get_app().authorize_redirect(
-            redirect_uri=url_for("callback", _external=True, source=source),
-            screen_hint="signup",
-        )
-
-    def callback(self, source) -> Response:
-        auth0 = self.__get_app()
-        auth_token = auth0.authorize_access_token()
-        session["auth0_info"] = auth_token
-        session["account"] = get_or_make_account(auth_token["userinfo"]["email"], source)
+    def enroll(self, email, source) -> Response:
+        session["account"] = get_or_make_account(email, source)
         return redirect(url_for(STATUS_REDIRECTS.get(self.get_account_status(), "home")))
 
     def login_via_account_id(self, account_id):
@@ -76,8 +54,8 @@ class Auth:
             return None
 
     def get_account_status(self):
-        self.refresh_account_info()  # status can change over time sometimes...
         if self.is_logged_in():
+            self.refresh_account_info()  # status can change over time sometimes...
             return session["account"]["status"]
         else:
             return None
@@ -91,12 +69,14 @@ class Auth:
     def requires_login(self, f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if self.is_logged_in() and self.get_account_status() in STATUS_REDIRECTS:
+            endpoint = request.endpoint
+            expected_endpoint = STATUS_REDIRECTS.get(self.get_account_status())
+            if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
                 return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
             elif self.is_logged_in():
                 return f(*args, **kwargs)
             else:
-                return redirect(url_for("home"))
+                return redirect(url_for("pre_enroll_get"))
 
         return decorated
 
@@ -113,18 +93,56 @@ class Auth:
     @staticmethod
     def logout(error_description=None) -> str:
         session.clear()
-        return (
-            "https://"
-            + env.get("AUTH0_DOMAIN")
-            + "/v2/logout?"
-            + urlencode(
-                {
-                    "returnTo": url_for("home", _external=True, error_description=error_description),
-                    "client_id": env.get("AUTH0_CLIENT_ID"),
-                },
-                quote_via=quote_plus,
-            )
+
+    def send_enroll_token(self, source, email):
+        queue_url = env.get("SEND_EMAIL_QUEUE_URL")
+
+        token = SignUpToken(email=email, source=source, created_at=datetime.now(timezone.utc).astimezone())
+        token_signed = to_hashed_base64(token, HMAC_KEY)
+
+        jinja_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader("email_templates"),
+            autoescape=jinja2.select_autoescape(),
         )
 
-    def fetch_is_email_verified(self):
-        return self.__get_app().userinfo(token=session["auth0_info"])["email_verified"]
+        template = jinja_env.get_template("enroll_token_email.html")
+        enroll_link = url_for("enroll_with_token", token_raw=token_signed, _external=True)
+        html = template.render(enroll_link=enroll_link)
+        message = json.dumps(
+            {
+                "email_to": email,
+                "email_subject": "Welcome to Poprox",
+                "email_body": html,
+            }
+        )
+        if queue_url:
+            sqs.send_message(queue_url=queue_url, message_body=message)
+        else:
+            logger.error("No email queue url is sent. This is OK in development.")
+            logger.error("Email not sent: " + message)
+
+    def send_post_consent(self):
+        queue_url = env.get("SEND_EMAIL_QUEUE_URL")
+        email = self.get_email()
+
+        jinja_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader("email_templates"),
+            autoescape=jinja2.select_autoescape(),
+        )
+
+        template = jinja_env.get_template("enroll_post_consent.html")
+        html = template.render(
+            consent_form_link=url_for("static", filename="Subscriber_Agreement_v1.pdf", _external=True)
+        )
+        message = json.dumps(
+            {
+                "email_to": email,
+                "email_subject": "Poprox - Record of Consent",
+                "email_body": html,
+            }
+        )
+        if queue_url:
+            sqs.send_message(queue_url=queue_url, message_body=message)
+        else:
+            logger.error("No email queue url is sent. This is OK in development.")
+            logger.error("Email not sent: " + message)
