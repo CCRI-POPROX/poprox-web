@@ -97,7 +97,7 @@ def unsubscribe():
     account_id = auth.get_account_id()
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.end_subscription_for_account(account_id)
+        account_repo.remove_subscription_for_account(account_id)
         conn.commit()
 
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
@@ -107,7 +107,7 @@ def unsubscribe():
 def email_unsubscribe(newsletter_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.end_subscription_for_account(auth.get_account_id())
+        account_repo.remove_subscription_for_account(auth.get_account_id())
         conn.commit()
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
 
@@ -118,7 +118,7 @@ def subscribe():
     account_id = auth.get_account_id()
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.create_subscription_for_account(account_id)
+        account_repo.store_subscription_for_account(account_id)
         conn.commit()
 
     return redirect(url_for("home", error_description="You have been subscribed!"))
@@ -220,7 +220,7 @@ def topics():
             account_id = auth.get_account_id()
             topic_prefs = []
             for topic in GENERAL_TOPICS:
-                entity_id = repo.lookup_entity_by_name(topic)
+                entity_id = repo.fetch_entity_by_name(topic)
                 if entity_id is None:
                     continue
                 score = get_pref(topic)
@@ -235,7 +235,7 @@ def topics():
                         )
                     )
 
-            repo.insert_topic_preferences(account_id, topic_prefs)
+            repo.store_topic_preferences(account_id, topic_prefs)
             conn.commit()
             updated = True
 
