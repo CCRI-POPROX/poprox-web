@@ -22,7 +22,7 @@ def get_or_make_account(email, source):
         account_repo = DbAccountRepository(conn)
         result = account_repo.fetch_account_by_email(email)
         if result is None:
-            result = account_repo.create_new_account(email, source)
+            result = account_repo.store_new_account(email, source)
             conn.commit()
         return {
             "account_id": result.account_id,
@@ -49,7 +49,7 @@ def get_account(account_id):
 def finish_consent(account_id, consent_version):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.record_consent(account_id, consent_version)
+        account_repo.store_consent(account_id, consent_version)
         account_repo.update_status(account_id, "pending_initial_preferences")
         conn.commit()
 
@@ -58,5 +58,5 @@ def finish_onboarding(account_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         account_repo.update_status(account_id, "onboarding_done")
-        account_repo.create_subscription_for_account(account_id)
+        account_repo.store_subscription_for_account(account_id)
         conn.commit()
