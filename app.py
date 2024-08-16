@@ -58,7 +58,8 @@ def email_redirect(path):
 @app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
 def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
-    return render_template("pre_enroll.html", source=source)
+    error = request.args.get("error")
+    return render_template("pre_enroll.html", source=source, error=error)
 
 
 @app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
@@ -76,10 +77,24 @@ def pre_enroll_post():
 
 @app.route(f"{URL_PREFIX}/enroll/<token_raw>", methods=["GET"])
 def enroll_with_token(token_raw):
-    token: SignUpToken = from_hashed_base64(token_raw, HMAC_KEY, SignUpToken)
+    try:
+        token: SignUpToken = from_hashed_base64(token_raw, HMAC_KEY, SignUpToken)
+    except ValueError:
+        return redirect(
+            url_for(
+                "pre_enroll_post",
+                error="The enrollment link you used was invalid. Please request a new enrollment link below.",
+            )
+        )
     now = datetime.datetime.now(timezone.utc).astimezone()
     if (not token) or (now - token.created_at > ENROLL_TOKEN_TIMEOUT):
-        return render_template("enroll_error.html", source=token.source)
+        return redirect(
+            url_for(
+                "pre_enroll_post",
+                source=token.source,
+                error="The enrollment link you used was expired. Please request a new enrollment link below.",
+            )
+        )
     else:
         return auth.enroll(token.email, token.source)
 

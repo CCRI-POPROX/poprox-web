@@ -2,7 +2,13 @@
 {% block sidebar %}
 {% endblock %}
 {% block content %}
+{% if error %}
+
+{% endif %}
 <div class="block box">
+	<div class="error-flash">
+		<p>{{ error }}</p>
+	</div>
 	<div class="content">
 		<h2>POPROX</h2>
 		<p>POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests.
