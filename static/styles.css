@@ -125,4 +125,10 @@ h5 {
 	margin-top: 2rem;
 }
 
+@media print {
+	.consent-section {
+		height: auto !important;
+	}
+}
+
 /* end consent1.html */
