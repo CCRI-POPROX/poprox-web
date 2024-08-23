@@ -159,7 +159,7 @@ def consent2():
     if auth.get_account_status() != "new_account":
         return redirect(url_for("home"))
 
-    agrees = ["agree1", "agree2", "agree3", "agree4", "agree5"]
+    agrees = ["agree1", "agree2", "agree3", "agree4", "agree5", "agree6", "agree7", "agree8"]
     agrees = [request.args.get(agree) for agree in agrees]
     if not all(agrees):
         disagree = [agree for agree in agrees if not agree]
@@ -172,7 +172,7 @@ def consent2():
         )
 
     else:
-        finish_consent(auth.get_account_id(), "poprox_main_consent_v1")
+        finish_consent(auth.get_account_id(), "poprox_main_consent_v2")
         auth.send_post_consent()
         return redirect(url_for("topics"))
 

@@ -6,9 +6,11 @@
 
 {% endif %}
 <div class="block box">
+	{% if error %}
 	<div class="error-flash">
 		<p>{{ error }}</p>
 	</div>
+	{% endif %}
 	<div class="content">
 		<h2>POPROX</h2>
 		<p>POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests.
