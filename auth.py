@@ -132,7 +132,7 @@ class Auth:
 
         template = jinja_env.get_template("enroll_post_consent.html")
         html = template.render(
-            consent_form_link=url_for("static", filename="Subscriber_Agreement_v1.pdf", _external=True)
+            consent_form_link=url_for("static", filename="Subscriber_Agreement_v2.pdf", _external=True)
         )
         message = json.dumps(
             {
