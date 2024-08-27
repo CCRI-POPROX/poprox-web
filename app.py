@@ -3,10 +3,8 @@ import datetime
 from datetime import timedelta, timezone
 from os import environ as env
 
-import sqlalchemy
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
-from sqlalchemy import MetaData, Table, func
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -182,16 +180,7 @@ def consent2():
 @auth.requires_login
 def home():
     error = request.args.get("error_description")
-
-    metadata = MetaData()
-    article_table = Table("articles", metadata, autoload_with=DB_ENGINE)
-    query = (
-        sqlalchemy.select(article_table.c.title, article_table.c.url, article_table.c.content)
-        .order_by(func.random())
-        .limit(1)
-    )
     with DB_ENGINE.connect() as conn:
-        result = conn.execute(query).fetchone()
         account_repo = DbAccountRepository(conn)
 
         is_subscribed = False
@@ -201,7 +190,6 @@ def home():
 
         return render_template(
             "home.html",
-            article=result,
             auth=auth,
             error=error,
             is_subscribed=is_subscribed,
