@@ -27,7 +27,9 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 
+DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
@@ -244,6 +246,12 @@ def topics():
 
             if onboarding:
                 finish_onboarding(auth.get_account_id())
+                enqueue_newsletter_request(
+                    account_id=account_id,
+                    profile_id=account_id,
+                    group_id=None,
+                    endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                )
                 return redirect(url_for("home", error_description="You have been subscribed!"))
 
     return render_template(
