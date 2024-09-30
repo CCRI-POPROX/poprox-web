@@ -10,7 +10,6 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import (
     DbAccountInterestRepository,
 )
@@ -28,6 +27,8 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
+
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -206,7 +207,7 @@ def home():
             error=error,
             is_subscribed=is_subscribed,
         )
-list
+
 
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])
 @auth.requires_login
