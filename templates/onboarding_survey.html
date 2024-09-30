@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="column box onboarding-survey">
+    <form action="/onboarding" method="POST">
+        <div class="" select>
+            <p>What is your gender identity?</p>
+            <select title="Select options for eliciting gender identity."
+                name="genderselection"
+            >
+                <option>Select an option</option>
+                {% for genderopt in genderopts %}
+                    <option value="{{genderopt[1]}}">{{genderopt[0]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <p>
+                Please select your birth year.
+            </p>
+            <select title="Select options for eliciting birth year.">
+                <option>Choose a year</option>
+                {% for year in yearopts %}
+                    <option value="{{year}}">{{year}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <p>Enter your 5 digit ZIP code</p>
+            <input type="text" name="zip" id="zip" placeholder="ZIP code">
+        </div>
+        <div>
+            <p>
+                What is the highest degree or level of education you have completed?
+            </p>
+            <select title="Select options for eliciting level of education.">
+                <option>Select an option</option>
+                {% for edlevel in edlevelopts %}
+                    <option value="{{edlevel[1]}}">{{edlevel[0]}}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+        <div>
+            <p>Choose one or more races that you consider yourself to be:</p>
+            <div class="chckboxes">
+                <ul>
+                    {% for raceopt in raceopts %}
+                        <li class="checkbox">
+                            <label class="checkbox">
+                                <input type="checkbox" 
+                                value="{{raceopt[1]}}"
+                                name="raceselect"/>
+                                {{raceopt[0]}}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <input class="button is-primary" type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

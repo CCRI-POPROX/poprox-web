@@ -20,6 +20,7 @@ from db.postgres_db import (
     DB_ENGINE,
     finish_consent,
     finish_onboarding,
+    finish_topic_selection,
 )
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
@@ -245,14 +246,8 @@ def topics():
             updated = True
 
             if onboarding:
-                finish_onboarding(auth.get_account_id())
-                enqueue_newsletter_request(
-                    account_id=account_id,
-                    profile_id=account_id,
-                    group_id=None,
-                    endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
-                )
-                return redirect(url_for("home", error_description="You have been subscribed!"))
+                finish_topic_selection(auth.get_account_id())
+                return redirect(url_for("onboarding_survey", error_description="You have been subscribed!"))
 
     return render_template(
         "topics.html",
@@ -262,6 +257,67 @@ def topics():
         intlvls=interest_lvls,
         auth=auth,
     )
+
+
+@app.route(f"{URL_PREFIX}/onboarding", methods=["GET", "POST"])
+@auth.requires_login
+def onboarding_survey():
+    if auth.get_account_status() != "pending_onboarding_survey":
+        return redirect(url_for("home"))
+    
+
+    if request.method == "POST":
+        print(request.form)
+    
+    # enqueue_newsletter_request(
+    #                 account_id=account_id,
+    #                 profile_id=account_id,
+    #                 group_id=None,
+    #                 endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+    #             )
+    
+
+    genderopts = [
+        ('Woman', 1), 
+        ('Man', 2), 
+        ('Non-binary', 3), 
+        ('Other', 4), 
+        ('Prefer not to say', 4)]
+
+    today = datetime.date.today()
+    oneyear = timedelta(days=365)
+    yearmin = (today - 100 * oneyear).year # arbitrarilly set to 100 years old
+    yearmax = (today - 18 * oneyear).year # to ensure at least 18 year old
+    yearopts = [year for year in range(yearmin, yearmax)[::-1]]
+
+    edlevelopts = [
+        ('Some high school', 1), 
+        ('High school', 2),
+        ('Some college', 3),
+        ('Trade, technical or vocational training', 4),
+        ('Associate\'s degree', 5),
+        ('Bachelor\'s degree', 6),
+        ('Master\'s degree', 7),
+        ('Professional degree', 8),
+        ('Doctorate', 9),
+        ('Prefer not to say', 10)]
+    
+    raceopts = [
+        ('White', 1),
+        ('Black or African American', 2),
+        ('American Indian or Alaska Native', 3),
+        ('Asian', 'Native Hawaiian or Other Pacific Islander', 4),
+        ('Not listed (please specify)', 5),
+        ('Prefer not to say', 6)]
+
+    return render_template("onboarding_survey.html",
+        genderopts=genderopts,
+        yearopts=yearopts,
+        edlevelopts=edlevelopts,
+        raceopts=raceopts,
+        auth=auth)
+
+    
 
 
 if __name__ == "__main__":

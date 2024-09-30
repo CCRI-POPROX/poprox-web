@@ -54,6 +54,13 @@ def finish_consent(account_id, consent_version):
         conn.commit()
 
 
+def finish_topic_selection(account_id):
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        account_repo.update_status(account_id, "pending_onboarding_survey")
+        conn.commit()
+
+
 def finish_onboarding(account_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)

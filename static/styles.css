@@ -132,3 +132,22 @@ h5 {
 }
 
 /* end consent1.html */
+
+
+/* css for onboarding_survey.html */
+.onboarding-survey {
+	margin: 2rem;
+}
+
+.onboarding-survey ul {
+	list-style-type: none;
+	display: inline-grid;
+}
+
+.onboarding-survey ul li {
+	margin: 0.25rem;
+}
+
+.onboarding-survey div {
+	margin: 1rem;
+}
