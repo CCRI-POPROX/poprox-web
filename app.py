@@ -105,6 +105,16 @@ def logout():
     auth.logout(error_description)
     return redirect(url_for("home"))
 
+@app.route(f"{URL_PREFIX}/opt_out_of_experiments")
+@auth.requires_login
+def opt_out_of_experiments():
+    account_id = auth.get_account_id()
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        account_repo.update_expt_assignment_to_opt_out(account_id)
+        conn.commit()
+    
+    return redirect(url_for("home", error_desctiption="You have been opted outed out of experiments"))
 
 @app.route(f"{URL_PREFIX}/unsubscribe")
 @auth.requires_login
@@ -196,7 +206,7 @@ def home():
             error=error,
             is_subscribed=is_subscribed,
         )
-
+list
 
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])
 @auth.requires_login
