@@ -27,7 +27,6 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
-
 from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
@@ -115,7 +114,7 @@ def opt_out_of_experiments():
         account_repo.update_expt_assignment_to_opt_out(account_id)
         conn.commit()
     
-    return redirect(url_for("home", error_desctiption="You have been opted outed out of experiments"))
+    return redirect(url_for("home", error_desctiption="You have been opted out of experiments"))
 
 @app.route(f"{URL_PREFIX}/unsubscribe")
 @auth.requires_login
