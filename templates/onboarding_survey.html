@@ -1,59 +1,118 @@
 {% extends "layout.html" %}
+{% block header %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // FIXME: hardercoded index
+        var racecheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        var racenotlisted = racecheckboxes[racecheckboxes.length - 1];
+        racenotlisted.addEventListener('change', function (event) {
+            if(event.target.checked) {
+                var racefields = document.getElementById('racefields');
+                var fielddiv = document.createElement('div');
+                fielddiv.id = 'dynamicracefield';
+                fielddiv.className = 'field';
+                var fieldinput = document.createElement('input');
+                fieldinput.type = 'text';
+                fieldinput.name = 'race';
+                fieldinput.className = 'input';
+                fieldinput.placeholder = 'Please specify';
+                fieldinput.required = 'required';
+                fielddiv.appendChild(fieldinput);
+                racefields.appendChild(fielddiv);
+            } else {
+                var dynamicracefield = document.getElementById('dynamicracefield');
+                if (dynamicracefield) {
+                    dynamicracefield.remove();
+                }
+            }
+        });
+
+    });
+
+    function validateForm() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        var allcheckboxes = Array();
+        for (var i = 0; i < checkboxes.length; i++) {
+            console.log(checkboxes[i]);
+            if (checkboxes[i].checked) {
+                allcheckboxes.push(true);
+            }
+        }
+        if (allcheckboxes.length < 1) {
+            return false;
+        }
+    }
+</script>
+{% endblock %}
 {% block content %}
-
 <div class="column box onboarding-survey">
-    <form action="/onboarding" method="POST">
-        <div class="" select>
-            <p>What is your gender identity?</p>
-            <select title="Select options for eliciting gender identity."
-                name="genderselection"
-            >
-                <option>Select an option</option>
-                {% for genderopt in genderopts %}
-                    <option value="{{genderopt[1]}}">{{genderopt[0]}}</option>
-                {% endfor %}
-            </select>
+    <form action="/onboarding" onsubmit="return validateForm()" method="POST">
+        <!--Gender input-->
+        <div class="field">
+            <label class="label">What is your gender identity?</label>
+            <div class="control">
+                <div class="select" id="genderselect">
+                    <select title="Select options for eliciting gender identity." name="gender" required="required">
+                        <option value="" selected>Select an option</option>
+                        {% for genderopt in genderopts %}
+                        <option value="{{genderopt}}">{{genderopt}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
-        <div>
-            <p>
-                Please select your birth year.
-            </p>
-            <select title="Select options for eliciting birth year.">
-                <option>Choose a year</option>
-                {% for year in yearopts %}
-                    <option value="{{year}}">{{year}}</option>
-                {% endfor %}
-            </select>
+        <!--Birth year input-->
+        <div class="field">
+            <label class="label">Please select your birth year.</label>
+            <div class="control">
+                <div class="select">
+                    <select title="Select options for eliciting birth year." name="birthyear" required="requried">
+                        <option value="" selected>Choose a year</option>
+                        {% for year in yearopts %}
+                        <option value="{{year}}">{{year}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
-        <div>
-            <p>Enter your 5 digit ZIP code</p>
-            <input type="text" name="zip" id="zip" placeholder="ZIP code">
+        <!--ZIP code input-->
+        <div class="field">
+            <label class="label">Enter your 5 digit ZIP code</label>
+            <div class="control">
+                <input class="input" type="text" name="zip" id="zip" placeholder="ZIP code" required="required">
+            </div>
         </div>
-        <div>
-            <p>
+        <!--Education level input-->
+        <div class="field">
+            <label class="label">
                 What is the highest degree or level of education you have completed?
-            </p>
-            <select title="Select options for eliciting level of education.">
-                <option>Select an option</option>
-                {% for edlevel in edlevelopts %}
-                    <option value="{{edlevel[1]}}">{{edlevel[0]}}</option>
-                {% endfor %}
-            </select>
-
+            </label>
+            <div class="control">
+                <div class="select">
+                    <select title="Select options for eliciting level of education." name="education"
+                        required="required">
+                        <option value="" selected>Select an option</option>
+                        {% for edlevel in edlevelopts %}
+                        <option value="{{edlevel}}">{{edlevel}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
-        <div>
-            <p>Choose one or more races that you consider yourself to be:</p>
-            <div class="chckboxes">
+        <!--Race input-->
+        <div class="field" id="racefields">
+            <label class="label">Choose one or more races that you consider yourself to be:</label>
+            <div class="checkboxes">
                 <ul>
                     {% for raceopt in raceopts %}
-                        <li class="checkbox">
-                            <label class="checkbox">
-                                <input type="checkbox" 
-                                value="{{raceopt[1]}}"
-                                name="raceselect"/>
-                                {{raceopt[0]}}
-                            </label>
-                        </li>
+                    <li class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" value="{{raceopt}}" name="race" />
+                            {{raceopt}}
+                        </label>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>

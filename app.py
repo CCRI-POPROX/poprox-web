@@ -14,6 +14,7 @@ from poprox_storage.repositories.account_interest_log import (
     DbAccountInterestRepository,
 )
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
 
 from auth import Auth
 from db.postgres_db import (
@@ -25,6 +26,12 @@ from db.postgres_db import (
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.topics import GENERAL_TOPICS
+from poprox_concepts.domain.demographics import (
+    Demographics,
+    GENDER_OPTIONS,
+    EDUCATION_OPTIONS,
+    RACE_OPTIONS
+)
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
@@ -247,7 +254,7 @@ def topics():
 
             if onboarding:
                 finish_topic_selection(auth.get_account_id())
-                return redirect(url_for("onboarding_survey", error_description="You have been subscribed!"))
+                return redirect(url_for("onboarding_survey"))
 
     return render_template(
         "topics.html",
@@ -264,25 +271,37 @@ def topics():
 def onboarding_survey():
     if auth.get_account_status() != "pending_onboarding_survey":
         return redirect(url_for("home"))
-    
 
     if request.method == "POST":
         print(request.form)
-    
-    # enqueue_newsletter_request(
-    #                 account_id=account_id,
-    #                 profile_id=account_id,
-    #                 group_id=None,
-    #                 endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
-    #             )
-    
 
-    genderopts = [
-        ('Woman', 1), 
-        ('Man', 2), 
-        ('Non-binary', 3), 
-        ('Other', 4), 
-        ('Prefer not to say', 4)]
+        with DB_ENGINE.connect() as conn:
+            repo = DbDemographicsRepository(conn)
+            account_id = auth.get_account_id()
+            
+            demo = Demographics(
+                account_id=account_id,
+                gender=request.form.get("gender"),
+                birth_year=int(request.form.get("birthyear")),
+                zip5=request.form.get("zip"),
+                education=request.form.get("education"),
+                race=';'.join(request.form.getlist("race"))
+            )
+
+            repo.store_demographics(demo)
+            conn.commit()
+
+            if auth.get_account_status() == "pending_onboarding_survey":
+                finish_onboarding(account_id)
+                enqueue_newsletter_request(
+                                account_id=account_id,
+                                profile_id=account_id,
+                                group_id=None,
+                                endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                            )
+                return redirect(url_for("home", error_description="You have been subscribed!"))
+
+
 
     today = datetime.date.today()
     oneyear = timedelta(days=365)
@@ -290,31 +309,11 @@ def onboarding_survey():
     yearmax = (today - 18 * oneyear).year # to ensure at least 18 year old
     yearopts = [year for year in range(yearmin, yearmax)[::-1]]
 
-    edlevelopts = [
-        ('Some high school', 1), 
-        ('High school', 2),
-        ('Some college', 3),
-        ('Trade, technical or vocational training', 4),
-        ('Associate\'s degree', 5),
-        ('Bachelor\'s degree', 6),
-        ('Master\'s degree', 7),
-        ('Professional degree', 8),
-        ('Doctorate', 9),
-        ('Prefer not to say', 10)]
-    
-    raceopts = [
-        ('White', 1),
-        ('Black or African American', 2),
-        ('American Indian or Alaska Native', 3),
-        ('Asian', 'Native Hawaiian or Other Pacific Islander', 4),
-        ('Not listed (please specify)', 5),
-        ('Prefer not to say', 6)]
-
     return render_template("onboarding_survey.html",
-        genderopts=genderopts,
+        genderopts=GENDER_OPTIONS,
         yearopts=yearopts,
-        edlevelopts=edlevelopts,
-        raceopts=raceopts,
+        edlevelopts=EDUCATION_OPTIONS,
+        raceopts=RACE_OPTIONS,
         auth=auth)
 
     
