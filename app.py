@@ -10,6 +10,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import (
     DbAccountInterestRepository,
 )
@@ -25,17 +26,11 @@ from db.postgres_db import (
 )
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain.demographics import EDUCATION_OPTIONS, GENDER_OPTIONS, RACE_OPTIONS, Demographics
 from poprox_concepts.domain.topics import GENERAL_TOPICS
-from poprox_concepts.domain.demographics import (
-    Demographics,
-    GENDER_OPTIONS,
-    EDUCATION_OPTIONS,
-    RACE_OPTIONS
-)
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -266,7 +261,7 @@ def topics():
     )
 
 
-@app.route(f"{URL_PREFIX}/onboarding", methods=["GET", "POST"])
+@app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET", "POST"])
 @auth.requires_login
 def onboarding_survey():
     if auth.get_account_status() != "pending_onboarding_survey":
@@ -278,14 +273,14 @@ def onboarding_survey():
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
             account_id = auth.get_account_id()
-            
+
             demo = Demographics(
                 account_id=account_id,
                 gender=request.form.get("gender"),
                 birth_year=int(request.form.get("birthyear")),
                 zip5=request.form.get("zip"),
                 education=request.form.get("education"),
-                race=';'.join(request.form.getlist("race"))
+                race=";".join(request.form.getlist("race")),
             )
 
             repo.store_demographics(demo)
@@ -294,29 +289,27 @@ def onboarding_survey():
             if auth.get_account_status() == "pending_onboarding_survey":
                 finish_onboarding(account_id)
                 enqueue_newsletter_request(
-                                account_id=account_id,
-                                profile_id=account_id,
-                                group_id=None,
-                                endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
-                            )
+                    account_id=account_id,
+                    profile_id=account_id,
+                    group_id=None,
+                    endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                )
                 return redirect(url_for("home", error_description="You have been subscribed!"))
-
-
 
     today = datetime.date.today()
     oneyear = timedelta(days=365)
-    yearmin = (today - 100 * oneyear).year # arbitrarilly set to 100 years old
-    yearmax = (today - 18 * oneyear).year # to ensure at least 18 year old
+    yearmin = (today - 100 * oneyear).year  # arbitrarilly set to 100 years old
+    yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [year for year in range(yearmin, yearmax)[::-1]]
 
-    return render_template("onboarding_survey.html",
+    return render_template(
+        "onboarding_survey.html",
         genderopts=GENDER_OPTIONS,
         yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
-        auth=auth)
-
-    
+        auth=auth,
+    )
 
 
 if __name__ == "__main__":
