@@ -267,40 +267,55 @@ def onboarding_survey():
     if auth.get_account_status() != "pending_onboarding_survey":
         return redirect(url_for("home"))
 
-    if request.method == "POST":
-        print(request.form)
+    today = datetime.date.today()
+    oneyear = timedelta(days=365)
+    yearmin = (today - 123 * oneyear).year  # arbitrarilly set to 100 years old
+    yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
+    yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
 
+    if request.method == "POST":
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
             account_id = auth.get_account_id()
 
-            demo = Demographics(
-                account_id=account_id,
-                gender=request.form.get("gender"),
-                birth_year=int(request.form.get("birthyear")),
-                zip5=request.form.get("zip"),
-                education=request.form.get("education"),
-                race=";".join(request.form.getlist("race")),
-            )
+            def validate(val, options):
+                if isinstance(val, list):
+                    val = [v for v in val if v in options]
+                    if len(val) == 0:
+                        return None
+                else:
+                    if val not in options:
+                        return None
+                return val
 
-            repo.store_demographics(demo)
-            conn.commit()
+            gender = validate(request.form.get("gender"), GENDER_OPTIONS)
+            birthyear = validate(request.form.get("birthyear"), yearopts)
+            education = validate(request.form.get("education"), EDUCATION_OPTIONS)
+            zip5 = request.form.get("zip")
+            race = validate(request.form.get("race"), RACE_OPTIONS)
 
-            if auth.get_account_status() == "pending_onboarding_survey":
-                finish_onboarding(account_id)
-                enqueue_newsletter_request(
+            if all([gender, birthyear, education, zip5, race]):  # None is falsy
+                demo = Demographics(
                     account_id=account_id,
-                    profile_id=account_id,
-                    group_id=None,
-                    endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                    gender=gender,
+                    birth_year=int(birthyear),
+                    zip5=zip5,
+                    education=education,
+                    race=";".join(race),
                 )
-                return redirect(url_for("home", error_description="You have been subscribed!"))
 
-    today = datetime.date.today()
-    oneyear = timedelta(days=365)
-    yearmin = (today - 100 * oneyear).year  # arbitrarilly set to 100 years old
-    yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
-    yearopts = [year for year in range(yearmin, yearmax)[::-1]]
+                repo.store_demographics(demo)
+                conn.commit()
+
+                if auth.get_account_status() == "pending_onboarding_survey":
+                    finish_onboarding(account_id)
+                    enqueue_newsletter_request(
+                        account_id=account_id,
+                        profile_id=account_id,
+                        group_id=None,
+                        endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                    )
+                    return redirect(url_for("home", error_description="You have been subscribed!"))
 
     return render_template(
         "onboarding_survey.html",

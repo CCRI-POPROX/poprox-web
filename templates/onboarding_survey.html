@@ -7,23 +7,15 @@
         var racecheckboxes = document.querySelectorAll('input[type="checkbox"]');
         var racenotlisted = racecheckboxes[racecheckboxes.length - 1];
         racenotlisted.addEventListener('change', function (event) {
-            if(event.target.checked) {
-                var racefields = document.getElementById('racefields');
-                var fielddiv = document.createElement('div');
-                fielddiv.id = 'dynamicracefield';
-                fielddiv.className = 'field';
-                var fieldinput = document.createElement('input');
-                fieldinput.type = 'text';
-                fieldinput.name = 'race';
-                fieldinput.className = 'input';
-                fieldinput.placeholder = 'Please specify';
-                fieldinput.required = 'required';
-                fielddiv.appendChild(fieldinput);
-                racefields.appendChild(fielddiv);
+            var raceInputField = document.getElementById('raceinput');
+            if (event.target.checked) {
+                if (raceInputField) {
+                    raceInputField.setAttribute('type', 'text');
+                }
+
             } else {
-                var dynamicracefield = document.getElementById('dynamicracefield');
-                if (dynamicracefield) {
-                    dynamicracefield.remove();
+                if (raceInputField) {
+                    raceInputField.setAttribute('type', 'hidden');
                 }
             }
         });
@@ -33,22 +25,18 @@
     function validateForm() {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-        var allcheckboxes = Array();
         for (var i = 0; i < checkboxes.length; i++) {
-            console.log(checkboxes[i]);
             if (checkboxes[i].checked) {
-                allcheckboxes.push(true);
+                return true;
             }
         }
-        if (allcheckboxes.length < 1) {
-            return false;
-        }
+        return false;
     }
 </script>
 {% endblock %}
 {% block content %}
 <div class="column box onboarding-survey">
-    <form action="/onboarding" onsubmit="return validateForm()" method="POST">
+    <form action="/demographic_survey" onsubmit="return validateForm()" method="POST">
         <!--Gender input-->
         <div class="field">
             <label class="label">What is your gender identity?</label>
@@ -102,7 +90,7 @@
             </div>
         </div>
         <!--Race input-->
-        <div class="field" id="racefields">
+        <div class="field">
             <label class="label">Choose one or more races that you consider yourself to be:</label>
             <div class="checkboxes">
                 <ul>
@@ -115,6 +103,9 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <div class="field">
+                    <input id="raceinput" type="hidden" name="race" class="input" placeholder="Please specify" required="required">
+                </div>
             </div>
         </div>
         <input class="button is-primary" type="submit" value="Submit">
