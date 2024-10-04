@@ -10,24 +10,27 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import (
     DbAccountInterestRepository,
 )
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
 
 from auth import Auth
 from db.postgres_db import (
     DB_ENGINE,
     finish_consent,
     finish_onboarding,
+    finish_topic_selection,
 )
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain.demographics import EDUCATION_OPTIONS, GENDER_OPTIONS, RACE_OPTIONS, Demographics
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
     from_hashed_base64,
 )
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -255,14 +258,8 @@ def topics():
             updated = True
 
             if onboarding:
-                finish_onboarding(auth.get_account_id())
-                enqueue_newsletter_request(
-                    account_id=account_id,
-                    profile_id=account_id,
-                    group_id=None,
-                    endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
-                )
-                return redirect(url_for("home", error_description="You have been subscribed!"))
+                finish_topic_selection(auth.get_account_id())
+                return redirect(url_for("onboarding_survey"))
 
     return render_template(
         "topics.html",
@@ -270,6 +267,72 @@ def topics():
         onboarding=onboarding,
         topics=GENERAL_TOPICS,
         intlvls=interest_lvls,
+        auth=auth,
+    )
+
+
+@app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET", "POST"])
+@auth.requires_login
+def onboarding_survey():
+    if auth.get_account_status() != "pending_onboarding_survey":
+        return redirect(url_for("home"))
+
+    today = datetime.date.today()
+    oneyear = timedelta(days=365)
+    yearmin = (today - 123 * oneyear).year  # arbitrarilly set to 100 years old
+    yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
+    yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
+
+    if request.method == "POST":
+        with DB_ENGINE.connect() as conn:
+            repo = DbDemographicsRepository(conn)
+            account_id = auth.get_account_id()
+
+            def validate(val, options):
+                if isinstance(val, list):
+                    val = [v for v in val if v in options]
+                    if len(val) == 0:
+                        return None
+                else:
+                    if val not in options:
+                        return None
+                return val
+
+            gender = validate(request.form.get("gender"), GENDER_OPTIONS)
+            birthyear = validate(request.form.get("birthyear"), yearopts)
+            education = validate(request.form.get("education"), EDUCATION_OPTIONS)
+            zip5 = request.form.get("zip")
+            race = validate(request.form.get("race"), RACE_OPTIONS)
+
+            if all([gender, birthyear, education, zip5, race]):  # None is falsy
+                demo = Demographics(
+                    account_id=account_id,
+                    gender=gender,
+                    birth_year=int(birthyear),
+                    zip5=zip5,
+                    education=education,
+                    race=";".join(race),
+                )
+
+                repo.store_demographics(demo)
+                conn.commit()
+
+                if auth.get_account_status() == "pending_onboarding_survey":
+                    finish_onboarding(account_id)
+                    enqueue_newsletter_request(
+                        account_id=account_id,
+                        profile_id=account_id,
+                        group_id=None,
+                        endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                    )
+                    return redirect(url_for("home", error_description="You have been subscribed!"))
+
+    return render_template(
+        "onboarding_survey.html",
+        genderopts=GENDER_OPTIONS,
+        yearopts=yearopts,
+        edlevelopts=EDUCATION_OPTIONS,
+        raceopts=RACE_OPTIONS,
         auth=auth,
     )
 
