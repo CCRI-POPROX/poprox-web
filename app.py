@@ -323,7 +323,7 @@ def onboarding_survey():
                         account_id=account_id,
                         profile_id=account_id,
                         group_id=None,
-                        endpoint_url=DEFAULT_RECS_ENDPOINT_URL,
+                        recommender_url=DEFAULT_RECS_ENDPOINT_URL,
                     )
                     return redirect(url_for("home", error_description="You have been subscribed!"))
 
