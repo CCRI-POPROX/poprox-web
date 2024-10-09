@@ -267,12 +267,11 @@ def topics():
             if onboarding:
                 finish_topic_selection(auth.get_account_id())
                 return redirect(url_for("onboarding_survey"))
-            
-    if request.method == "GET": # topic get method
+        
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
-        # print(f"{user_topic_preferences}")
-    else:
-        user_topic_preferences = {}
+            
+    else: # topic get method
+        user_topic_preferences = get_topic_preferences(auth.get_account_id())
 
     return render_template(
         "topics.html",
