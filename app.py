@@ -224,6 +224,13 @@ def topics():
         ("Not at all interested", 1),
     ]
 
+    def get_topic_preferences(account_id): #for geting user topic preference
+        with DB_ENGINE.connect() as conn:
+            repo = DbAccountInterestRepository(conn)
+            preferences = repo.fetch_topic_preferences(account_id)
+        preferences_dict = {pref.entity_name: pref.preference for pref in preferences}
+        return preferences_dict
+
     def get_pref(topic):
         pref_score = request.form.get(topic.replace(" ", "_") + "_pref", None)
         if pref_score:
@@ -260,6 +267,12 @@ def topics():
             if onboarding:
                 finish_topic_selection(auth.get_account_id())
                 return redirect(url_for("onboarding_survey"))
+            
+    if request.method == "GET": # topic get method
+        user_topic_preferences = get_topic_preferences(auth.get_account_id())
+        # print(f"{user_topic_preferences}")
+    else:
+        user_topic_preferences = {}
 
     return render_template(
         "topics.html",
@@ -268,6 +281,7 @@ def topics():
         topics=GENERAL_TOPICS,
         intlvls=interest_lvls,
         auth=auth,
+        user_topic_preferences=user_topic_preferences,
     )
 
 
