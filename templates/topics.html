@@ -23,12 +23,17 @@
 		<p>
 			This survey is required to complete the enrollment process, but you are free to skip any question you prefer not to answer. Your responses will help the algorithms find articles that match your interests.
 		</p>
-		{% endif %}
 		<div class="block content">
 			<p><strong>
-					1. Please mark your initial preference by selecting the your
-					level of interest in the following topics.
+					1. Please mark your initial preference by selecting the your level of interest in the following topics.
 				</strong></p>
+		{% else %}
+		<div class="block content">
+			<p><strong>
+					1. Here is your latest preference of interest in the following topics. You can edit your preference by clicking new preference level for any following topics.
+				</strong></p>
+		{% endif %}
+
 			<div>
 				{% for topic in topics %}
 				{% set input_name = topic|replace(' ', '_') + "_pref" %}
