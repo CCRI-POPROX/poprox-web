@@ -115,8 +115,8 @@ def logout():
 def opt_out_of_experiments():
     account_id = auth.get_account_id()
     with DB_ENGINE.connect() as conn:
-        account_repo = DbExperimentRepository(conn)
-        account_repo.update_expt_assignment_to_opt_out(account_id)
+        experiment_repo = DbExperimentRepository(conn)
+        experiment_repo.update_expt_assignment_to_opt_out(account_id)
         conn.commit()
 
     return redirect(url_for("home", error_desctiption="You have been opted out of experiments"))
