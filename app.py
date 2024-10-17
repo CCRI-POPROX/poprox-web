@@ -10,24 +10,16 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_storage.repositories.account_interest_log import (
-    DbAccountInterestRepository,
-)
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
 
 from auth import Auth
-from db.postgres_db import (
-    DB_ENGINE,
-    finish_consent,
-    finish_onboarding,
-)
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.topics import GENERAL_TOPICS
-from poprox_concepts.internals import (
-    from_hashed_base64,
-)
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
+from poprox_concepts.internals import from_hashed_base64
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -109,22 +101,20 @@ def logout():
 @app.route(f"{URL_PREFIX}/unsubscribe")
 @auth.requires_login
 def unsubscribe():
-    account_id = auth.get_account_id()
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(account_id)
-        conn.commit()
-
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
+    return render_template("pre_unsubscribe.html")
 
 
-@app.route(f"{URL_PREFIX}/email_unsubscribe/<newsletter_id>")
-def email_unsubscribe(newsletter_id):
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(auth.get_account_id())
-        conn.commit()
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
+@app.route(f"{URL_PREFIX}/pre_unsubscribe", methods=["POST"])
+def pre_unsubscribe():
+    main_menu_option = request.form.get("main-menu")
+    unsubscribe_menu_option = request.form.get("unsubscribe-menu")
+    if main_menu_option == "leave-experiment":
+        with DB_ENGINE.connect() as conn:
+            account_repo = DbAccountRepository(conn)
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            conn.commit()
+    error_description = "Please reach out to poprox admins to complete this request."
+    return render_template(("post_unsubscribe.html"), error=error_description)
 
 
 @app.route(f"{URL_PREFIX}/subscribe")
