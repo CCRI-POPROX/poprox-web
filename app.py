@@ -290,8 +290,10 @@ def topics():
 @app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET", "POST"])
 @auth.requires_login
 def onboarding_survey():
-    if auth.get_account_status() != "pending_onboarding_survey":
-        return redirect(url_for("home"))
+    # if auth.get_account_status() != "pending_onboarding_survey":
+    #     return redirect(url_for("home"))
+
+    onboarding = auth.get_account_status() == "pending_initial_preferences"
 
     today = datetime.date.today()
     oneyear = timedelta(days=365)
@@ -299,6 +301,7 @@ def onboarding_survey():
     yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
 
+    updated = False
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
@@ -332,8 +335,9 @@ def onboarding_survey():
 
                 repo.store_demographics(demo)
                 conn.commit()
+                updated = True
 
-                if auth.get_account_status() == "pending_onboarding_survey":
+                if onboarding:
                     finish_onboarding(account_id)
                     enqueue_newsletter_request(
                         account_id=account_id,
@@ -345,6 +349,7 @@ def onboarding_survey():
 
     return render_template(
         "onboarding_survey.html",
+        updated=updated,
         genderopts=GENDER_OPTIONS,
         yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
