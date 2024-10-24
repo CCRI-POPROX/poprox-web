@@ -9,7 +9,16 @@
 	</div>
 	{% endif %}
 	<form action="/topics" method="POST">
-		<h2>Topic Selection survey</h2>
+		<div class="columns is-mobile">
+			<div class="column is-half">
+				<h2>Topic Selection survey</h2>
+			</div>
+			{% if not onboarding %}
+			<div class="column is-half">
+				<a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a> <!-- added a home button temporarily -->
+			</div>
+			{% endif %}
+		</div>
 		{% if onboarding %}
 		<p>
 			This survey is required to complete the enrollment process, but you are free to skip any question you prefer not to answer. Your responses will help the algorithms find articles that match your interests.
@@ -30,7 +39,10 @@
 					{% for intlvl in intlvls %}
 					<div class="column topic-radio-container">
 						<label class="radio">
-							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}" />
+							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}" 
+							{% if user_topic_preferences.get(topic) == intlvl[1] %}
+							checked
+							{% endif%}/> <!-- added the check part here -->
 							<p>{{intlvl[0]}}</p>
 						</label>
 					</div>
