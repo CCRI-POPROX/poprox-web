@@ -105,15 +105,28 @@ def unsubscribe():
 
 
 @app.route(f"{URL_PREFIX}/pre_unsubscribe", methods=["POST"])
+@auth.requires_login
 def pre_unsubscribe():
     main_menu_option = request.form.get("main-menu")
     unsubscribe_menu_option = request.form.get("unsubscribe-menu")
-    if main_menu_option == "leave-experiment":
-        with DB_ENGINE.connect() as conn:
-            account_repo = DbAccountRepository(conn)
-            account_repo.remove_subscription_for_account(auth.get_account_id())
-            conn.commit()
     error_description = "Please reach out to poprox admins to complete this request."
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        if main_menu_option == "leave-experiment":
+            # opt-out
+            error_description = "this is an opt out request"
+        elif unsubscribe_menu_option == "remove-email":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            error_description = "You have been unsubscribed from POPROX."
+        elif unsubscribe_menu_option == "withdraw-email-poprox":
+            account_repo.remove_email_for_account(auth.get_account_id())
+            error_description = "Your email has been withdrawn from POPROX."
+        elif unsubscribe_menu_option == "withdraw-all-data":
+            account_repo.set_deletion_for_account(auth.get_account_id())
+            error_description = "Your request has been recorded."
+        else:
+            error_description = "Please reach out to poprox admins to complete this request."
     return render_template(("post_unsubscribe.html"), error=error_description)
 
 
