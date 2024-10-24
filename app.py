@@ -11,27 +11,18 @@ if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 from poprox_platform.newsletter.assignments import enqueue_newsletter_request
-from poprox_storage.repositories.account_interest_log import (
-    DbAccountInterestRepository,
-)
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 
 from auth import Auth
-from db.postgres_db import (
-    DB_ENGINE,
-    finish_consent,
-    finish_onboarding,
-    finish_topic_selection,
-)
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.demographics import EDUCATION_OPTIONS, GENDER_OPTIONS, RACE_OPTIONS, Demographics
 from poprox_concepts.domain.topics import GENERAL_TOPICS
-from poprox_concepts.internals import (
-    from_hashed_base64,
-)
+from poprox_concepts.internals import from_hashed_base64
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -125,22 +116,33 @@ def opt_out_of_experiments():
 @app.route(f"{URL_PREFIX}/unsubscribe")
 @auth.requires_login
 def unsubscribe():
-    account_id = auth.get_account_id()
+    return render_template("pre_unsubscribe.html")
+
+
+@app.route(f"{URL_PREFIX}/pre_unsubscribe", methods=["POST"])
+@auth.requires_login
+def pre_unsubscribe():
+    main_menu_option = request.form.get("main-menu")
+    unsubscribe_menu_option = request.form.get("unsubscribe-menu")
+    error_description = "Please reach out to poprox admins to complete this request."
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(account_id)
-        conn.commit()
-
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
-
-
-@app.route(f"{URL_PREFIX}/email_unsubscribe/<newsletter_id>")
-def email_unsubscribe(newsletter_id):
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(auth.get_account_id())
-        conn.commit()
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
+        if main_menu_option == "leave-experiment":
+            # opt-out
+            error_description = "this is an opt out request"
+        elif unsubscribe_menu_option == "remove-email":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            error_description = "You have been unsubscribed from POPROX."
+        elif unsubscribe_menu_option == "withdraw-email-poprox":
+            account_repo.remove_email_for_account(auth.get_account_id())
+            error_description = "Your email has been withdrawn from POPROX."
+        elif unsubscribe_menu_option == "withdraw-all-data":
+            account_repo.set_deletion_for_account(auth.get_account_id())
+            error_description = "Your request has been recorded."
+        else:
+            error_description = "Please reach out to poprox admins to complete this request."
+    return render_template(("post_unsubscribe.html"), error=error_description)
 
 
 @app.route(f"{URL_PREFIX}/subscribe")
@@ -227,7 +229,7 @@ def topics():
         ("Not at all interested", 1),
     ]
 
-    def get_topic_preferences(account_id): #for geting user topic preference
+    def get_topic_preferences(account_id):  # for geting user topic preference
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_topic_preferences(account_id)
@@ -270,10 +272,10 @@ def topics():
             if onboarding:
                 finish_topic_selection(auth.get_account_id())
                 return redirect(url_for("onboarding_survey"))
-        
+
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
-            
-    else: # topic get method
+
+    else:  # topic get method
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
 
     return render_template(
