@@ -56,6 +56,10 @@ def email_redirect(path):
         account_repo.store_login(data)
         conn.commit()
 
+    # redirect for deprecated endpoint.
+    if data.endpoint == "email_unsubscribe":
+        data.endpoint = "unsubscribe"
+
     return redirect(url_for(data.endpoint, **data.data))
 
 
@@ -131,15 +135,6 @@ def unsubscribe():
         account_repo.remove_subscription_for_account(account_id)
         conn.commit()
 
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
-
-
-@app.route(f"{URL_PREFIX}/email_unsubscribe/<newsletter_id>")
-def email_unsubscribe(newsletter_id):
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(auth.get_account_id())
-        conn.commit()
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
 
 
@@ -227,7 +222,7 @@ def topics():
         ("Not at all interested", 1),
     ]
 
-    def get_topic_preferences(account_id): #for geting user topic preference
+    def get_topic_preferences(account_id):  # for geting user topic preference
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_topic_preferences(account_id)
@@ -270,10 +265,10 @@ def topics():
             if onboarding:
                 finish_topic_selection(auth.get_account_id())
                 return redirect(url_for("onboarding_survey"))
-        
+
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
-            
-    else: # topic get method
+
+    else:  # topic get method
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
 
     return render_template(
