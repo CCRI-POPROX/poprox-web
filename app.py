@@ -301,6 +301,26 @@ def onboarding_survey():
     yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
 
+    def convert_to_record(row: Demographics) -> dict:
+        return {
+            "gender" : row.gender,
+            "birth_year" : row.birth_year,
+            "zip5" : "",
+            "education" : row.education,
+            "race" : row.race,
+        }
+    
+    def get_demographic_information(account_id): 
+        with DB_ENGINE.connect() as conn:
+            repo = DbDemographicsRepository(conn)
+            information = repo.fetch_demographics_by_account_ids(account_id) 
+        print(information)
+        if information:
+            information_dict = convert_to_record(information[0])
+            return information_dict
+        else:
+            return None
+
     updated = False
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
@@ -346,6 +366,10 @@ def onboarding_survey():
                         recommender_url=DEFAULT_RECS_ENDPOINT_URL,
                     )
                     return redirect(url_for("home", error_description="You have been subscribed!"))
+        user_demographic_information = get_demographic_information(auth.get_account_id())
+            
+    else: # topic get method
+        user_demographic_information = get_demographic_information(auth.get_account_id())
 
     return render_template(
         "onboarding_survey.html",
@@ -355,6 +379,7 @@ def onboarding_survey():
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
         auth=auth,
+        user_demographic_information=user_demographic_information,
     )
 
 
