@@ -22,7 +22,7 @@
         }
     
         function handleSubmenuChange1() {
-            var unsubscribeMenu1 = document.getElementById('unsubscribe-menu');
+            var unsubscribeMenu1 = document.getElementById('unsubscribe-menu-1');
             var unsubscribeOptions2 = document.getElementById('unsubscribe-options-2');
             var submitButton = document.getElementById('submit-button');
             if (unsubscribeMenu1.value === 'unsubscribe-user') {
@@ -34,7 +34,7 @@
         }
 
         function handleSubmenuChange2() {
-            var unsubscribeMenu2 = document.getElementById('unsubscribe-menu-okay');
+            var unsubscribeMenu2 = document.getElementById('unsubscribe-menu-2');
             var submitButton = document.getElementById('submit-button');
             if (unsubscribeMenu2.value !== '') {
                 submitButton.disabled = false;
@@ -44,7 +44,7 @@
         }
 
         function handleSubmenuChange3() {
-            var unsubscribeMenu3 = document.getElementById('return-to-standard-menu');
+            var unsubscribeMenu3 = document.getElementById('return-to-standard-menu-1');
             var unsubscribeOptions4 = document.getElementById('unsubscribe-options-4');
             var submitButton = document.getElementById('submit-button');
             if (unsubscribeMenu3.value === 'stop-receiving-newsletter') {
@@ -56,7 +56,7 @@
         } 
         
         function handleSubmenuChange4() {
-            var unsubscribeMenu4 = document.getElementById('return-unsubscribe-menu');
+            var unsubscribeMenu4 = document.getElementById('return-unsubscribe-menu-1');
             var unsubscribeOptions5 = document.getElementById('unsubscribe-options-5');
             var submitButton = document.getElementById('submit-button');
             if (unsubscribeMenu4.value === 'return-unsubscribe-user') {
@@ -68,7 +68,7 @@
         }
 
         function handleSubmenuChange5() {
-            var unsubscribeMenu5 = document.getElementById('return-unsubscribe-menu-okay');
+            var unsubscribeMenu5 = document.getElementById('return-unsubscribe-menu-2');
             var submitButton = document.getElementById('submit-button');
             if (unsubscribeMenu5.value !== '') {
                 submitButton.disabled = false;
@@ -107,7 +107,7 @@
                             <label class="label">We have unsubscribed you, you might receive one additional newsletter if it's already on the way today:</label>
                             <div class="control">
                                 <div class="select">
-                                    <select id="unsubscribe-menu" name="unsubscribe-menu" onchange="handleSubmenuChange1()">
+                                    <select id="unsubscribe-menu-1" name="unsubscribe-menu-1" onchange="handleSubmenuChange1()">
                                         <option value="">-- Select an option --</option>
                                         <option value="unsubscribe-user">Okay</option>
                                         <option value="keep-user-subscribed">I changed may mind. Keep me subscribed.</option>
@@ -120,10 +120,10 @@
                             <label class="label">We'll remove your name and email from our database:</label>
                             <div class="control">
                                 <div class="select">
-                                    <select id="unsubscribe-menu-okay" name="unsubscribe-menu-okay" onchange="handleSubmenuChange2()">
+                                    <select id="unsubscribe-menu-2" name="unsubscribe-menu-2" onchange="handleSubmenuChange2()">
                                         <option value="">-- Select an option --</option>
                                         <option value="remove-email">Okay</option>
-                                        <option value="withdraw-email-poprox">I also want you to remove all my data from your system</option>
+                                        <option value="withdraw-all-data">I also want you to remove all my data from your system</option>
                                     </select>
                                 </div>
                             </div>
@@ -146,10 +146,10 @@
                             <label class="label">We have unsubscribed you, you might receive one additional newsletter if it's already on the way today:</label>
                             <div class="control">
                                 <div class="select">
-                                    <select id="return-unsubscribe-menu" name="return-unsubscribe-menu" onchange="handleSubmenuChange4()">
+                                    <select id="return-unsubscribe-menu-1" name="return-unsubscribe-menu-1" onchange="handleSubmenuChange4()">
                                         <option value="">-- Select an option --</option>
-                                        <option value="return-unsubscribe-user">Okay</option>
-                                        <option value="return-keep-user-subscribed">I changed may mind. Keep me subscribed.</option>
+                                        <option value="unsubscribe-user">Okay</option>
+                                        <option value="keep-user-subscribed">I changed may mind. Keep me subscribed.</option>
                                     </select>
                                 </div>
                             </div>
@@ -159,10 +159,10 @@
                             <label class="label">We'll remove your name and email from our database:</label>
                             <div class="control">
                                 <div class="select">
-                                    <select id="return-unsubscribe-menu-okay" name="return-unsubscribe-menu-okay" onchange="handleSubmenuChange5()">
+                                    <select id="return-unsubscribe-menu-2" name="return-unsubscribe-menu-2" onchange="handleSubmenuChange5()">
                                         <option value="">-- Select an option --</option>
-                                        <option value="return-remove-email">Okay</option>
-                                        <option value="return-withdraw-email-poprox">I also want you to remove all my data from your system</option>
+                                        <option value="remove-email">Okay</option>
+                                        <option value="withdraw-all-data">I also want you to remove all my data from your system</option>
                                     </select>
                                 </div>
                             </div>
