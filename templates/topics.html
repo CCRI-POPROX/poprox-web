@@ -39,7 +39,7 @@
 					{% for intlvl in intlvls %}
 					<div class="column topic-radio-container">
 						<label class="radio">
-							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}" 
+							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}"
 							{% if user_topic_preferences.get(topic) == intlvl[1] %}
 							checked
 							{% endif%}/> <!-- added the check part here -->

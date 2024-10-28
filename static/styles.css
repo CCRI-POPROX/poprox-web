@@ -145,16 +145,16 @@ h5 {
 }
 
 .onboarding-survey ul li {
-	margin: 0.25em 0.25em 0.25em 1em;
+	margin: 0.25em 0.25em 0.25em 0;
 	padding: 0.25em;
 }
 
-.onboarding-survey div {
+.onboarding-survey .field{
 	margin: 1rem;
 }
 
 .onboarding-survey input[type="text"] {
 	max-width: 200px;
-	margin-left: 1em;
+	/* margin-left: 1em; */
 
 }
