@@ -232,6 +232,7 @@ def topics():
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_topic_preferences(account_id)
         preferences_dict = {pref.entity_name: pref.preference for pref in preferences}
+        print(preferences_dict)
         return preferences_dict
 
     def get_pref(topic):
@@ -304,16 +305,16 @@ def onboarding_survey():
     def convert_to_record(row: Demographics) -> dict:
         return {
             "gender" : row.gender,
-            "birth_year" : row.birth_year,
+            "birth_year" : str(row.birth_year),
             "zip5" : "",
             "education" : row.education,
-            "race" : row.race,
+            "race" : row.race.replace(';', ''),
         }
     
     def get_demographic_information(account_id): 
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
-            information = repo.fetch_demographics_by_account_ids(account_id) 
+            information = repo.fetch_demographics_by_account_ids([account_id]) 
         print(information)
         if information:
             information_dict = convert_to_record(information[0])
