@@ -114,18 +114,41 @@
                     <li class="checkbox">
                         <label class="checkbox">
                             <input type="checkbox" value="{{raceopt}}" name="race" 
-                            {% if raceopt in selected_races %} checked {% endif %}/>
+                            {% if raceopt in selected_races %} checked {% endif %} />
                             {{raceopt}}
                         </label>
                     </li>
                     {% endfor %}
                 </ul>
                 <div class="field">
-                    <input id="raceinput" type="{% if 'race_notlisted' in user_demographic_information and user_demographic_information['race_notlisted'] %}text{% else %}hidden{% endif %}"  name="race" class="input" placeholder="Please specify" required="required"
-                        value="{% if 'race_notlisted' in user_demographic_information %}{{ user_demographic_information['race_notlisted'] }}{% endif %}">
+                    {% set custom_race = user_demographic_information['race_notlisted'] %}
+                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" 
+                    class="input" placeholder="Please specify" value="{{ custom_race }}" 
+                    required="{{ 'required' if custom_race else '' }}">
                 </div>
             </div>
         </div>
+
+        <!--Email client preference-->
+        <!--<div class="field">
+            <label class="label">Choose one or more preferred email client:</label>
+            <div class="checkboxes">
+                <ul>
+                    {% set selected_clients = user_demographic_information['client'].split(';') if 'client' in user_demographic_information else [] %}
+                    {% for client in clientopts %}
+                    <li class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" value="{{client}}" name="client" />
+                            {{client}}
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="field">
+                    <input id="clientinput" type="hidden" name="client" class="input" placeholder="Please specify" >
+                </div>
+            </div>
+        </div> -->
         <input class="button is-primary" type="submit" value="Submit">
     </form>
 </div>

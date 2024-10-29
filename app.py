@@ -303,22 +303,28 @@ def onboarding_survey():
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
 
     def convert_to_record(row: Demographics) -> dict:
+        race_list = row.race.split(";")  # Split the race field into individual races
+        predefined_races = [r for r in race_list if r in RACE_OPTIONS]
+        custom_races = next((r for r in race_list if r not in RACE_OPTIONS), None)
         return {
             "gender" : row.gender,
             "birth_year" : str(row.birth_year),
-            "zip5" : "",
+            "zip5" : row.zip5,
             "education" : row.education,
-            "race" : row.race.replace(';', ''),
+            "race" : row.race,
+            "race": ";".join(predefined_races),  # Join predefined races back into a single string
+            "race_notlisted": custom_races, 
+            # "client" : row.client,
         }
     
     def get_demographic_information(account_id): 
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
-            information = repo.fetch_demographics_by_account_ids([account_id]) 
-        print(information)
+            information = repo.fetch_latest_demographics_by_account_id(account_id) 
         if information:
-            information_dict = convert_to_record(information[0])
-            return information_dict
+            information_dict = convert_to_record(information)
+            print(information_dict)
+            return information_dict     
         else:
             return None
 
@@ -342,7 +348,20 @@ def onboarding_survey():
             birthyear = validate(request.form.get("birthyear"), yearopts)
             education = validate(request.form.get("education"), EDUCATION_OPTIONS)
             zip5 = request.form.get("zip")
-            race = validate(request.form.get("race"), RACE_OPTIONS)
+            # race = validate(request.form.get("race"), RACE_OPTIONS)
+            allrace = request.form.getlist("race")
+            race = validate(allrace, RACE_OPTIONS)
+            race_notlisted = None
+            if "Not listed (please specify)" in race:
+                race_notlisted = next((i for i in allrace if i not in RACE_OPTIONS), None)
+            # client = validate(request.form.getlist("client"), EMAIL_CLIENT_OPTIONS)
+            
+            # If `race_notlisted` has a value, add it to `race`
+            if race_notlisted:
+                race.append(race_notlisted)  
+            
+            print(request.form.getlist("race"))
+            print(allrace)
 
             if all([gender, birthyear, education, zip5, race]):  # None is falsy
                 demo = Demographics(
@@ -351,9 +370,10 @@ def onboarding_survey():
                     birth_year=int(birthyear),
                     zip5=zip5,
                     education=education,
-                    race=";".join(race),
+                    race=";".join(race) if isinstance(race, list) else race,
+                    # client=";".join(client) if isinstance(client, list) else client,
                 )
-
+                
                 repo.store_demographics(demo)
                 conn.commit()
                 updated = True
@@ -369,7 +389,7 @@ def onboarding_survey():
                     return redirect(url_for("home", error_description="You have been subscribed!"))
         user_demographic_information = get_demographic_information(auth.get_account_id())
             
-    else: # topic get method
+    else: 
         user_demographic_information = get_demographic_information(auth.get_account_id())
 
     return render_template(
@@ -379,6 +399,7 @@ def onboarding_survey():
         yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
+        # clientopts=EMAIL_CLIENT_OPTIONS,
         auth=auth,
         user_demographic_information=user_demographic_information,
     )
