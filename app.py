@@ -306,6 +306,10 @@ def onboarding_survey():
         race_list = row.race.split(";")  # Split the race field into individual races
         predefined_races = [r for r in race_list if r in RACE_OPTIONS]
         custom_races = next((r for r in race_list if r not in RACE_OPTIONS), None)
+        
+        email_client_list = row.email_client.split(";")
+        predefined_email_clients = [e for e in email_client_list if e in EMAIL_CLIENT_OPTIONS]
+        custom_email_clients= next((e for e in email_client_list if e not in EMAIL_CLIENT_OPTIONS), None)
         return {
             "gender" : row.gender,
             "birth_year" : str(row.birth_year),
@@ -315,6 +319,8 @@ def onboarding_survey():
             "race": ";".join(predefined_races),  # Join predefined races back into a single string
             "race_notlisted": custom_races, 
             "email_client" : row.email_client,
+            "email_client": ";".join(predefined_email_clients),
+            "email_client_other": custom_email_clients,
         }
     
     def get_demographic_information(account_id): 
@@ -353,14 +359,21 @@ def onboarding_survey():
             race_notlisted = None
             if "Not listed (please specify)" in race:
                 race_notlisted = next((i for i in allrace if i not in RACE_OPTIONS), None)
-            email_client = request.form.getlist("email_client")
+            all_email_client = request.form.getlist("email_client")
+            email_client = validate (all_email_client, EMAIL_CLIENT_OPTIONS)
+            email_client_other = None
+            if "Other" in email_client:
+                email_client_other= next ((i for i in all_email_client if i not in EMAIL_CLIENT_OPTIONS), None)
             
             # If `race_notlisted` has a value, add it to `race`
             if race_notlisted:
                 race.append(race_notlisted)  
+                
+            if email_client_other:
+                email_client.append(email_client_other)
             
             print(request.form.getlist("race"))
-            print(allrace)
+            print(request.form.getlist("email_client"))
 
             if all([gender, birthyear, education, zip5, race, email_client]):  # None is falsy
                 demo = Demographics(
