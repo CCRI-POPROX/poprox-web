@@ -16,12 +16,6 @@
                 raceInputField.value = ''; 
             }
         });
-
-        // Check if the "Not listed" checkbox was selected before and show the input field if so
-        if (racenotlisted.checked) {
-            raceInputField.setAttribute('type', 'text');
-        }
-
     });
 
     function validateForm() {
@@ -35,6 +29,9 @@
         return false;
     }
 </script>
+
+
+
 {% endblock %}
 {% block content %}
 
@@ -109,7 +106,7 @@
             <label class="label">Choose one or more races that you consider yourself to be:</label>
             <div class="checkboxes">
                 <ul>
-                    {% set selected_races = user_demographic_information['race'].split(';') if 'race' in user_demographic_information else [] %}
+                    {% set selected_races = user_demographic_information['race'].split(';') if user_demographic_information and user_demographic_information.get('race') else [] %}
                     {% for raceopt in raceopts %}
                     <li class="checkbox">
                         <label class="checkbox">
@@ -121,7 +118,7 @@
                     {% endfor %}
                 </ul>
                 <div class="field">
-                    {% set custom_race = user_demographic_information['race_notlisted'] %}
+                    {% set custom_race = user_demographic_information['race_notlisted'] if user_demographic_information and 'race_notlisted' in user_demographic_information else '' %}
                     <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" 
                     class="input" placeholder="Please specify" value="{{ custom_race }}" 
                     required="{{ 'required' if custom_race else '' }}">
@@ -130,25 +127,26 @@
         </div>
 
         <!--Email client preference-->
-        <!--<div class="field">
+        <div class="field">
             <label class="label">Choose one or more preferred email client:</label>
             <div class="checkboxes">
                 <ul>
-                    {% set selected_clients = user_demographic_information['client'].split(';') if 'client' in user_demographic_information else [] %}
+                    {% set selected_clients = user_demographic_information['email_client'].split(';') if user_demographic_information and user_demographic_information.get('email_client') else [] %}
                     {% for client in clientopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{client}}" name="client" />
+                            <input type="checkbox" value="{{client}}" name="email_client" 
+                            {% if client in selected_clients%} checked {% endif %} />
                             {{client}}
                         </label>
                     </li>
                     {% endfor %}
                 </ul>
-                <div class="field">
-                    <input id="clientinput" type="hidden" name="client" class="input" placeholder="Please specify" >
-                </div>
+                <!--<div class="field">
+                    <input id="clientinput" type="hidden" name="email_client" class="input" placeholder="Please specify" >
+                </div>-->
             </div>
-        </div> -->
+        </div> 
         <input class="button is-primary" type="submit" value="Submit">
     </form>
 </div>

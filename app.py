@@ -27,7 +27,7 @@ from db.postgres_db import (
 )
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
-from poprox_concepts.domain.demographics import EDUCATION_OPTIONS, GENDER_OPTIONS, RACE_OPTIONS, Demographics
+from poprox_concepts.domain.demographics import EDUCATION_OPTIONS, GENDER_OPTIONS, RACE_OPTIONS, EMAIL_CLIENT_OPTIONS, Demographics
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import (
     from_hashed_base64,
@@ -314,7 +314,7 @@ def onboarding_survey():
             "race" : row.race,
             "race": ";".join(predefined_races),  # Join predefined races back into a single string
             "race_notlisted": custom_races, 
-            # "client" : row.client,
+            "email_client" : row.email_client,
         }
     
     def get_demographic_information(account_id): 
@@ -348,13 +348,12 @@ def onboarding_survey():
             birthyear = validate(request.form.get("birthyear"), yearopts)
             education = validate(request.form.get("education"), EDUCATION_OPTIONS)
             zip5 = request.form.get("zip")
-            # race = validate(request.form.get("race"), RACE_OPTIONS)
             allrace = request.form.getlist("race")
             race = validate(allrace, RACE_OPTIONS)
             race_notlisted = None
             if "Not listed (please specify)" in race:
                 race_notlisted = next((i for i in allrace if i not in RACE_OPTIONS), None)
-            # client = validate(request.form.getlist("client"), EMAIL_CLIENT_OPTIONS)
+            email_client = request.form.getlist("email_client")
             
             # If `race_notlisted` has a value, add it to `race`
             if race_notlisted:
@@ -363,7 +362,7 @@ def onboarding_survey():
             print(request.form.getlist("race"))
             print(allrace)
 
-            if all([gender, birthyear, education, zip5, race]):  # None is falsy
+            if all([gender, birthyear, education, zip5, race, email_client]):  # None is falsy
                 demo = Demographics(
                     account_id=account_id,
                     gender=gender,
@@ -371,7 +370,7 @@ def onboarding_survey():
                     zip5=zip5,
                     education=education,
                     race=";".join(race) if isinstance(race, list) else race,
-                    # client=";".join(client) if isinstance(client, list) else client,
+                    email_client=";".join(email_client) if isinstance(email_client, list) else email_client,
                 )
                 
                 repo.store_demographics(demo)
@@ -399,7 +398,7 @@ def onboarding_survey():
         yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
-        # clientopts=EMAIL_CLIENT_OPTIONS,
+        clientopts=EMAIL_CLIENT_OPTIONS,
         auth=auth,
         user_demographic_information=user_demographic_information,
     )
