@@ -302,7 +302,7 @@ def onboarding_survey():
     yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
 
-    def convert_to_record(row: Demographics) -> dict:
+    def convert_to_record(row: Demographics, zip5) -> dict:
         race_list = row.race.split(";")  # Split the race field into individual races
         predefined_races = [r for r in race_list if r in RACE_OPTIONS]
         custom_races = next((r for r in race_list if r not in RACE_OPTIONS), None)
@@ -313,7 +313,7 @@ def onboarding_survey():
         return {
             "gender" : row.gender,
             "birth_year" : str(row.birth_year),
-            "zip5" : row.zip5,
+            "zip5" : zip5,
             "education" : row.education,
             "race" : row.race,
             "race": ";".join(predefined_races),  # Join predefined races back into a single string
@@ -326,9 +326,11 @@ def onboarding_survey():
     def get_demographic_information(account_id): 
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
+            account_repo = DbAccountRepository(conn)
             information = repo.fetch_latest_demographics_by_account_id(account_id) 
-        if information:
-            information_dict = convert_to_record(information)
+            zip5 = account_repo.fetch_zip_code(account_id)
+        if information and zip5:
+            information_dict = convert_to_record(information, zip5)
             print(information_dict)
             return information_dict     
         else:
@@ -338,6 +340,7 @@ def onboarding_survey():
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
+            account_repo = DbAccountRepository(conn)
             account_id = auth.get_account_id()
 
             def validate(val, options):
@@ -349,11 +352,17 @@ def onboarding_survey():
                     if val not in options:
                         return None
                 return val
+            
+            def zip_validation(zip_code):
+                if len(zip_code) == 5 and zip_code.isdigit():
+                    return zip_code
+                else:
+                    return None
 
             gender = validate(request.form.get("gender"), GENDER_OPTIONS)
             birthyear = validate(request.form.get("birthyear"), yearopts)
             education = validate(request.form.get("education"), EDUCATION_OPTIONS)
-            zip5 = request.form.get("zip")
+            zip5 = zip_validation(request.form.get("zip"))
             allrace = request.form.getlist("race")
             race = validate(allrace, RACE_OPTIONS)
             race_notlisted = None
@@ -376,17 +385,19 @@ def onboarding_survey():
             print(request.form.getlist("email_client"))
 
             if all([gender, birthyear, education, zip5, race, email_client]):  # None is falsy
+                zip5=zip5
                 demo = Demographics(
                     account_id=account_id,
                     gender=gender,
                     birth_year=int(birthyear),
-                    zip5=zip5,
+                    zip5=str(zip5)[:3],
                     education=education,
                     race=";".join(race) if isinstance(race, list) else race,
                     email_client=";".join(email_client) if isinstance(email_client, list) else email_client,
                 )
                 
                 repo.store_demographics(demo)
+                account_repo.store_zip_code(account_id,zip5)
                 conn.commit()
                 updated = True
 
