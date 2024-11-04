@@ -293,6 +293,7 @@ def onboarding_survey():
     yearmin = (today - 123 * oneyear).year  # arbitrarilly set to 100 years old
     yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
+    yearopts = ["Prefer not to say"] + yearopts
 
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
@@ -339,7 +340,7 @@ def onboarding_survey():
                     return redirect(url_for("home", error_description="You have been subscribed!"))
 
     return render_template(
-        "onboarding_survey.html",
+        "demographics_survey_form.html",
         genderopts=GENDER_OPTIONS,
         yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
