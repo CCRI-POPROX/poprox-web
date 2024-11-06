@@ -232,7 +232,6 @@ def topics():
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_topic_preferences(account_id)
         preferences_dict = {pref.entity_name: pref.preference for pref in preferences}
-        print(preferences_dict)
         return preferences_dict
 
     def get_pref(topic):
@@ -328,7 +327,7 @@ def onboarding_survey():
             repo = DbDemographicsRepository(conn)
             account_repo = DbAccountRepository(conn)
             information = repo.fetch_latest_demographics_by_account_id(account_id) 
-            zip5 = account_repo.fetch_zip_code(account_id)
+            zip5 = account_repo.fetch_zip5(account_id)
         if information and zip5:
             information_dict = convert_to_record(information, zip5)
             print(information_dict)
@@ -380,9 +379,7 @@ def onboarding_survey():
                 
             if email_client_other:
                 email_client.append(email_client_other)
-            
-            print(request.form.getlist("race"))
-            print(request.form.getlist("email_client"))
+
 
             if all([gender, birthyear, education, zip5, race, email_client]):  # None is falsy
                 zip5=zip5
@@ -397,7 +394,7 @@ def onboarding_survey():
                 )
                 
                 repo.store_demographics(demo)
-                account_repo.store_zip_code(account_id,zip5)
+                account_repo.store_zip5(account_id,zip5)
                 conn.commit()
                 updated = True
 
