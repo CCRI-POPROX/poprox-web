@@ -66,7 +66,7 @@ def email_redirect(path):
 @app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
 def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
-    subsource = request.args.get("subsource")
+    subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
     return render_template("pre_enroll.html", source=source, subsource=subsource, error=error)
 
@@ -74,7 +74,7 @@ def pre_enroll_get():
 @app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
 def pre_enroll_post():
     source = request.form.get("source", DEFAULT_SOURCE)
-    subsource = request.form.get("subsource")
+    subsource = request.form.get("subsource", DEFAULT_SOURCE)
     legal_age = request.form.get("legal_age")
     us_area = request.form.get("us_area")
     email = request.form.get("email")
