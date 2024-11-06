@@ -336,7 +336,6 @@ def onboarding_survey():
             zip5 = account_repo.fetch_zip5(account_id)
         if information and zip5:
             information_dict = convert_to_record(information, zip5)
-            print(information_dict)
             return information_dict
         else:
             return None
