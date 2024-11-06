@@ -5,7 +5,6 @@
         var raceCheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
         var raceInputField = document.getElementById('raceinput');
 
-        // Find the checkbox with data-not-listed="true"
         var notListedCheckbox = Array.from(raceCheckboxes).find(cb => cb.dataset.notListed == "true");
 
         if (notListedCheckbox && raceInputField.value) {
@@ -14,12 +13,12 @@
         }
 
         if (notListedCheckbox) {
-            notListedCheckbox.addEventListener('change', function (event) {            
+            notListedCheckbox.addEventListener('change', function (event) {
                 if (event.target.checked) {
                     raceInputField.setAttribute('type', 'text');
                 } else {
                     raceInputField.setAttribute('type', 'hidden');
-                    raceInputField.value = ''; 
+                    raceInputField.value = '';
                 }
             });
         }
@@ -43,7 +42,7 @@
                     otherInputField.setAttribute('type', 'text');
                 } else {
                     otherInputField.setAttribute('type', 'hidden');
-                    otherInputField.value = ''; 
+                    otherInputField.value = '';
                 }
             });
         }
@@ -130,7 +129,7 @@
                     {% for raceopt in raceopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{ raceopt }}" name="race" 
+                            <input type="checkbox" value="{{ raceopt }}" name="race"
                             {% if raceopt in selected_races %} checked {% endif %}
                             {% if raceopt == "Not listed (please specify)" %} data-not-listed="true" {% endif %} />
                             {{ raceopt }}
@@ -140,7 +139,7 @@
                 </ul>
                 <div class="field">
                     {% set custom_race = user_demographic_information['race_notlisted'] if user_demographic_information and 'race_notlisted' in user_demographic_information and user_demographic_information.get('race_notlisted')!= None else '' %}
-                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" 
+                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race"
                     class="input" placeholder="Please specify" value="{{ custom_race }}">
                 </div>
             </div>
@@ -155,7 +154,7 @@
                     {% for client in clientopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{client}}" name="email_client" 
+                            <input type="checkbox" value="{{client}}" name="email_client"
                             {% if client in selected_clients%} checked {% endif %}
                             {% if client == "Other" %} data-other="true" {% endif %} />
                             {{client}}
@@ -165,11 +164,11 @@
                 </ul>
                 <div class="field">
                     {% set custom_email_client = user_demographic_information['email_client_other'] if user_demographic_information and 'email_client_other' in user_demographic_information and user_demographic_information.get('email_client_other')!= None else '' %}
-                    <input id="clientinput" type="hidden" name="email_client" 
+                    <input id="clientinput" type="hidden" name="email_client"
                     class="input" placeholder="Please specify" value="{{ custom_email_client}}">
                 </div>
             </div>
-        </div> 
+        </div>
         <input class="button is-primary" type="submit" value="Submit">
     </form>
 </div>
