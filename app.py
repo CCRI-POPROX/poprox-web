@@ -383,7 +383,7 @@ def onboarding_survey():
                     account_id=account_id,
                     gender=gender,
                     birth_year=int(birthyear),
-                    zip5=str(zip5)[:3],
+                    zip3=str(zip5)[:3],
                     education=education,
                     race=";".join(race) if isinstance(race, list) else race,
                     email_client=";".join(email_client) if isinstance(email_client, list) else email_client,
