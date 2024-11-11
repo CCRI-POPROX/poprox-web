@@ -62,6 +62,10 @@ def email_redirect(path):
         account_repo.store_login(data)
         conn.commit()
 
+    # redirect for deprecated endpoint.
+    if data.endpoint == "email_unsubscribe":
+        data.endpoint = "unsubscribe"
+
     return redirect(url_for(data.endpoint, **data.data))
 
 
@@ -137,15 +141,6 @@ def unsubscribe():
         account_repo.remove_subscription_for_account(account_id)
         conn.commit()
 
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
-
-
-@app.route(f"{URL_PREFIX}/email_unsubscribe/<newsletter_id>")
-def email_unsubscribe(newsletter_id):
-    with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(auth.get_account_id())
-        conn.commit()
     return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
 
 
