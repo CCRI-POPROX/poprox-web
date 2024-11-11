@@ -17,12 +17,12 @@ DB_URL = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 DB_ENGINE = create_engine(DB_URL, echo=False)
 
 
-def get_or_make_account(email, source):
+def get_or_make_account(email, source, subsource):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         result = account_repo.fetch_account_by_email(email)
         if result is None:
-            result = account_repo.store_new_account(email, source)
+            result = account_repo.store_new_account(email, source, subsource)
             conn.commit()
         return {
             "account_id": result.account_id,
