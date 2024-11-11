@@ -291,9 +291,6 @@ def topics():
 @app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET", "POST"])
 @auth.requires_login
 def onboarding_survey():
-    # if auth.get_account_status() != "pending_onboarding_survey":
-    #     return redirect(url_for("home"))
-
     onboarding = auth.get_account_status() == "pending_onboarding_survey"
 
     today = datetime.date.today()
