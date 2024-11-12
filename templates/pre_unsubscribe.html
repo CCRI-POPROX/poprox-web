@@ -3,170 +3,87 @@
 <script>
     function handleMenuChange() {
         var mainMenu = document.getElementById('main-menu');
-        var unsubscribeOptions1 = document.getElementById('unsubscribe-options-1');
-        var unsubscribeOptions3 = document.getElementById('unsubscribe-options-3');
+        var unsubscribeOptions1 = document.getElementById('unsubscribe-menu-1');
+        var unsubscribeOptions2 = document.getElementById('survey');
         var submitButton = document.getElementById('submit-button');
         submitButton.disabled = true;
         if (mainMenu.value === 'unsubscribe-from-poprox') {
+            if (unsubscribeOptions2.style.display === 'block') {
+                unsubscribeOptions2.style.display = 'none';
+            }
             unsubscribeOptions1.style.display = 'block';
-        } else {
-            unsubscribeOptions3.style.display = 'block';
-        }
-    }
-
-    function handleSubmenuChange1() {
-        var unsubscribeMenu1 = document.getElementById('unsubscribe-menu-1');
-        var unsubscribeOptions2 = document.getElementById('unsubscribe-options-2');
-        var submitButton = document.getElementById('submit-button');
-        if (unsubscribeMenu1.value === 'unsubscribe-user') {
+        } else if (mainMenu.value === 'return-to-standard') {
+            if (unsubscribeOptions1.style.display === 'block') {
+                unsubscribeOptions1.style.display = 'none';
+            }
             unsubscribeOptions2.style.display = 'block';
-            submitButton.disabled = true;
-        } else {
             submitButton.disabled = false;
+        } else {
+            unsubscribeOptions1.style.display = 'none';
+            unsubscribeOptions2.style.display = 'none';
+            submitButton.disabled = true;
+
         }
     }
 
-    function handleSubmenuChange2() {
-        var unsubscribeMenu2 = document.getElementById('unsubscribe-menu-2');
+    function handleSubMenuChange() {
+        var subMenu = document.getElementById('sub-menu');
         var submitButton = document.getElementById('submit-button');
-        if (unsubscribeMenu2.value !== '') {
+        submitButton.disabled = true;
+        if (subMenu.value === 'remove-email') {
+            submitButton.disabled = false;
+        } else if (subMenu.value === 'remove-all-data') {
             submitButton.disabled = false;
         } else {
             submitButton.disabled = true;
         }
     }
 
-    function handleSubmenuChange3() {
-        var unsubscribeMenu3 = document.getElementById('return-to-standard-menu-1');
-        var unsubscribeOptions4 = document.getElementById('unsubscribe-options-4');
-        var submitButton = document.getElementById('submit-button');
-        if (unsubscribeMenu3.value === 'stop-receiving-newsletter') {
-            unsubscribeOptions4.style.display = 'block';
-            submitButton.disabled = true;
-        } else {
-            submitButton.disabled = false;
-        }
-    }
-
-    function handleSubmenuChange4() {
-        var unsubscribeMenu4 = document.getElementById('return-unsubscribe-menu-1');
-        var unsubscribeOptions5 = document.getElementById('unsubscribe-options-5');
-        var submitButton = document.getElementById('submit-button');
-        if (unsubscribeMenu4.value === 'return-unsubscribe-user') {
-            unsubscribeOptions5.style.display = 'block';
-            submitButton.disabled = true;
-        } else {
-            submitButton.disabled = false;
-        }
-    }
-
-    function handleSubmenuChange5() {
-        var unsubscribeMenu5 = document.getElementById('return-unsubscribe-menu-2');
-        var submitButton = document.getElementById('submit-button');
-        if (unsubscribeMenu5.value !== '') {
-            submitButton.disabled = false;
-        } else {
-            submitButton.disabled = true;
-        }
-    }
 </script>
 {% endblock %}
 {% block content %}
 <form action="{{url_for('pre_unsubscribe')}}" method="post">
-    <p>
-        Sorry to see you go!
-    </p>
-    <div class="block">
-        <div class="field">
-            <label class="label">Choose an option:</label>
-            <div class="control">
-                <div class="select">
-                    <select name="main-menu" id="main-menu" onchange="handleMenuChange()">
-                        <option value="">-- Select an option --</option>
-                        <option value="unsubscribe-from-poprox">Unsubscribe from POPROX</option>
-                        <option value="return-to-standard">Return to standard newsletter </option>
-                    </select>
-                </div>
+    <h2>
+        We're sorry to see you go!
+    </h2>
+    <br/>
+    <div class="field">
+        <label class="label">Choose an option:</label>
+        <div class="control">
+            <div class="select">
+                <select name="main-menu" id="main-menu" onchange="handleMenuChange()">
+                    <option value="">-- Select an option --</option>
+                    <option value="unsubscribe-from-poprox">Unsubscribe from POPROX</option>
+                    <option value="return-to-standard">Return to standard newsletter </option>
+                </select>
             </div>
         </div>
-
-        <div id="unsubscribe-options-1" class="field" style="display:none;">
-            <label class="label">We have unsubscribed you, you might receive one additional newsletter if it's already
-                on the way today:</label>
-            <div class="control">
-                <div class="select">
-                    <select id="unsubscribe-menu-1" name="unsubscribe-menu-1" onchange="handleSubmenuChange1()">
-                        <option value="">-- Select an option --</option>
-                        <option value="unsubscribe-user">Okay</option>
-                        <option value="keep-user-subscribed">I changed may mind. Keep me subscribed.</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div id="unsubscribe-options-2" class="field" style="display:none;">
-            <label class="label">We'll remove your name and email from our database:</label>
-            <div class="control">
-                <div class="select">
-                    <select id="unsubscribe-menu-2" name="unsubscribe-menu-2" onchange="handleSubmenuChange2()">
-                        <option value="">-- Select an option --</option>
-                        <option value="remove-email">Okay</option>
-                        <option value="withdraw-all-data">I also want you to remove all my data from your system
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div id="unsubscribe-options-3" class="field" style="display:none;">
-            <label class="label">We have removed you from the current varient of newsletters. You will be receiving the
-                standard POPROX newsletter until you are assigned to the next experiment:</label>
-            <div class="control">
-                <div class="select">
-                    <select id="return-to-standard-menu" name="return-to-standard-menu"
-                        onchange="handleSubmenuChange3()">
-                        <option value="">-- Select an option --</option>
-                        <option value="tell-us-why">Tell us why you're changing from this recommendation set</option>
-                        <option value="stop-receiving-newsletter">I want to stop receiving all POPROX newsletters
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div id="unsubscribe-options-4" class="field" style="display:none;">
-            <label class="label">We have unsubscribed you, you might receive one additional newsletter if it's already
-                on the way today:</label>
-            <div class="control">
-                <div class="select">
-                    <select id="return-unsubscribe-menu-1" name="return-unsubscribe-menu-1"
-                        onchange="handleSubmenuChange4()">
-                        <option value="">-- Select an option --</option>
-                        <option value="unsubscribe-user">Okay</option>
-                        <option value="keep-user-subscribed">I changed may mind. Keep me subscribed.</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div id="unsubscribe-options-5" class="field" style="display:none;">
-            <label class="label">We'll remove your name and email from our database:</label>
-            <div class="control">
-                <div class="select">
-                    <select id="return-unsubscribe-menu-2" name="return-unsubscribe-menu-2"
-                        onchange="handleSubmenuChange5()">
-                        <option value="">-- Select an option --</option>
-                        <option value="remove-email">Okay</option>
-                        <option value="withdraw-all-data">I also want you to remove all my data from your system
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
     </div>
+    <div id="unsubscribe-menu-1" class="field" style="display:none;">
+        <p>We will unsubscribe you, you might receive one additional newsletter if it's already
+            on the way today</p>
+        <label class="label">How do you want us to handle your data?</label>
+        <div class="control">
+            <div class="select">
+                <select id="sub-menu" name="sub-menu" onchange="handleSubMenuChange()">
+                    <option value="">-- Select an option --</option>
+                    <option value="remove-email">Remove just my name and email from POPROX database</option>
+                    <option value="remove-all-data">I want POPROX to remove all my data from the system</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="survey" class="field hidden" style="display:none;">
+        <p>We will remove you from the current varient of newsletters. You will be receiving the
+            standard POPROX newsletter until you are assigned to the next experiment. <br> 
+            We will be sending out a survey, tell us why you are changing to the standard newsletter. <br>
+            Click on the following button
+        </p> 
+    </div>
+
     <div class="control">
-        <button class="button is-link" id="submit-button" type="submit">Submit</button>
+        <button class="button is-link" id="submit-button" type="submit">Unsubscribe</button>
     </div>
 </form>
 {% endblock %}
