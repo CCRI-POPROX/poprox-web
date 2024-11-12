@@ -399,15 +399,15 @@ def onboarding_survey():
                 account_repo.store_zip5(account_id, zip5)
                 conn.commit()
                 updated = True
-                if onboarding:
-                    finish_onboarding(account_id)
-                    enqueue_newsletter_request(
-                        account_id=account_id,
-                        profile_id=account_id,
-                        group_id=None,
-                        recommender_url=DEFAULT_RECS_ENDPOINT_URL,
-                    )
-                    return redirect(url_for("home", error_description="You have been subscribed!"))
+            if onboarding:
+                finish_onboarding(account_id)
+                enqueue_newsletter_request(
+                    account_id=account_id,
+                    profile_id=account_id,
+                    group_id=None,
+                    recommender_url=DEFAULT_RECS_ENDPOINT_URL,
+                )
+                return redirect(url_for("home", error_description="You have been subscribed!"))
         user_demographic_information = get_demographic_information(auth.get_account_id())
     else:
         user_demographic_information = get_demographic_information(auth.get_account_id())
