@@ -2,30 +2,48 @@
 {% block header %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var raceCheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
-        var raceInputField = document.getElementById('raceinput');
 
-        var notListedCheckbox = Array.from(raceCheckboxes).find(cb => cb.dataset.notListed == "true");
-
-        if (notListedCheckbox && raceInputField.value) {
-            raceInputField.setAttribute('type', 'text');
-            notListedCheckbox.checked = true;
-        }
-
-        if (notListedCheckbox) {
-            notListedCheckbox.addEventListener('change', function (event) {
-                if (event.target.checked) {
+        var racecheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
+        var racenotlisted = racecheckboxes[racecheckboxes.length - 1];
+        racenotlisted.addEventListener('change', function (event) {
+            var raceInputField = document.getElementById('raceinput');
+            if (event.target.checked) {
+                if (raceInputField) {
                     raceInputField.setAttribute('type', 'text');
-                } else {
-                    raceInputField.setAttribute('type', 'hidden');
-                    raceInputField.value = '';
                 }
-            });
-        }
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+
+            } else {
+                if (raceInputField) {
+                    raceInputField.setAttribute('type', 'hidden');
+                }
+            }
+        });
+
+        var zipConsentCheckbox = document.querySelector('input[name="zip-consent"]');
+        zipConsentCheckbox.addEventListener('change', function (event) {
+            var zipInput = document.getElementById('zip');
+            if (event.target.checked) {
+                zipInput.setAttribute('disabled', 'disabled');
+                zipInput.value = '00000';
+            } else {
+                zipInput.removeAttribute('disabled');
+            }
+        });
+
+        var zipInput = document.getElementById('zip');
+        zipInput.addEventListener('input', function (event) {
+            var zip = event.target.value;
+            if (zip.length > 5) {
+                zip = zip.substring(0, 5);
+                event.target.value = zip;
+            } else if (zip.length < 5) {
+                event.target.setCustomValidity('Please enter a 5 digit ZIP code.');
+            } else {
+                event.target.setCustomValidity('');
+                zipConsentCheckbox.removeAttribute('required');
+            }
+        });
+
         var emailCheckboxes = document.querySelectorAll('input[type="checkbox"][name="email_client"]');
         var otherInputField = document.getElementById('clientinput');
 
@@ -47,36 +65,28 @@
             });
         }
     });
+
+    function validateForm(evt) {
+        const checked = (checkbox) => checkbox.checked;
+        const emailCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="email_client"]')];
+        const raceCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="race"]')];
+
+        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked);
+    }
 </script>
-
-
-
 {% endblock %}
 {% block content %}
-
 <div class="column box onboarding-survey">
-    {% if updated %}
-	<div class="pref-updated-flash">
-		<p>
-			<strong>Your information have been updated.</strong>
-		</p>
-	</div>
-	{% endif %}
     <form action="/demographic_survey" onsubmit="return validateForm()" method="POST">
-        <div class="column is-12 pt-0 mt-0">
-			{% if not onboarding %}
-				<a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a> <!-- added a home button temporarily -->
-			{% endif %}
-		</div>
         <!--Gender input-->
         <div class="field">
             <label class="label">What is your gender identity?</label>
             <div class="control">
                 <div class="select" id="genderselect">
                     <select title="Select options for eliciting gender identity." name="gender" required="required">
-                        <option value="" {% if not user_demographic_information['gender'] %} selected {% endif %}>Select an option</option>
+                        <option value="" selected>Select an option</option>
                         {% for genderopt in genderopts %}
-                        <option value="{{genderopt}}" {% if user_demographic_information['gender'] == genderopt %} selected {% endif %}>{{genderopt}}</option>
+                        <option value="{{genderopt}}">{{genderopt}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -88,9 +98,9 @@
             <div class="control">
                 <div class="select">
                     <select title="Select options for eliciting birth year." name="birthyear" required="required">
-                        <option value="" {% if not user_demographic_information['birth_year'] %} selected {% endif %}>Choose a year</option>
+                        <option value="" selected>Choose a year</option>
                         {% for year in yearopts %}
-                        <option value="{{year}}" {% if user_demographic_information['birth_year'] == year %} selected {% endif %}>{{year}}</option>
+                        <option value="{{year}}">{{year}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -100,7 +110,13 @@
         <div class="field">
             <label class="label">Enter your 5 digit ZIP code</label>
             <div class="control">
-                <input class="input" type="text" name="zip" id="zip" placeholder="ZIP code" required="required" value="{{ user_demographic_information['zip5'] }}">
+                <input class="input" type="text" name="zip" id="zip" placeholder="ZIP code" required="required">
+            </div>
+            <div class="checkboxes">
+                <label class="checkbox">
+                    <input type="checkbox" name="zip-consent" value="00000" required="required">
+                    I prefer not to provide my ZIP code
+                </label>
             </div>
         </div>
         <!--Education level input-->
@@ -112,9 +128,9 @@
                 <div class="select">
                     <select title="Select options for eliciting level of education." name="education"
                         required="required">
-                        <option value="" {% if not user_demographic_information['education'] %} selected {% endif %}>Select an option</option>
+                        <option value="" selected>Select an option</option>
                         {% for edlevel in edlevelopts %}
-                        <option value="{{edlevel}}" {% if user_demographic_information['education'] == edlevel %} selected {% endif %}>{{edlevel}}</option>
+                        <option value="{{edlevel}}">{{edlevel}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -125,47 +141,45 @@
             <label class="label">Choose one or more races that you consider yourself to be:</label>
             <div class="checkboxes">
                 <ul>
-                    {% set selected_races = user_demographic_information['race'].split(';') if user_demographic_information and user_demographic_information.get('race') else [] %}
                     {% for raceopt in raceopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{ raceopt }}" name="race"
-                            {% if raceopt in selected_races %} checked {% endif %}
-                            {% if raceopt == "Not listed (please specify)" %} data-not-listed="true" {% endif %} />
-                            {{ raceopt }}
+                            <input type="checkbox" value="{{raceopt}}" name="race" />
+                            {{raceopt}}
                         </label>
                     </li>
                     {% endfor %}
                 </ul>
-                <div class="field">
-                    {% set custom_race = user_demographic_information['race_notlisted'] if user_demographic_information and 'race_notlisted' in user_demographic_information and user_demographic_information.get('race_notlisted')!= None else '' %}
-                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race"
-                    class="input" placeholder="Please specify" value="{{ custom_race }}">
+                <div>
+                    <input id="raceinput" type="hidden" name="race" class="input" placeholder="Please specify"
+                        required="required">
                 </div>
             </div>
         </div>
-
         <!--Email client preference-->
         <div class="field">
             <label class="label">Choose one or more preferred email client:</label>
             <div class="checkboxes">
                 <ul>
-                    {% set selected_clients = user_demographic_information['email_client'].split(';') if user_demographic_information and user_demographic_information.get('email_client') else [] %}
+                    {% set selected_clients = user_demographic_information['email_client'].split(';') if
+                    user_demographic_information and user_demographic_information.get('email_client') else [] %}
                     {% for client in clientopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{client}}" name="email_client"
-                            {% if client in selected_clients%} checked {% endif %}
-                            {% if client == "Other" %} data-other="true" {% endif %} />
+                            <input type="checkbox" value="{{client}}" name="email_client" {% if client in
+                                selected_clients%} checked {% endif %} {% if client=="Other" %} data-other="true" {%
+                                endif %} />
                             {{client}}
                         </label>
                     </li>
                     {% endfor %}
                 </ul>
                 <div class="field">
-                    {% set custom_email_client = user_demographic_information['email_client_other'] if user_demographic_information and 'email_client_other' in user_demographic_information and user_demographic_information.get('email_client_other')!= None else '' %}
-                    <input id="clientinput" type="hidden" name="email_client"
-                    class="input" placeholder="Please specify" value="{{ custom_email_client}}">
+                    {% set custom_email_client = user_demographic_information['email_client_other'] if
+                    user_demographic_information and 'email_client_other' in user_demographic_information and
+                    user_demographic_information.get('email_client_other')!= None else '' %}
+                    <input id="clientinput" type="hidden" name="email_client" class="input" placeholder="Please specify"
+                        value="{{ custom_email_client}}">
                 </div>
             </div>
         </div>
