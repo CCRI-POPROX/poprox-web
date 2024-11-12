@@ -72,20 +72,22 @@ def email_redirect(path):
 @app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
 def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
+    subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
-    return render_template("pre_enroll.html", source=source, error=error)
+    return render_template("pre_enroll.html", source=source, subsource=subsource, error=error)
 
 
 @app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
 def pre_enroll_post():
     source = request.form.get("source", DEFAULT_SOURCE)
+    subsource = request.form.get("subsource", DEFAULT_SOURCE)
     legal_age = request.form.get("legal_age")
     us_area = request.form.get("us_area")
     email = request.form.get("email")
     if (not legal_age) or (not us_area) or (not email):
-        return render_template("pre_enroll.html", source=source)
+        return render_template("pre_enroll.html", source=source, subsource=subsource)
     else:
-        auth.send_enroll_token(source, email)
+        auth.send_enroll_token(source, subsource, email)
         return render_template("pre_enroll_sent.html")
 
 
@@ -106,11 +108,12 @@ def enroll_with_token(token_raw):
             url_for(
                 "pre_enroll_post",
                 source=token.source,
+                subsource=token.subsource,
                 error="The enrollment link you used was expired. Please request a new enrollment link below.",
             )
         )
     else:
-        return auth.enroll(token.email, token.source)
+        return auth.enroll(token.email, token.source, token.subsource)
 
 
 @app.route(f"{URL_PREFIX}/logout")
@@ -298,6 +301,7 @@ def onboarding_survey():
     yearmin = (today - 123 * oneyear).year  # arbitrarilly set to 100 years old
     yearmax = (today - 18 * oneyear).year  # to ensure at least 18 year old
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
+    yearopts = ["Prefer not to say"] + yearopts
 
     def convert_to_record(row: Demographics, zip5) -> dict:
         race_list = row.race.split(";")  # Split the race field into individual races
@@ -350,13 +354,15 @@ def onboarding_survey():
                 return val
 
             def zip_validation(zip_code):
-                if len(zip_code) == 5 and zip_code.isdigit():
-                    return zip_code
-                else:
-                    return None
+                if zip_code:
+                    if len(zip_code) == 5 and zip_code.isdigit():
+                        return zip_code
+                return "00000"
 
             gender = validate(request.form.get("gender"), GENDER_OPTIONS)
             birthyear = validate(request.form.get("birthyear"), yearopts)
+            if birthyear == "Prefer not to say":
+                birthyear = None
             education = validate(request.form.get("education"), EDUCATION_OPTIONS)
             zip5 = zip_validation(request.form.get("zip"))
             allrace = request.form.getlist("race")
@@ -393,7 +399,6 @@ def onboarding_survey():
                 account_repo.store_zip5(account_id, zip5)
                 conn.commit()
                 updated = True
-
                 if onboarding:
                     finish_onboarding(account_id)
                     enqueue_newsletter_request(
@@ -404,12 +409,11 @@ def onboarding_survey():
                     )
                     return redirect(url_for("home", error_description="You have been subscribed!"))
         user_demographic_information = get_demographic_information(auth.get_account_id())
-
     else:
         user_demographic_information = get_demographic_information(auth.get_account_id())
 
     return render_template(
-        "onboarding_survey.html",
+        "demographics_survey_form.html",
         updated=updated,
         onboarding=onboarding,
         genderopts=GENDER_OPTIONS,
