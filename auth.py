@@ -28,8 +28,8 @@ class Auth:
     def __init__(self, app: Flask) -> None:
         pass
 
-    def enroll(self, email, source) -> Response:
-        session["account"] = get_or_make_account(email, source)
+    def enroll(self, email, source, subsource) -> Response:
+        session["account"] = get_or_make_account(email, source, subsource)
         return redirect(url_for(STATUS_REDIRECTS.get(self.get_account_status(), "home")))
 
     def login_via_account_id(self, account_id):
@@ -94,10 +94,12 @@ class Auth:
     def logout(error_description=None) -> str:
         session.clear()
 
-    def send_enroll_token(self, source, email):
+    def send_enroll_token(self, source, subsource, email):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")
 
-        token = SignUpToken(email=email, source=source, created_at=datetime.now(timezone.utc).astimezone())
+        token = SignUpToken(
+            email=email, source=source, subsource=subsource, created_at=datetime.now(timezone.utc).astimezone()
+        )
         token_signed = to_hashed_base64(token, HMAC_KEY)
 
         jinja_env = jinja2.Environment(

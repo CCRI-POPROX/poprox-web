@@ -57,20 +57,22 @@ def email_redirect(path):
 @app.route(f"{URL_PREFIX}/enroll", methods=["GET"])
 def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
+    subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
-    return render_template("pre_enroll.html", source=source, error=error)
+    return render_template("pre_enroll.html", source=source, subsource=subsource, error=error)
 
 
 @app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
 def pre_enroll_post():
     source = request.form.get("source", DEFAULT_SOURCE)
+    subsource = request.form.get("subsource", DEFAULT_SOURCE)
     legal_age = request.form.get("legal_age")
     us_area = request.form.get("us_area")
     email = request.form.get("email")
     if (not legal_age) or (not us_area) or (not email):
-        return render_template("pre_enroll.html", source=source)
+        return render_template("pre_enroll.html", source=source, subsource=subsource)
     else:
-        auth.send_enroll_token(source, email)
+        auth.send_enroll_token(source, subsource, email)
         return render_template("pre_enroll_sent.html")
 
 
@@ -91,11 +93,12 @@ def enroll_with_token(token_raw):
             url_for(
                 "pre_enroll_post",
                 source=token.source,
+                subsource=token.subsource,
                 error="The enrollment link you used was expired. Please request a new enrollment link below.",
             )
         )
     else:
-        return auth.enroll(token.email, token.source)
+        return auth.enroll(token.email, token.source, token.subsource)
 
 
 @app.route(f"{URL_PREFIX}/logout")
