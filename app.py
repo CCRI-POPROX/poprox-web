@@ -133,11 +133,15 @@ def pre_unsubscribe():
     sub_menu = request.form.get("sub-menu")
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        if main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-email":
+        if main_menu == "unsubscribe-from-poprox" and sub_menu == "unsubscribe-without-any-removal":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            error_description = "You have been unsubscribed from POPROX."
+        elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-email":
             account_repo.remove_subscription_for_account(auth.get_account_id())
             account_repo.end_consent_for_account(auth.get_account_id())
             account_repo.remove_email_for_account(auth.get_account_id())
-            error_description = "You have been unsubscribed from POPROX."
+            error_description = "You have been unsubscribed from POPROX along with removing your email from our system."
         elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-all-data":
             account_repo.remove_subscription_for_account(auth.get_account_id())
             account_repo.end_consent_for_account(auth.get_account_id())

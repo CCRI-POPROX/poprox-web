@@ -30,7 +30,9 @@
         var subMenu = document.getElementById('sub-menu');
         var submitButton = document.getElementById('submit-button');
         submitButton.disabled = true;
-        if (subMenu.value === 'remove-email') {
+        if (subMenu.value === 'unsubscribe-without-any-removal') {
+            submitButton.disabled = false;
+        } else if (subMenu.value === 'remove-email') {
             submitButton.disabled = false;
         } else if (subMenu.value === 'remove-all-data') {
             submitButton.disabled = false;
@@ -67,8 +69,9 @@
             <div class="select">
                 <select id="sub-menu" name="sub-menu" onchange="handleSubMenuChange()">
                     <option value="">-- Select an option --</option>
-                    <option value="remove-email">Remove just my name and email from POPROX database</option>
-                    <option value="remove-all-data">I want POPROX to remove all my data from the system</option>
+                    <option value="unsubscribe-without-any-removal">Unsubscribe from a POPROX emails.</option>
+                    <option value="remove-email">Unsubscribe and remove my name and email from POPROX system.</option>
+                    <option value="remove-all-data">I want POPROX to remove all my data from the system.</option>
                 </select>
             </div>
         </div>
