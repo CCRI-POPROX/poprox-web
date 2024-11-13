@@ -11,20 +11,13 @@ if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 from poprox_platform.newsletter.assignments import enqueue_newsletter_request
-from poprox_storage.repositories.account_interest_log import (
-    DbAccountInterestRepository,
-)
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 
 from auth import Auth
-from db.postgres_db import (
-    DB_ENGINE,
-    finish_consent,
-    finish_onboarding,
-    finish_topic_selection,
-)
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.demographics import (
@@ -35,9 +28,7 @@ from poprox_concepts.domain.demographics import (
     Demographics,
 )
 from poprox_concepts.domain.topics import GENERAL_TOPICS
-from poprox_concepts.internals import (
-    from_hashed_base64,
-)
+from poprox_concepts.internals import from_hashed_base64
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -138,13 +129,36 @@ def opt_out_of_experiments():
 @app.route(f"{URL_PREFIX}/unsubscribe")
 @auth.requires_login
 def unsubscribe():
-    account_id = auth.get_account_id()
+    return render_template("pre_unsubscribe.html")
+
+
+@app.route(f"{URL_PREFIX}/pre_unsubscribe", methods=["POST"])
+@auth.requires_login
+def pre_unsubscribe():
+    main_menu = request.form.get("main-menu")
+    sub_menu = request.form.get("sub-menu")
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.remove_subscription_for_account(account_id)
-        conn.commit()
-
-    return redirect(url_for("home", error_description="Sorry to see you go. You have been unsubscribed"))
+        if main_menu == "unsubscribe-from-poprox" and sub_menu == "unsubscribe-without-any-removal":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            error_description = "You have been unsubscribed from POPROX."
+        elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-email":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            account_repo.remove_email_for_account(auth.get_account_id())
+            error_description = "You have been unsubscribed from POPROX along with removing your email from our system."
+        elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-all-data":
+            account_repo.remove_subscription_for_account(auth.get_account_id())
+            account_repo.end_consent_for_account(auth.get_account_id())
+            account_repo.remove_email_for_account(auth.get_account_id())
+            account_repo.set_deletion_for_account(auth.get_account_id())
+            error_description = "Your request has been recorded."
+        elif main_menu == "return-to-standard":
+            error_description = "Tell us why you're changing from the current varient in a survey sent to your email. You will be switched to the standard varient of newletters."
+            # send survey -- todo
+            return redirect(url_for("opt_out_of_experiments"))
+    return render_template(("post_unsubscribe.html"), error=error_description)
 
 
 @app.route(f"{URL_PREFIX}/subscribe")
