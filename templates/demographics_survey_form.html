@@ -3,7 +3,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        var racecheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        var racecheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
         var racenotlisted = racecheckboxes[racecheckboxes.length - 1];
         racenotlisted.addEventListener('change', function (event) {
             var raceInputField = document.getElementById('raceinput');
@@ -24,7 +24,7 @@
             var zipInput = document.getElementById('zip');
             if (event.target.checked) {
                 zipInput.setAttribute('disabled', 'disabled');
-                zipInput.value = '';
+                zipInput.value = '00000';
             } else {
                 zipInput.removeAttribute('disabled');
             }
@@ -43,18 +43,35 @@
                 zipConsentCheckbox.removeAttribute('required');
             }
         });
+
+        var emailCheckboxes = document.querySelectorAll('input[type="checkbox"][name="email_client"]');
+        var otherInputField = document.getElementById('clientinput');
+
+        var otherCheckbox = Array.from(emailCheckboxes).find(cb => cb.dataset.other == "true");
+
+        if (otherCheckbox && otherInputField.value) {
+            otherInputField.setAttribute('type', 'text');
+            otherCheckbox.checked = true;
+        }
+
+        if (otherCheckbox) {
+            otherCheckbox.addEventListener('change', function (event) {
+                if (event.target.checked) {
+                    otherInputField.setAttribute('type', 'text');
+                } else {
+                    otherInputField.setAttribute('type', 'hidden');
+                    otherInputField.value = '';
+                }
+            });
+        }
     });
 
+    function validateForm(evt) {
+        const checked = (checkbox) => checkbox.checked;
+        const emailCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="email_client"]')];
+        const raceCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="race"]')];
 
-
-    function validateForm() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                return true;
-            }
-        }
-        return false;
+        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked);
     }
 </script>
 {% endblock %}
@@ -136,6 +153,33 @@
                 <div>
                     <input id="raceinput" type="hidden" name="race" class="input" placeholder="Please specify"
                         required="required">
+                </div>
+            </div>
+        </div>
+        <!--Email client preference-->
+        <div class="field">
+            <label class="label">Choose one or more preferred email client:</label>
+            <div class="checkboxes">
+                <ul>
+                    {% set selected_clients = user_demographic_information['email_client'].split(';') if
+                    user_demographic_information and user_demographic_information.get('email_client') else [] %}
+                    {% for client in clientopts %}
+                    <li class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" value="{{client}}" name="email_client" {% if client in
+                                selected_clients%} checked {% endif %} {% if client=="Other" %} data-other="true" {%
+                                endif %} />
+                            {{client}}
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="field">
+                    {% set custom_email_client = user_demographic_information['email_client_other'] if
+                    user_demographic_information and 'email_client_other' in user_demographic_information and
+                    user_demographic_information.get('email_client_other')!= None else '' %}
+                    <input id="clientinput" type="hidden" name="email_client" class="input" placeholder="Please specify"
+                        value="{{ custom_email_client}}">
                 </div>
             </div>
         </div>
