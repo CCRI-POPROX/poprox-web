@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block header %}
+<script>
+    function handleMenuChange() {
+        var mainMenu = document.getElementById('main-menu');
+        var unsubscribeOptions1 = document.getElementById('unsubscribe-menu-1');
+        var unsubscribeOptions2 = document.getElementById('survey');
+        var submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        if (mainMenu.value === 'unsubscribe-from-poprox') {
+            if (unsubscribeOptions2.style.display === 'block') {
+                unsubscribeOptions2.style.display = 'none';
+            }
+            unsubscribeOptions1.style.display = 'block';
+        } else if (mainMenu.value === 'return-to-standard') {
+            if (unsubscribeOptions1.style.display === 'block') {
+                unsubscribeOptions1.style.display = 'none';
+            }
+            unsubscribeOptions2.style.display = 'block';
+            submitButton.disabled = false;
+        } else {
+            unsubscribeOptions1.style.display = 'none';
+            unsubscribeOptions2.style.display = 'none';
+            submitButton.disabled = true;
+
+        }
+    }
+
+    function handleSubMenuChange() {
+        var subMenu = document.getElementById('sub-menu');
+        var submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        if (subMenu.value === 'unsubscribe-without-any-removal') {
+            submitButton.disabled = false;
+        } else if (subMenu.value === 'remove-email') {
+            submitButton.disabled = false;
+        } else if (subMenu.value === 'remove-all-data') {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+</script>
+{% endblock %}
+{% block content %}
+<form action="{{url_for('pre_unsubscribe')}}" method="post">
+    <h2>
+        We're sorry to see you go!
+    </h2>
+    <br/>
+    <div class="field">
+        <label class="label">Choose an option:</label>
+        <div class="control">
+            <div class="select">
+                <select name="main-menu" id="main-menu" onchange="handleMenuChange()">
+                    <option value="">-- Select an option --</option>
+                    <option value="unsubscribe-from-poprox">Unsubscribe from POPROX</option>
+                    <option value="return-to-standard">Return to standard newsletter </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="unsubscribe-menu-1" class="field" style="display:none;">
+        <p>We will unsubscribe you, you might receive one additional newsletter if it's already
+            on the way today</p>
+        <label class="label">How do you want us to handle your data?</label>
+        <div class="control">
+            <div class="select">
+                <select id="sub-menu" name="sub-menu" onchange="handleSubMenuChange()">
+                    <option value="">-- Select an option --</option>
+                    <option value="unsubscribe-without-any-removal">Unsubscribe from a POPROX emails.</option>
+                    <option value="remove-email">Unsubscribe and remove my name and email from POPROX system.</option>
+                    <option value="remove-all-data">I want POPROX to remove all my data from the system.</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="survey" class="field hidden" style="display:none;">
+        <p>We will remove you from the current varient of newsletters. You will be receiving the
+            standard POPROX newsletter until you are assigned to the next experiment. <br> 
+            We will be sending out a survey, tell us why you are changing to the standard newsletter. <br>
+            Click on the following button
+        </p> 
+    </div>
+
+    <div class="control">
+        <button class="button is-link" id="submit-button" type="submit">Unsubscribe</button>
+    </div>
+</form>
+{% endblock %}
