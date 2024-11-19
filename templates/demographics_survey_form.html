@@ -56,7 +56,7 @@
         } else if (zipInput.value.trim() === "00000") {
             zipConsentCheckbox.removeAttribute('required');
             zipConsentCheckbox.checked = true;
-        }else {
+        } else {
             zipConsentCheckbox.removeAttribute('required');
         }
 
@@ -86,45 +86,48 @@
         const checked = (checkbox) => checkbox.checked;
         const emailCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="email_client"]')];
         const raceCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="race"]')];
+        const compensationRadios = [...document.querySelectorAll('input[type="radio"][name="compensation"]')];
 
-        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked);
+        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked) && compensationRadios.some(checked);
     }
 </script>
 {% endblock %}
 {% block content %}
 <div class="column box onboarding-survey">
-  {% if updated %}
-	<div class="pref-updated-flash">
-		<p>
-			<strong>Your information have been updated.</strong>
-		</p>
-	</div>
-	{% endif %}
-  <h1>POPROX News Subscriber Demographic Form</h1>
+    {% if updated %}
+    <div class="pref-updated-flash">
+        <p>
+            <strong>Your information have been updated.</strong>
+        </p>
+    </div>
+    {% endif %}
+    <h1>POPROX News Subscriber Demographic Form</h1>
 
-	<p>
-		Please provide the following information.
-        <span class="hint--bottom-right hint--large"
-        aria-label="To test whether studies ran on the POPROX platform make equitable improvements, we ask users to
+    <p>
+        Please provide the following information.
+        <span class="hint--bottom-right hint--large" aria-label="To test whether studies ran on the POPROX platform make equitable improvements, we ask users to
         answer the following demographic questions. These may also be used to personalize the news recommendations.
         With the exception of ZIP code, this data may be shared with researchers. We ask for your zip code for internal
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
-	</p>
+    </p>
     <form action="/demographic_survey" onsubmit="return validateForm()" method="POST">
         <div class="column is-12 pt-0 mt-0">
-			{% if not onboarding %}
-				<a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a> <!-- added a home button temporarily -->
-			{% endif %}
-		</div>
+            {% if not onboarding %}
+            <a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a>
+            <!-- added a home button temporarily -->
+            {% endif %}
+        </div>
         <!--Gender input-->
         <div class="field">
             <label class="label">What is your gender identity?</label>
             <div class="control">
                 <div class="select" id="genderselect">
                     <select title="Select options for eliciting gender identity." name="gender" required="required">
-                        <option value="" {% if not user_demographic_information['gender'] %}  selected {% endif %}>Select an option</option>
+                        <option value="" {% if not user_demographic_information['gender'] %} selected {% endif %}>Select
+                            an option</option>
                         {% for genderopt in genderopts %}
-                        <option value="{{genderopt}}" {% if user_demographic_information['gender'] == genderopt %} selected {% endif %} >{{genderopt}}</option>
+                        <option value="{{genderopt}}" {% if user_demographic_information['gender']==genderopt %}
+                            selected {% endif %}>{{genderopt}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -136,9 +139,11 @@
             <div class="control">
                 <div class="select">
                     <select title="Select options for eliciting birth year." name="birthyear" required="required">
-                        <option value="" {% if not user_demographic_information['birth_year'] %} selected {% endif %}>Choose a year</option>
+                        <option value="" {% if not user_demographic_information['birth_year'] %} selected {% endif %}>
+                            Choose a year</option>
                         {% for year in yearopts %}
-                        <option value="{{year}}" {% if user_demographic_information['birth_year'] == year %} selected {% endif %} >{{year}}</option>
+                        <option value="{{year}}" {% if user_demographic_information['birth_year']==year %} selected {%
+                            endif %}>{{year}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -148,7 +153,8 @@
         <div class="field">
             <label class="label">Enter your 5 digit ZIP code</label>
             <div class="control">
-                <input class="input" type="text" name="zip" id="zip" placeholder="ZIP code" required="required" value="{{ user_demographic_information['zip5'] }}">
+                <input class="input" type="text" name="zip" id="zip" placeholder="ZIP code" required="required"
+                    value="{{ user_demographic_information['zip5'] }}">
             </div>
             <div class="checkboxes">
                 <label class="checkbox">
@@ -166,9 +172,11 @@
                 <div class="select">
                     <select title="Select options for eliciting level of education." name="education"
                         required="required">
-                        <option value="" {% if not user_demographic_information['education'] %} selected {% endif %}>Select an option</option>
+                        <option value="" {% if not user_demographic_information['education'] %} selected {% endif %}>
+                            Select an option</option>
                         {% for edlevel in edlevelopts %}
-                        <option value="{{edlevel}}" {% if user_demographic_information['education'] == edlevel %} selected {% endif %} >{{edlevel}}</option>
+                        <option value="{{edlevel}}" {% if user_demographic_information['education']==edlevel %} selected
+                            {% endif %}>{{edlevel}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -184,9 +192,9 @@
                     {% for raceopt in raceopts %}
                     <li class="checkbox">
                         <label class="checkbox">
-                            <input type="checkbox" value="{{raceopt}}" name="race" {% if raceopt in
-                                selected_races %} checked {% endif %} {% if raceopt == "Not listed (please specify)" %} data-not-listed="true" {%
-                                    endif %}/>
+                            <input type="checkbox" value="{{raceopt}}" name="race" {% if raceopt in selected_races %}
+                                checked {% endif %} {% if raceopt=="Not listed (please specify)" %}
+                                data-not-listed="true" {% endif %} />
                             {{raceopt}}
                         </label>
                     </li>
@@ -196,8 +204,8 @@
                     {% set custom_race = user_demographic_information['race_notlisted'] if
                     user_demographic_information and 'race_notlisted' in user_demographic_information and
                     user_demographic_information.get('race_notlisted')!= None else '' %}
-                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" class="input" placeholder="Please specify"
-                        value="{{ custom_race }}">
+                    <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" class="input"
+                        placeholder="Please specify" value="{{ custom_race }}">
                 </div>
             </div>
         </div>
@@ -226,6 +234,44 @@
                     <input id="clientinput" type="hidden" name="email_client" class="input" placeholder="Please specify"
                         value="{{ custom_email_client}}">
                 </div>
+            </div>
+        </div>
+        <!--Compensation preference-->
+        <div class="field">
+            <label class="label">Choose your preferred method of compensation:</label>
+            <div class="radiobuttons">
+                <ul>
+                    {% set selected_comp = user_demographic_information['compensation'] if
+                    user_demographic_information and user_demographic_information.get('compensation') else '' %}
+                    <i>Gift cards:</i>
+                    {% for comp in giftcardopts %}
+                    <li class="radiobutton">
+                        <label class="radiobutton">
+                            <input type="radio" value="{{comp}}" name="compensation" {% if comp==selected_comp %}
+                                checked {% endif %} />
+                            {{comp}}
+                        </label>
+                    </li>
+                    {% endfor %}
+                    <i>Charitable Donations:</i>
+                    {% for comp in donationopts %}
+                    <li class="radiobutton">
+                        <label class="radiobutton">
+                            <input type="radio" value="{{comp}}" name="compensation" {% if comp==selected_comp %}
+                                checked {% endif %} />
+                            {{comp}}
+                        </label>
+                    </li>
+                    {% endfor %}
+                    <i>Other:</i>
+                    <li class="radiobutton">
+                        <label class="radiobutton">
+                            <input type="radio" value="Decline Payment" name="compensation" {% if comp==selected_comp %}
+                                checked {% endif %} />
+                            Decline Payment
+                        </label>
+                    </li>
+                </ul>
             </div>
         </div>
         <input class="button is-primary" type="submit" value="Submit">
