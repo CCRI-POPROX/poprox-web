@@ -20,6 +20,10 @@ from auth import Auth
 from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain.account import (
+    COMPENSATION_CARD_OPTIONS,
+    COMPENSATION_CHARITY_OPTIONS,
+)
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
     EMAIL_CLIENT_OPTIONS,
@@ -29,6 +33,8 @@ from poprox_concepts.domain.demographics import (
 )
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
+
+COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -317,7 +323,7 @@ def onboarding_survey():
     yearopts = [str(year) for year in range(yearmin, yearmax)[::-1]]
     yearopts = ["Prefer not to say"] + yearopts
 
-    def convert_to_record(row: Demographics, zip5) -> dict:
+    def convert_to_record(row: Demographics, zip5: str, compensation: str) -> dict:
         race_list = row.race.split(";")  # Split the race field into individual races
         predefined_races = [r for r in race_list if r in RACE_OPTIONS]
         custom_races = next((r for r in race_list if r not in RACE_OPTIONS), None)
@@ -336,17 +342,19 @@ def onboarding_survey():
             "raw_email_client": row.email_client,
             "email_client": ";".join(predefined_email_clients),
             "email_client_other": custom_email_clients,
+            "compensation": compensation,
         }
 
-    def get_demographic_information(account_id):
+    def fetch_demographic_information(account_id):
         with DB_ENGINE.connect() as conn:
             repo = DbDemographicsRepository(conn)
             account_repo = DbAccountRepository(conn)
-            information = repo.fetch_latest_demographics_by_account_id(account_id)
+            demographics = repo.fetch_latest_demographics_by_account_id(account_id)
             zip5 = account_repo.fetch_zip5(account_id)
-        if information and zip5:
-            information_dict = convert_to_record(information, zip5)
-            return information_dict
+            compensation = account_repo.fetch_compensation(account_id)
+        if demographics and zip5:
+            combined_dict = convert_to_record(demographics, zip5, compensation)
+            return combined_dict
         else:
             return None
 
@@ -390,6 +398,8 @@ def onboarding_survey():
             if "Other" in email_client:
                 email_client_other = next((i for i in all_email_client if i not in EMAIL_CLIENT_OPTIONS), None)
 
+            compensation = validate(request.form.get("compensation"), COMPENSATION_OPTIONS)
+
             # If `race_notlisted` has a value, add it to `race`
             if race_notlisted:
                 race.append(race_notlisted)
@@ -411,6 +421,7 @@ def onboarding_survey():
 
                 repo.store_demographics(demo)
                 account_repo.store_zip5(account_id, zip5)
+                account_repo.store_compensation(account_id, compensation)
                 conn.commit()
                 updated = True
             if onboarding:
@@ -422,9 +433,9 @@ def onboarding_survey():
                     recommender_url=DEFAULT_RECS_ENDPOINT_URL,
                 )
                 return redirect(url_for("home", error_description="You have been subscribed!"))
-        user_demographic_information = get_demographic_information(auth.get_account_id())
+        user_demographic_information = fetch_demographic_information(auth.get_account_id())
     else:
-        user_demographic_information = get_demographic_information(auth.get_account_id())
+        user_demographic_information = fetch_demographic_information(auth.get_account_id())
 
     return render_template(
         "demographics_survey_form.html",
@@ -435,6 +446,8 @@ def onboarding_survey():
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
         clientopts=EMAIL_CLIENT_OPTIONS,
+        giftcardopts=COMPENSATION_CARD_OPTIONS,
+        donationopts=COMPENSATION_CHARITY_OPTIONS,
         auth=auth,
         user_demographic_information=user_demographic_information,
     )
