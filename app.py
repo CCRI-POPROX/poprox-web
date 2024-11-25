@@ -10,20 +10,9 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
-from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
-from poprox_storage.repositories.accounts import DbAccountRepository
-from poprox_storage.repositories.demographics import DbDemographicsRepository
-from poprox_storage.repositories.experiments import DbExperimentRepository
-
-from auth import Auth
-from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
-from poprox_concepts.domain.account import (
-    COMPENSATION_CARD_OPTIONS,
-    COMPENSATION_CHARITY_OPTIONS,
-)
+from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
     EMAIL_CLIENT_OPTIONS,
@@ -33,6 +22,14 @@ from poprox_concepts.domain.demographics import (
 )
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
+from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
+from poprox_storage.repositories.experiments import DbExperimentRepository
+
+from auth import Auth
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
@@ -164,6 +161,7 @@ def pre_unsubscribe():
             error_description = "Tell us why you're changing from the current varient in a survey sent to your email. You will be switched to the standard varient of newletters."
             # send survey -- todo
             return redirect(url_for("opt_out_of_experiments"))
+        conn.commit()
     return render_template(("post_unsubscribe.html"), error=error_description)
 
 
