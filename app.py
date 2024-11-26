@@ -126,7 +126,9 @@ def opt_out_of_experiments():
         experiment_repo.update_expt_assignment_to_opt_out(account_id)
         conn.commit()
 
-    return redirect(url_for("home", error_desctiption="You have been opted out of experiments"))
+    return redirect(
+        url_for("home", error_description="You have been opted out of any experiments you were participating in.")
+    )
 
 
 @app.route(f"{URL_PREFIX}/unsubscribe")
