@@ -121,10 +121,6 @@
     </p>
     <form action="/demographic_survey" onsubmit="return validateForm()" method="POST">
         <div class="column is-12 pt-0 mt-0">
-            {% if not onboarding %}
-            <a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a>
-            <!-- added a home button temporarily -->
-            {% endif %}
         </div>
         <!--Gender input-->
         <div class="field">
