@@ -1,4 +1,10 @@
 {% extends "layout.html" %}
+
+{% block sidebar %}
+<!-- no sidebar -->
+<div class="column is-1"></div>
+{% endblock %}
+
 {% block header %}
 <script>
 	const precheck = new Array("agree1", "agree2", "agree3", "agree4", "agree5", "agree6", "agree7", "agree8")
@@ -20,6 +26,21 @@
 			else headerIcon.setAttribute("state-lbl", "-");
 			if (noHeight) return slidetoggle.call(this);
 		}
+	}
+
+	function fix_heights() {
+		for (const headerEle of document.querySelectorAll('*[target-panel]')) {
+			const targetId = headerEle.getAttribute("target-panel");
+			const txtPanel = document.getElementById(targetId);
+			if (txtPanel && txtPanel.clientHeight > 0) {
+				txtPanel.style.height = "0px"
+				txtPanel.style.transition = "height 0.0s"
+				txtPanel.style.height = txtPanel.scrollHeight + "px"
+				txtPanel.style.transition = "height 0.5s"
+			}
+		}
+
+
 	}
 
 	function update(evt) {
@@ -71,11 +92,14 @@
 		// Initializing a style parameter to avoid an initial jitter
 		Array.from(ctSections).forEach((ele, idx) =>
 			ele.style.height = (idx === 0 ? ele.scrollHeight : 0) + "px");
+
+		window.addEventListener("resize", fix_heights)
 	})
 </script>
 {% endblock %}
+
 {% block content %}
-<div class="column box content">
+<div class="content box">
 	<h1>POPROX News Subscriber Consent Form</h1>
 
 	<p>

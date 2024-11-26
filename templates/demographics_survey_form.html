@@ -1,4 +1,13 @@
 {% extends "layout.html" %}
+
+{% block sidebar %}
+	{% if onboarding %}
+        <div class="column is-1"></div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
 {% block header %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -93,7 +102,7 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="column box onboarding-survey">
+<div class="onboarding-survey box">
     {% if updated %}
     <div class="pref-updated-flash">
         <p>
@@ -105,7 +114,7 @@
 
     <p>
         Please provide the following information.
-        <span class="hint--bottom-right hint--large" aria-label="To test whether studies ran on the POPROX platform make equitable improvements, we ask users to
+        <span class="hint--bottom-left hint--large" aria-label="To test whether studies ran on the POPROX platform make equitable improvements, we ask users to
         answer the following demographic questions. These may also be used to personalize the news recommendations.
         With the exception of ZIP code, this data may be shared with researchers. We ask for your zip code for internal
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
