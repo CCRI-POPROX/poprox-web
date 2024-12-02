@@ -97,6 +97,30 @@
         const raceCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="race"]')];
         const compensationRadios = [...document.querySelectorAll('input[type="radio"][name="compensation"]')];
 
+        const errorMessage = document.getElementById('emailClientError');
+        if (!emailCheckboxes.some(checked)) {
+            errorMessage.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            errorMessage.style.display = 'none';
+        }
+
+        const raceErrorMessage = document.getElementById('raceError');
+        if (!raceCheckboxes.some(checked)) {
+            raceErrorMessage.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            raceErrorMessage.style.display = 'none';
+        }
+
+        const compensationErrorMessage = document.getElementById('compensationError');
+        if (!compensationRadios.some(checked)) {
+            compensationErrorMessage.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            compensationErrorMessage.style.display = 'none';
+        }
+
         return emailCheckboxes.some(checked) && raceCheckboxes.some(checked) && compensationRadios.some(checked);
     }
 </script>
@@ -190,6 +214,7 @@
         <!--Race input-->
         <div class="field">
             <label class="label">Choose one or more races that you consider yourself to be:</label>
+            <p id="raceError" style="color: red; display: none;">Please select at least one option.</p>
             <div class="checkboxes">
                 <ul>
                     {% set selected_races = user_demographic_information['race'].split(';') if
@@ -216,7 +241,9 @@
         </div>
         <!--Email client preference-->
         <div class="field">
-            <label class="label">Choose one or more preferred email client:</label>
+            <label class="label">Choose one or more preferred email client:
+            </label>
+            <p id="emailClientError" style="color: red; display: none;">Please select at least one option.</p>
             <div class="checkboxes">
                 <ul>
                     {% set selected_clients = user_demographic_information['email_client'].split(';') if
@@ -244,6 +271,7 @@
         <!--Compensation preference-->
         <div class="field">
             <label class="label">Choose your preferred method of compensation:</label>
+            <p id="compensationError" style="color: red; display: none;">Please select at least one option.</p>
             <div class="radiobuttons">
                 <ul>
                     {% set selected_comp = user_demographic_information['compensation'] if
