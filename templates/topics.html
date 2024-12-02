@@ -1,6 +1,15 @@
 {% extends "layout.html" %}
+
+{% block sidebar %}
+	{% if onboarding %}
+        <div class="column is-1"></div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-<div class="column box">
+<div class="box">
 	{% if updated %}
 	<div class="pref-updated-flash">
 		<p>
@@ -8,16 +17,12 @@
 		</p>
 	</div>
 	{% endif %}
+
 	<form action="/topics" method="POST">
 		<div class="columns is-mobile">
 			<div class="column is-half">
 				<h2>Topic Selection survey</h2>
 			</div>
-			{% if not onboarding %}
-			<div class="column is-half">
-				<a href="{{url_for('home')}}" class="button is-link is-pulled-right">Home</a> <!-- added a home button temporarily -->
-			</div>
-			{% endif %}
 		</div>
 		{% if onboarding %}
 		<p>
