@@ -106,7 +106,7 @@ h5 {
 
 .consent-section {
 	overflow: hidden;
-	transition: height 0.5s;
+	transition: height 1s;
 }
 
 #consent-final {
