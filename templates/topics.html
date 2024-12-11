@@ -19,7 +19,7 @@
 	{% endif %}
 
 	<form action="/topics" method="POST">
-		<div class="columns is-mobile">
+		<div class="columns">
 			<div class="column is-half">
 				<h2>Topic Selection survey</h2>
 			</div>
@@ -42,7 +42,7 @@
 			<div>
 				{% for topic in topics %}
 				{% set input_name = topic|replace(' ', '_') + "_pref" %}
-				<div class="columns pref-item-block is-mobile box">
+				<div class="columns pref-item-block box">
 					<div class="column">
 						<p><strong>{{topic}}</strong></p>
 					</div>
