@@ -24,6 +24,13 @@
 	margin-left: 0.75em;
 }
 
+
+@media (max-width: 768px) {
+	.pref-item-block {
+		margin: -0.25em 0 0 0;
+	}
+}
+
 /* end topics.html */
 
 /*
