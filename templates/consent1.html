@@ -36,7 +36,10 @@
 			if (txtPanel && txtPanel.clientHeight > 0) {
 				txtPanel.style.height = "0px"
 				txtPanel.style.transition = "height 0.0s"
-				txtPanel.style.transition = "height 0.5s"
+				txtPanel.style.height = txtPanel.scrollHeight + "px"
+				setTimeout(() => {
+					txtPanel.style.transition = "height 1s"
+				}, 1);
 			}
 		}
 	}
