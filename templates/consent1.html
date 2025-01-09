@@ -14,17 +14,18 @@
 		const headerEle = ['DIV', 'H2'].includes(evt.target.tagName) ?
 			evt.target.parentElement : evt.target;
 		const targetId = headerEle.getAttribute("target-panel");
-		const headerIcon = headerEle.getElementsByClassName("minmax-icon")[0];
 		const txtPanel = document.getElementById(targetId);
-		if (txtPanel) {
-			const cheight = txtPanel.clientHeight;
-			const sheight = txtPanel.scrollHeight;
-			const noHeight = !txtPanel.style && !txtPanel.style.height;
 
-			txtPanel.style.height = (!cheight || noHeight ? sheight : 0) + "px";
-			if (txtPanel.style.height === "0px") headerIcon.setAttribute("state-lbl", "+");
-			else headerIcon.setAttribute("state-lbl", "-");
-			if (noHeight) return slidetoggle.call(this);
+		if (!txtPanel) return;
+
+		const isExpanded = txtPanel.style.height !== "0px";
+		const newHeight = isExpanded ? "0px" : txtPanel.scrollHeight + "px";
+
+		txtPanel.style.height = newHeight;
+
+		const headerIcon = headerEle.getElementsByClassName("minmax-icon")[0];
+		if (headerIcon) {
+			headerIcon.setAttribute("state-lbl", isExpanded ? "+" : "-");
 		}
 	}
 
@@ -36,24 +37,31 @@
 				txtPanel.style.height = "0px"
 				txtPanel.style.transition = "height 0.0s"
 				txtPanel.style.height = txtPanel.scrollHeight + "px"
-				txtPanel.style.transition = "height 0.5s"
+				setTimeout(() => {
+					txtPanel.style.transition = "height 1s"
+				}, 1);
 			}
 		}
-
-
 	}
 
 	function update(evt) {
 		const checkbox = evt.target;
 		const header = document.getElementById(checkbox.getAttribute("header-id"));
+
 		if (checkbox.checked) {
 			if (header.classList.contains("error")) header.classList.remove("error");
+
 			header.classList.add("checked");
 			checklist[checkbox.id] = true;
 			header.dispatchEvent(new MouseEvent('click')); // collapse current block
 
 			// expand the next section by clicking on the next header
-			header.nextElementSibling.nextElementSibling.dispatchEvent(new MouseEvent('click'));
+			const nextHeader = header.nextElementSibling.nextElementSibling;
+
+			if (nextHeader) {
+				nextHeader.scrollIntoView(true, { behavior: "smooth", block: "start" });
+				nextHeader.dispatchEvent(new MouseEvent('click'));
+			}
 		} else {
 			header.classList.remove("checked");
 			checklist[checkbox.id] = false;
@@ -62,17 +70,11 @@
 		const finalNote = document.getElementById("consent-final");
 		const submitBtn = document.getElementById("submit-btn");
 
-		if (checktest.length === precheck.length) {
-			finalNote.style.height = finalNote.scrollHeight + "px";
-			submitBtn.disabled = false;
-			// if (submitBtn.disabled) !submitBtn.disabled;
-			// submitbtn.hasAttribute("disabled") && submitbtn.removeAttribute("disabled");
-		} else {
-			finalNote.style.height = "0px";
-			submitBtn.disabled = true;
-			// !submitbtn.hasAttribute("disabled") && submitbtn.setD;
-			// if (!submitBtn.disabled) !submitBtn.disabled;
-		}
+		submitBtn.disabled = !(checktest.length === precheck.length);
+
+		const ctSections = document.getElementsByClassName("consent-section");
+		Array.from(ctSections).forEach((ele, idx) =>
+			console.log(ele.style.height, idx, ele.scrollHeight));
 	}
 
 	window.addEventListener('DOMContentLoaded', function () {
