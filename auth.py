@@ -15,7 +15,7 @@ from poprox_concepts.api.tracking import SignUpToken, to_hashed_base64
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-HMAC_KEY = env.get("POPROX_HMAC_KEY")
+HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 
 STATUS_REDIRECTS = {
