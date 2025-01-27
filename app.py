@@ -38,8 +38,8 @@ DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
-app.secret_key = env.get("APP_SECRET_KEY")
-HMAC_KEY = env.get("POPROX_HMAC_KEY")
+app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
+HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
