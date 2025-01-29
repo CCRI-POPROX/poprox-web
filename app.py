@@ -11,7 +11,7 @@ if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
-from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain import AccountInterest, Article, Newsletter
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
@@ -25,8 +25,11 @@ from poprox_concepts.internals import from_hashed_base64
 from poprox_platform.newsletter.assignments import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.articles import DbArticleRepository
+from poprox_storage.repositories.clicks import DbClicksRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from auth import Auth
 from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
@@ -236,6 +239,101 @@ def home():
             error=error,
             is_subscribed=is_subscribed,
         )
+
+
+
+# TODO
+# add a new route to delete the article from the history that accepts the article id to delete
+# inside that route: create a click repository object and call a method on it to delete a click
+# (note: the method you need for deleting clicks may not exist yet, so you might have to write it) 
+
+@app.route(f"{URL_PREFIX}/hide_article", methods=["POST"])
+# @auth.requires_login
+def hide_article():
+    article_id = request.args.get('article_id')
+    # delete an article from the user's history
+    account_id = auth.get_account_id()
+    with DB_ENGINE.connect() as conn:
+        clicks_repo = DbClicksRepository(conn)
+        clicks_repo.hide_click(account_id, article_id)  # new method added to repository
+        conn.commit()
+
+    return redirect(url_for("history", error_description="Article hidden."))
+
+@app.route(f"{URL_PREFIX}/history", methods=["GET", "POST"])
+@auth.requires_login
+def history():
+    onboarding = auth.get_account_status() == "pending_initial_preferences"
+
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        article_repo = DbArticleRepository(conn)
+        clicks_repo = DbClicksRepository(conn)
+
+        if auth.is_logged_in():
+            accounts = account_repo.fetch_accounts([auth.get_account_id()])
+        else:
+            accounts = []
+            
+        account_id = accounts[0].account_id
+        app.logger.info(f"Account id: {account_id}")
+
+        clicks_by_account_id = clicks_repo.fetch_clicks(accounts)
+        clicked_article_ids = [click.article_id for click in clicks_by_account_id[account_id]]
+
+        app.logger.info(f"Number of clicks: {len(clicked_article_ids)}")
+        app.logger.info(f"Clicked article ids: {clicked_article_ids}")
+        articles = article_repo.fetch_articles_by_id(clicked_article_ids)
+
+        all_articles = article_repo.fetch_articles_since(days_ago=365)
+        app.logger.info(f"Number of total articles: {len(all_articles)}")
+
+        app.logger.info(f"Number of fetched articles: {len(articles)}")
+
+    return render_template(
+        "history.html",
+        articles=articles,
+        auth=auth,
+        onboarding=onboarding,
+    )
+
+@app.route(f"{URL_PREFIX}/create_clicks", methods=["GET"])
+@auth.requires_login
+def create_clicks():
+    articles = [
+        Article(
+            headline="Australian Open: Naomi Osaka is back in a Slam’s 3rd round for the 1st time in 3 years",
+            url="https://apnews.com/article/australian-open-1-15-2025-live-updates-411aebc0d622b66d88f0f168a96e28ae"
+        )
+    ]
+
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        newsletter_repo = DbNewsletterRepository(conn)
+        article_repo = DbArticleRepository(conn)
+        clicks_repo = DbClicksRepository(conn)
+
+        all_articles = article_repo.fetch_articles_since(days_ago=365)
+        app.logger.info(f"Number of total articles: {len(all_articles)}")
+
+        if auth.is_logged_in():
+            accounts = account_repo.fetch_accounts([auth.get_account_id()])
+        else:
+            accounts = []
+
+        app.logger.info(f"Account id: {accounts[0].account_id}")
+
+        article_id = article_repo.store_article(articles[0])
+        app.logger.info(f"Stored article id: {article_id}")
+
+        newsletter = Newsletter(account_id=accounts[0].account_id, impressions=[], subject="", body_html="")
+        newsletter.newsletter_id = newsletter_repo.store_newsletter(newsletter)
+
+        clicks_repo.store_click(
+            newsletter.newsletter_id, accounts[0].account_id, article_id, articles[0].headline, "2024-06-12 09:55:22"
+        )
+
+    return redirect(url_for("history", error_description="Click created."))
 
 
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])

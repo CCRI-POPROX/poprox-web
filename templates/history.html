@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block sidebar %}
+	{% if onboarding %}
+        <div class="column is-1"></div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
+<!-- 
+TODO 
+add a delete link to each article in history template
+-->
+
+{% block content %}
+    <div><h1>History</h1></div>
+    {% for article in articles %}
+        <li>
+            <a href="{{ article.url }}">{{ article.headline }}</a>
+            <form action="{{ url_for('hide_article', article_id=article.article_id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="button is-danger is-small">Hide</button>
+            </form>
+        </li>
+    {% endfor %}
+    
+{% endblock %}
