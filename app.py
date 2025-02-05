@@ -278,10 +278,14 @@ def history():
         account_id = accounts[0].account_id
         app.logger.info(f"Account id: {account_id}")
 
+        clicks_by_account_id = clicks_repo.fetch_clicks(accounts, include_hidden=True)
+        clicked_article_ids = [click.article_id for click in clicks_by_account_id[account_id]]
+        app.logger.info(f"Number of total clicks: {len(clicked_article_ids)}")
+
         clicks_by_account_id = clicks_repo.fetch_clicks(accounts)
         clicked_article_ids = [click.article_id for click in clicks_by_account_id[account_id]]
 
-        app.logger.info(f"Number of clicks: {len(clicked_article_ids)}")
+        app.logger.info(f"Number of unhidden clicks: {len(clicked_article_ids)}")
         app.logger.info(f"Clicked article ids: {clicked_article_ids}")
         articles = article_repo.fetch_articles_by_id(clicked_article_ids)
 
