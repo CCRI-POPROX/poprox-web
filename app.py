@@ -124,6 +124,10 @@ def opt_out_of_experiments():
     with DB_ENGINE.connect() as conn:
         experiment_repo = DbExperimentRepository(conn)
         experiment_repo.update_expt_assignment_to_opt_out(account_id)
+
+        account_repo = DbAccountRepository(conn)
+        account_repo.set_placebo_id(account_id)
+
         conn.commit()
 
     return redirect(
