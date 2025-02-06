@@ -126,6 +126,9 @@ def opt_out_of_experiments():
         experiment_repo.update_expt_assignment_to_opt_out(account_id)
         conn.commit()
 
+        account_repo = DbAccountRepository(conn)
+        account_repo.set_placebo_id(account_id)
+
     return redirect(
         url_for("home", error_description="You have been opted out of any experiments you were participating in.")
     )
