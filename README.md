@@ -7,13 +7,13 @@
 If you want to run the project, you'll need python installed on your computer. We recommend setting up a virtual environment. The easiest way to do this is with conda:
 
 ```bash
-conda create -n myenv python=3.11
+conda create -n poprox-web python=3.11
 ```
 
 Then switch to the now created conda environment
 
 ```bash
-conda activate myenv
+conda activate poprox-web
 ```
 
 To install all the required packages -
