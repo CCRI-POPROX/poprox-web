@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block sidebar %}
+	{% if onboarding %}
+        <div class="column is-1"></div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="box">
+	{% if updated %}
+	<div class="pref-updated-flash">
+		<p>
+			<strong>Your feedback has been stored.</strong>
+		</p>
+	</div>
+	{% endif %}
+
+	<form action="{{ url_for('feedback') }}" method="POST">
+		<div class="columns">
+			<div class="column is-half">
+				<h2>Here is your Today's News Recommendations.</h2>
+				{% for impression in impressions %}
+					<div style="margin-bottom: 1em;">
+						<a href="{{ impression.article.url }}">{{ impression.article.headline }}</a>
+						<p>{{ impression.article.subhead }}</p>
+
+						<button type="submit" name="articlefeedbackType" value="{{ impression.article.article_id }}||{{ impression.newsletter_id }}||positive" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
+							👍
+						</button>
+						<button type="submit" name="articlefeedbackType" value="{{ impression.article.article_id }}||{{ impression.newsletter_id }}||negative" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
+							👎
+						</button>
+
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock %}

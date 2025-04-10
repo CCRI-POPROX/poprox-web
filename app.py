@@ -10,6 +10,15 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from poprox_platform.newsletter.assignments import enqueue_newsletter_request
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
+from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
+from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.newsletters import DbNewsletterRepository
+
+from auth import Auth
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -22,14 +31,6 @@ from poprox_concepts.domain.demographics import (
 )
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
-from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
-from poprox_storage.repositories.accounts import DbAccountRepository
-from poprox_storage.repositories.demographics import DbDemographicsRepository
-from poprox_storage.repositories.experiments import DbExperimentRepository
-
-from auth import Auth
-from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
@@ -164,7 +165,8 @@ def pre_unsubscribe():
             account_repo.set_deletion_for_account(auth.get_account_id())
             error_description = "Your request has been recorded."
         elif main_menu == "return-to-standard":
-            error_description = "Tell us why you're changing from the current varient in a survey sent to your email. You will be switched to the standard varient of newletters."
+            error_description = "Tell us why you're changing from the current varient in a survey sent to your email.\
+                You will be switched to the standard varient of newletters."
             # send survey -- todo
             return redirect(url_for("opt_out_of_experiments"))
         conn.commit()
@@ -240,6 +242,52 @@ def home():
             error=error,
             is_subscribed=is_subscribed,
         )
+
+
+@app.route(f"{URL_PREFIX}/feedback", methods=["GET", "POST"])
+@auth.requires_login
+def feedback():
+    account_id = auth.get_account_id()
+
+    if request.method == "POST":
+        with DB_ENGINE.connect() as conn:
+            newsletter_repo = DbNewsletterRepository(conn)
+            combined_value = request.form.get("articlefeedbackType")
+
+            article_id, newsletter_id, article_feedback_type = combined_value.split("||")
+
+            if article_feedback_type == "positive":
+                is_article_positive = True
+            else:
+                is_article_positive = False
+
+            print(newsletter_id)
+            print(article_id)
+            print(is_article_positive)
+
+            newsletter_repo.store_impression_feedback(article_id, newsletter_id, is_article_positive)
+            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+
+    else:
+        with DB_ENGINE.connect() as conn:
+            newsletter_repo = DbNewsletterRepository(conn)
+            newsletter_id = request.args.get("newsletter_id")
+            feedbackType = request.args.get("feedbackType")
+
+            if feedbackType == "positive":
+                ispositive = True
+            else:
+                ispositive = False
+
+            newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, ispositive)
+            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            print(impressions)
+
+    return render_template(
+        "feedback.html",
+        auth=auth,
+        impressions=impressions,
+    )
 
 
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])
