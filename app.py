@@ -261,9 +261,9 @@ def feedback():
             else:
                 is_article_positive = False
 
-            print(newsletter_id)
             print(article_id)
-            print(is_article_positive)
+            print(newsletter_id)
+            print(article_feedback_type)
 
             newsletter_repo.store_impression_feedback(article_id, newsletter_id, is_article_positive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
@@ -281,7 +281,6 @@ def feedback():
 
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, ispositive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
-            print(impressions)
 
     return render_template(
         "feedback.html",
