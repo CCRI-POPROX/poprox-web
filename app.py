@@ -254,18 +254,14 @@ def feedback():
             newsletter_repo = DbNewsletterRepository(conn)
             combined_value = request.form.get("articlefeedbackType")
 
-            article_id, newsletter_id, article_feedback_type = combined_value.split("||")
+            newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
 
             if article_feedback_type == "positive":
                 is_article_positive = True
             else:
                 is_article_positive = False
 
-            print(article_id)
-            print(newsletter_id)
-            print(article_feedback_type)
-
-            newsletter_repo.store_impression_feedback(article_id, newsletter_id, is_article_positive)
+            newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
 
     else:

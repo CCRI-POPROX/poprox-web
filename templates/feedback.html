@@ -26,18 +26,20 @@
 					{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
             		{% set image = images[impression.article.preview_image_id] %}
 					<img src="path/to/image.jpg">
+					{% else %}
+					<p>No image available</p>
 					{% endif %}
 				</div>
 				<div class="column is-7">
 
-						<a href="{{ impression.article.url }}">{{ impression.article.headline }}</a>
-						<p>{{ impression.article.subhead }}</p>
+						<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
+						<p>{{ impression.subhead }}</p>
 				</div>
 				<div class="column is-1">
-						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.article.article_id }}||{{ impression.newsletter_id }}||positive" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
+						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.newsletter_id }}||{{ impression.impression_id }}||positive" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
 							👍
 						</button>
-						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.article.article_id }}||{{ impression.newsletter_id }}||negative" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
+						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.newsletter_id }}||{{ impression.impression_id }}||negative" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
 							👎
 						</button>
 				</div>
