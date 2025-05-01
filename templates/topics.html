@@ -8,6 +8,40 @@
     {% endif %}
 {% endblock %}
 
+{% block header %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function validateForm(evt) {
+            const topics = document.querySelectorAll('.pref-item-block');
+            let isValid = true;
+
+            topics.forEach(topicBlock => {
+                const topicName = topicBlock.querySelector('p strong').textContent;
+                const radioButtons = topicBlock.querySelectorAll('input[type="radio"]');
+                const errorMessage = topicBlock.querySelector('.topic-error');
+                const isChecked = Array.from(radioButtons).some(radio => radio.checked);
+
+                if (!isChecked) {
+                    errorMessage.style.display = 'block';
+                    isValid = false;
+                } else {
+                    errorMessage.style.display = 'none';
+                }
+            });
+
+            if (!isValid) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', validateForm);
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="box">
 	{% if updated %}
@@ -45,6 +79,7 @@
 				<div class="columns pref-item-block box">
 					<div class="column">
 						<p><strong>{{topic}}</strong></p>
+						<p class="topic-error" style="color: red; display: none;">Please select at least one option.</p>
 					</div>
 					{% for intlvl in intlvls %}
 					<div class="column topic-radio-container">
@@ -52,7 +87,7 @@
 							<input type="radio" name="{{input_name}}" value="{{intlvl[1]}}"
 							{% if user_topic_preferences.get(topic) == intlvl[1] %}
 							checked
-							{% endif%}/> <!-- added the check part here -->
+							{% endif%}/>
 							<p>{{intlvl[0]}}</p>
 						</label>
 					</div>
