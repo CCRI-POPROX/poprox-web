@@ -252,9 +252,11 @@ def feedback():
     if request.method == "POST":
         with DB_ENGINE.connect() as conn:
             newsletter_repo = DbNewsletterRepository(conn)
-            combined_value = request.form.get("articlefeedbackType")
+            article_feedback_type = request.form.get("articlefeedbackType")
+            newsletter_id = request.form.get("newsletter_id")
+            impression_id = request.form.get("impression_id")
 
-            newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
+            # newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
 
             if article_feedback_type == "positive":
                 is_article_positive = True

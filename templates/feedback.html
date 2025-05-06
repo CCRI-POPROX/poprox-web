@@ -23,12 +23,12 @@
 		{% for impression in impressions %}
 		<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 				<div class="column is-4">
-					{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
+					<!-- {% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
             		{% set image = images[impression.article.preview_image_id] %}
 					<img src="path/to/image.jpg">
 					{% else %}
 					<p>No image available</p>
-					{% endif %}
+					{% endif %} -->
 				</div>
 				<div class="column is-7">
 
@@ -36,12 +36,14 @@
 						<p>{{ impression.subhead }}</p>
 				</div>
 				<div class="column is-1">
-						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.newsletter_id }}||{{ impression.impression_id }}||positive" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
-							👍
-						</button>
-						<button class="vote-button" type="submit" name="articlefeedbackType" value="{{ impression.newsletter_id }}||{{ impression.impression_id }}||negative" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">
-							👎
-						</button>
+					<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
+					<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
+					<button class="vote-button" type="submit" name="articlefeedbackType" value="positive" class="emoji-button">
+						👍
+					</button>
+					<button class="vote-button" type="submit" name="articlefeedbackType" value="negative" class="emoji-button">
+						👎
+					</button>
 				</div>
 		</div>
 		{% endfor %}
