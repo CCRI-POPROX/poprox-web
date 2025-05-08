@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="box">
+<div class="card">
 	{% if updated %}
 	<div class="pref-updated-flash">
 		<p>
@@ -17,25 +17,21 @@
 		</p>
 	</div>
 	{% endif %}
-
+<div class="card-body">
 	<form action="/topics" method="POST">
-		<div class="columns">
-			<div class="column is-half">
 				<h2>Topic Selection survey</h2>
-			</div>
-		</div>
 		{% if onboarding %}
 		<p>
 			This survey is required to complete the enrollment process, but you are free to skip any question you prefer not to answer. Your responses will help the algorithms find articles that match your interests.
 		</p>
 		<div class="block content">
 			<p><strong>
-					1. Please mark your initial preference by selecting the your level of interest in the following topics.
+					Please mark your initial preference by selecting the your level of interest in the following topics.
 				</strong></p>
 		{% else %}
 		<div class="block content">
 			<p><strong>
-					1. Here is your latest preference of interest in the following topics. You can edit your preference by clicking new preference level for any following topics.
+					Here is your latest preference of interest in the following topics. You can edit your preference by clicking new preference level for any following topics.
 				</strong></p>
 		{% endif %}
 			<div class="row row-cols-1 g-3">
@@ -67,5 +63,6 @@
 		</div>
 		<input class="btn btn-primary mt-3" type="submit" value="Submit">
 	</form>
+	</div>
 </div>
 {% endblock %}
