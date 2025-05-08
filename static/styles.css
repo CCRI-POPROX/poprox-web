@@ -63,6 +63,10 @@ h3 {
     color: #ffffff;
 }
 
+.btn:disabled {
+	background-color: #000000;
+}
+
 /* body::after { */
     /* content: ''; */
     /* display: block; */
