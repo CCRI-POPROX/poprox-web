@@ -1,3 +1,81 @@
+/* General Styles */
+body {
+    /* font-family: ui-monospace; */
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    position: relative;
+    /* background-image: url("/img/background.jpg"); */
+}
+
+/* Headings */
+/*
+h2 {
+    color: #000000;
+    text-align: center;
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    letter-spacing: 2px;
+    margin: 20px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: rgb(46, 128, 119);
+    font-weight: bolder;
+} */
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    background-color: rgba(46, 128, 118, 0.581);
+    color: #000000;
+    box-shadow: 0 6px 12px rgba(46, 128, 118, 0.1);
+    padding: 15px;
+    /* text-align: center; */
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+
+}
+
+/* .card:hover {
+    box-shadow: 0 12px 24px rgba(46, 128, 118, 0.1);
+    transform: translateY(-5px);
+} */
+
+/* Buttons */
+.btn {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: rgb(46, 128, 119);
+    color: #ffffff;
+}
+
+/* body::after { */
+    /* content: ''; */
+    /* display: block; */
+    /* height: 60px; */
+    /* Set same as footer's height */
+  /* } */
+
+.form-control {
+	width: 30%;
+}
+
+
+
 /*
 * css for topics.html
 */
