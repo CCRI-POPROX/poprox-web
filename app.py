@@ -265,6 +265,7 @@ def feedback():
 
             newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            conn.commit()
 
     else:
         with DB_ENGINE.connect() as conn:
@@ -279,6 +280,7 @@ def feedback():
 
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, ispositive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            conn.commit()
 
     return render_template(
         "feedback.html",
