@@ -18,17 +18,15 @@
 	</div>
 	{% endif %}
 
-	<form action="{{ url_for('feedback') }}" method="POST">
+
 		<h2>Here is your Today's News Recommendations.</h2>
 		{% for impression in impressions %}
 		<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 				<div class="column is-4">
-					<!-- {% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
-            		{% set image = images[impression.article.preview_image_id] %}
-					<img src="path/to/image.jpg">
-					{% else %}
-					<p>No image available</p>
-					{% endif %} -->
+					{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
+						{% set image = images[impression.article.preview_image_id] %}
+						<img src="{{image.url}}">
+					{% endif %}
 				</div>
 				<div class="column is-7">
 
@@ -36,17 +34,22 @@
 						<p>{{ impression.subhead }}</p>
 				</div>
 				<div class="column is-1">
+					<form action="{{ url_for('feedback') }}" method="POST">
 					<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
 					<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
-					<button class="vote-button" type="submit" name="articlefeedbackType" value="positive" class="emoji-button">
+					<button class="vote-button" type="submit" name="articlefeedbackType" value="positive" class="emoji-button"
+					{% if impression.feedback == true %} style = "background-color:green;" {% endif %}
+					>
 						👍
 					</button>
-					<button class="vote-button" type="submit" name="articlefeedbackType" value="negative" class="emoji-button">
+					<button class="vote-button" type="submit" name="articlefeedbackType" value="negative" class="emoji-button"
+					{% if impression.feedback == false %} style = "background-color:red;" {% endif %}
+					>
 						👎
 					</button>
+				</form>
 				</div>
 		</div>
 		{% endfor %}
-	</form>
 </div>
 {% endblock %}

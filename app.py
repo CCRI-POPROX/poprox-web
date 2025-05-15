@@ -15,6 +15,7 @@ from poprox_storage.repositories.account_interest_log import DbAccountInterestRe
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from auth import Auth
@@ -249,9 +250,18 @@ def home():
 def feedback():
     account_id = auth.get_account_id()
 
-    if request.method == "POST":
-        with DB_ENGINE.connect() as conn:
-            newsletter_repo = DbNewsletterRepository(conn)
+    def fetch_images(image_repo, recommended_articles):
+        images = {}
+        for article in recommended_articles:
+            if article.preview_image_id:
+                images[article.preview_image_id] = image_repo.fetch_image_by_id(article.preview_image_id)
+        return images
+
+    with DB_ENGINE.connect() as conn:
+        newsletter_repo = DbNewsletterRepository(conn)
+        image_repo = DbImageRepository(conn)
+
+        if request.method == "POST":
             article_feedback_type = request.form.get("articlefeedbackType")
             newsletter_id = request.form.get("newsletter_id")
             impression_id = request.form.get("impression_id")
@@ -265,10 +275,9 @@ def feedback():
 
             newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            conn.commit()
 
-    else:
-        with DB_ENGINE.connect() as conn:
-            newsletter_repo = DbNewsletterRepository(conn)
+        else:
             newsletter_id = request.args.get("newsletter_id")
             feedbackType = request.args.get("feedbackType")
 
@@ -279,11 +288,16 @@ def feedback():
 
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, ispositive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            conn.commit()
+
+        recommended_articles = [impression.article for impression in impressions]
+        images = fetch_images(image_repo, recommended_articles)
 
     return render_template(
         "feedback.html",
         auth=auth,
         impressions=impressions,
+        images=images,
     )
 
 
