@@ -166,6 +166,41 @@ h5 {
 .emoji-button {
 	background: none;
 	border: none;
-	font-size: 1.5em;
+	font-size: 1.4em;
 	cursor: pointer;
+
+	width: 1.7em;
+	height: 1.7em;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.highlight_green{
+	background-color:lightgreen;
+	border: none;
+	font-size: 1.7em;
+	cursor: pointer;
+
+	width: 1.7em;
+	height: 1.7em;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.highlight_red{
+	background-color:orangered;
+	border: none;
+	font-size: 1.7em;
+	cursor: pointer;
+
+	width: 1.7em;
+	height: 1.7em;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
