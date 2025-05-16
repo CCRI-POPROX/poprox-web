@@ -281,12 +281,7 @@ def feedback():
             newsletter_id = request.args.get("newsletter_id")
             feedbackType = request.args.get("feedbackType")
 
-            if feedbackType == "positive":
-                ispositive = True
-            else:
-                ispositive = False
-
-            newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, ispositive)
+            newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
             conn.commit()
 
