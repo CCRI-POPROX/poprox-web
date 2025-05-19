@@ -1,0 +1,188 @@
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width; initial-scale=1" name="viewport" </head>
+
+    <head>
+        {# https://designmodo.com/html-css-emails/
+        I have not dug into the issue as much as I would like, but it sounds like
+        some email readers literally just delete the first head element. #}
+        <style>
+            body {
+                margin-left: 0;
+                margin-right: 0;
+                font-family: Arial, sans-serif;
+            }
+
+            a,
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                text-decoration: none;
+            }
+
+            div.article {
+                width: 100%;
+                display: flex;
+                max-width: 1200px;
+            }
+
+            .logo {
+                width: 100%;
+                background-color: #008f83;
+                text-align: center;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+                max-width: 1200px;
+            }
+
+            .logo img {
+                height: 3rem;
+                margin: 1rem;
+                max-width: 90%;
+            }
+
+
+            div.system_news {
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                padding-left: 1rem;
+                background-color: rgb(0, 60, 94);
+                color: white;
+            }
+
+            div.survey {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+
+            div.article {
+                display: block;
+                padding-bottom: 2rem;
+            }
+
+            div.article .figure {
+                display: none;
+            }
+
+            div.article .figure img {
+                display: none;
+            }
+
+            div.article .headline {
+                padding-bottom: 0;
+                font-size: 1.4rem;
+                color: #008f83;
+                margin-bottom: 0;
+            }
+
+            div.article .subhead {
+                font-size: 1rem;
+            }
+
+            div.article .content {
+                margin-bottom: 0rem;
+                color: #003c5e;
+                width: 100%;
+            }
+
+            div.article .tools {
+                color: #008f83;
+                text-align: right;
+            }
+
+            div.article div.content img {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+
+            div.footer {
+                text-align: center;
+                background-color: #003c5e;
+                max-width: 1200px;
+            }
+
+            div.footer a {
+                display: inline-block;
+                width: 8em;
+                color: #008f83;
+                font-weight: bold;
+                vertical-align: top;
+                margin: 1em;
+            }
+
+            div.footer a img {
+                width: 70%;
+                margin: 0% 15%;
+            }
+
+            div.article .content {
+                margin-bottom: 0;
+            }
+        </style>
+        <style>
+            /* At the top level of your code */
+            @media screen and (min-width: 768px) {
+
+                body {
+                    margin-left: 15% !important;
+                    margin-right: 15% !important;
+                }
+
+                .logo img {
+                    height: 6rem !important;
+                }
+
+                div.article {
+                    display: flex !important;
+                }
+
+
+                div.article .figure {
+                    display: block !important;
+                    width: 24rem !important;
+                    height: 16rem !important;
+                    margin-right: 2rem !important;
+                }
+
+                div.article .figure img {
+                    display: block !important;
+                    width: 24rem !important;
+                    height: 16rem !important;
+                    object-fit: cover !important;
+                }
+
+                div.article .headline {
+                    font-size: 1.8rem !important;
+                    margin-bottom: 1rem !important;
+                }
+
+                div.article .subhead {
+                    font-size: 1.2rem !important;
+                }
+
+                div.article .content {
+                    margin-bottom: 2rem !important;
+                }
+
+                div.article div.content img {
+                    display: none !important;
+                }
+
+            }
+        </style>
+    </head>
+
+<body>
+    <div class="logo">
+        <img alt="Poprox News Logo" src="https://poprox.ai/assets/images/logos_and_icons/logo_white.png"></h1>
+    </div>
+
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>
