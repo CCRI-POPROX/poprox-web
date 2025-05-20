@@ -11,22 +11,6 @@ body {
     /* background-image: url("/img/background.jpg"); */
 }
 
-/* Headings */
-/*
-h2 {
-    color: #000000;
-    text-align: center;
-    font-size: 2.5rem;
-    text-transform: capitalize;
-    letter-spacing: 2px;
-    margin: 20px;
-    margin-bottom: 20px;
-}
-
-h3 {
-    color: rgb(46, 128, 119);
-    font-weight: bolder;
-} */
 
 /* Cards */
 .card {
@@ -41,11 +25,6 @@ h3 {
     margin-bottom: 20px;
 
 }
-
-/* .card:hover {
-    box-shadow: 0 12px 24px rgba(46, 128, 118, 0.1);
-    transform: translateY(-5px);
-} */
 
 /* Buttons */
 .btn {
@@ -67,13 +46,6 @@ h3 {
 	background-color: #000000;
 }
 
-/* body::after { */
-    /* content: ''; */
-    /* display: block; */
-    /* height: 60px; */
-    /* Set same as footer's height */
-  /* } */
-
 .form-control {
 	width: 30%;
 }
@@ -81,8 +53,6 @@ h3 {
 .form-select {
 	width: 30%;
 }
-
-
 
 /*
 * css for topics.html
@@ -157,55 +127,65 @@ h3 {
     .pref-item-block {
         flex-wrap: nowrap;
     }
+
 }
+
+@media (min-wdith: 375px){
+    .topic-radio-container .form-check {
+        height: 63px;
+    }
+}
+
 /* end topics.html */
 
 /*
 * css for consent1.html
 */
-h1 {
+/* h1 {
 	font-size: 2em;
 	text-align: center;
 	margin: 1rem;
-}
+} */
+ h1 {
+    text-align: center;
+ }
 
-h2 {
+/* h2 {
 	font-size: 1.5rem;
-}
+} */
 
-h3 {
+/* h3 {
 	margin-top: 0.5rem;
 	font-weight: bolder;
 	font-size: 1.25rem;
-}
+} */
 
-h4 {
+/* h4 {
 	font-weight: bolder;
 	display: inline;
-}
+} */
 
-h5 {
+/* h5 {
 	font-weight: bold;
-	display: inline;
+	display: inline; */
 }
 
-h2~p,
+/* h2~p,
 h3 {
 	margin-left: 2rem;
-}
+} */
 
-h3~p,
+/* h3~p,
 h3~ul,
 h4 {
 	margin-left: 3rem;
-}
+} */
 
-h4~p,
+/* h4~p,
 h4~ul,
 h5 {
 	margin-left: 4rem;
-}
-
+} */
 
 .consent {
 	margin: 2rem;
@@ -241,6 +221,7 @@ h5 {
 .consent-section {
 	overflow: hidden;
 	transition: height 1s;
+    margin: 0.5em;
 }
 
 #consent-final {
@@ -257,6 +238,14 @@ h5 {
 	color: #ef3333;
 	padding: 0.25em;
 	margin-top: 2rem;
+}
+
+@media (min-width:375) {
+    /* h1 {
+        font-size: 1em;
+        text-align: center;
+        margin: 1rem;
+    } */
 }
 
 @media print {
