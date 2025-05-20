@@ -11,6 +11,32 @@ body {
     /* background-image: url("/img/background.jpg"); */
 }
 
+/* Navigation Bar */
+
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #ffffff !important;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color:  rgb(46, 128, 119) !important;
+    text-decoration: none;
+}
+
+/* Footer */
+
 footer {
     background-color: #000000;
     color: #000000;
