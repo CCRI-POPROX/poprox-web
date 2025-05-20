@@ -1,0 +1,293 @@
+/* General Styles */
+body {
+    /* font-family: ui-monospace; */
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    position: relative;
+    /* background-image: url("/img/background.jpg"); */
+}
+
+footer {
+    background-color: #000000;
+    color: #000000;
+    padding: 15px;
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+}
+
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    background-color: rgba(46, 128, 118, 0.581);
+    color: #000000;
+    box-shadow: 0 6px 12px rgba(46, 128, 118, 0.1);
+    padding: 15px;
+    /* text-align: center; */
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+
+}
+
+/* Buttons */
+.btn {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: rgb(46, 128, 119);
+    color: #ffffff;
+}
+
+.btn:disabled {
+	background-color: #000000;
+}
+
+.form-control {
+	width: 30%;
+}
+
+.form-select {
+	width: 30%;
+}
+
+/*
+* css for topics.html
+*/
+.pref-updated-flash {
+	background-color: #22771133;
+	padding: 0.25em;
+	margin: -0.75em -0.75em 9px -0.75em;
+}
+
+.pref-item-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0rem;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.topic-label-container {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.topic-radio-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.topic-radio-container .form-check { /* Target the Bootstrap form-check within the radio container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+	height: 63px;
+}
+
+.topic-radio-container .form-check-input {
+    margin-right: 0;
+    margin-bottom: 0.25rem;
+    cursor: pointer;
+}
+
+.topic-radio-container .form-check-label {
+    margin-left: 0;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.topic-radio-container label {
+	width: 116px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.topic-label-container strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .pref-item-block {
+        flex-wrap: nowrap;
+    }
+
+}
+
+@media (min-wdith: 375px){
+    .topic-radio-container .form-check {
+        height: 63px;
+    }
+}
+
+/* end topics.html */
+
+/*
+* css for consent1.html
+*/
+/* h1 {
+	font-size: 2em;
+	text-align: center;
+	margin: 1rem;
+} */
+ h1 {
+    text-align: center;
+ }
+
+/* h2 {
+	font-size: 1.5rem;
+} */
+
+/* h3 {
+	margin-top: 0.5rem;
+	font-weight: bolder;
+	font-size: 1.25rem;
+} */
+
+/* h4 {
+	font-weight: bolder;
+	display: inline;
+} */
+
+/* h5 {
+	font-weight: bold;
+	display: inline; */
+}
+
+/* h2~p,
+h3 {
+	margin-left: 2rem;
+} */
+
+/* h3~p,
+h3~ul,
+h4 {
+	margin-left: 3rem;
+} */
+
+/* h4~p,
+h4~ul,
+h5 {
+	margin-left: 4rem;
+} */
+
+.consent {
+	margin: 2rem;
+}
+
+.minmax-icon {
+	font-size: 1.5rem;
+	margin-left: auto;
+	font-family: monospace;
+}
+
+.minmax-icon::after {
+	content: "[" attr(state-lbl) "]";
+}
+
+.accordion-header {
+	cursor: pointer;
+	background-color: #ececec;
+	display: flex;
+	padding: 1rem;
+	margin-bottom: 0.1rem;
+	margin-top: 0.1rem;
+}
+
+.accordion-header.checked {
+	background-color: #22771133;
+}
+
+.accordion-header.error {
+	background-color: #ef333363;
+}
+
+.consent-section {
+	overflow: hidden;
+	transition: height 1s;
+    margin: 0.5em;
+}
+
+#consent-final {
+	overflow: hidden;
+	height: 0;
+}
+
+#consent-final p {
+	margin: 2rem;
+}
+
+.error-flash {
+	background-color: #ececec;
+	color: #ef3333;
+	padding: 0.25em;
+	margin-top: 2rem;
+}
+
+@media (min-width:375) {
+    /* h1 {
+        font-size: 1em;
+        text-align: center;
+        margin: 1rem;
+    } */
+}
+
+@media print {
+	.consent-section {
+		height: auto !important;
+	}
+}
+
+/* end consent1.html */
+
+
+/* css for onboarding_survey.html */
+
+.onboarding-survey ul{
+	list-style-type: none;
+	display: inline-grid;
+}
+
+.onboarding-survey ul li {
+	margin: 0.25em 0.25em 0.25em 0;
+	padding: 0.25em;
+}
+
+.onboarding-survey .field{
+	margin: 1rem;
+}
+
+.onboarding-survey input[type="text"] {
+	max-width: 200px;
+	/* margin-left: 1em; */
+
+}
