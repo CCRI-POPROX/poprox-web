@@ -230,6 +230,12 @@ h5 {
 	margin: 2rem;
 }
 
+.consent .form-check-input {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+
 .minmax-icon {
 	font-size: 1.5rem;
 	margin-left: auto;
