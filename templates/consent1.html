@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "new-layout.html" %}
 
 {% block sidebar %}
 <!-- no sidebar -->
@@ -101,8 +101,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="content box">
-	<h1>POPROX News Subscriber Consent Form</h1>
+<div class="card">
+	<h1 class="card-title">Subscriber Consent Form</h1>
 
 	<div class="container is-max-tablet">
 		<table class="table">
@@ -139,18 +139,19 @@
 		<p>{{ error }}</p>
 	</div>
 	{% endif %}
+	<div class="card-body">
 
-	<p class="action-summary">This form consists of 9 sections and a final confirmation. Read and accept each section to confirm your registration.</p>
+		<p class="action-summary">This form consists of 9 sections and a final confirmation. Read and accept each section to confirm your registration.</p>
 
-	<p>
-		This onboarding process is a little different from most services you've probably signed up for!  That is deliberate &mdash; since we are a research project, we want to make sure that you are giving your informed consent to participate in 
-		research studies on POPROX.  A copy of this form can be downloaded <a href="/static/Subscriber_Agreement_v2.pdf">here</a>; it will be emailed to you if you consent
-	</p>
+		<p>
+			This onboarding process is a little different from most services you've probably signed up for!  That is deliberate &mdash; since we are a research project, we want to make sure that you are giving your informed consent to participate in 
+			research studies on POPROX.  A copy of this form can be downloaded <a href="/static/Subscriber_Agreement_v2.pdf">here</a>; it will be emailed to you if you consent
+		</p>
 
-	<form id="content" method="GET" action="/consent2">
-		<header id="consent-header-1" class="accordion-header {% if 'agree1' in missing %}error{% endif %}"
+		<form id="content" method="GET" action="/consent2">
+			<header id="consent-header-1" class="accordion-header {% if 'agree1' in missing %}error{% endif %}"
 			target-panel="consent-section-1">
-			<h2>1. Introduction</h2>
+			<h2 class="card-title">1. Introduction</h2>
 			<div class="minmax-icon" state-lbl="-"></div>
 		</header>
 		<section id="consent-section-1" class="consent-section">
@@ -225,15 +226,15 @@
 				responsible for research with human participants.
 			</p>
 
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree1" value="yes" id="agree1" header-id="consent-header-1" required>
-				<label for="agree1">I understand my eligibility, the consent procedure, and the nature of POPROX as an
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree1" value="yes" id="agree1" header-id="consent-header-1" required>
+				<label for="agree1" class="form-check-label">I understand my eligibility, the consent procedure, and the nature of POPROX as an
 					experimental research platform.</label>
-			</div>
-		</section>
+				</div>
+			</section>
 
-		<header id="consent-header-2" class="accordion-header {% if 'agree2' in missing %}error{% endif %}"
+			<header id="consent-header-2" class="accordion-header {% if 'agree2' in missing %}error{% endif %}"
 			target-panel="consent-section-2">
 			<h2>2. Studies</h2>
 			<div class="minmax-icon" state-lbl="+"></div>
@@ -264,21 +265,21 @@
 				unsubscribing from POPROX News entirely, but will always be able to opt out once you are part of a
 				specific study.
 			</p>
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree2" value="yes" id="agree2" header-id="consent-header-2" required>
-				<label for="agree2">
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree2" value="yes" id="agree2" header-id="consent-header-2" required>
+				<label for="agree2" class="form-check-label">
 					I understand the definition of POPROX studies and opt-out options.
 				</label>
 			</div>
 		</section>
 
 		<header id="consent-header-3" class="accordion-header {% if 'agree3' in missing %}error{% endif %}"
-			target-panel="consent-section-3">
-			<h2>3. POPROX Platform</h2>
-			<div class="minmax-icon" state-lbl="+"></div>
-		</header>
-		<section id="consent-section-3" class="consent-section">
+		target-panel="consent-section-3">
+		<h2>3. POPROX Platform</h2>
+		<div class="minmax-icon" state-lbl="+"></div>
+	</header>
+	<section id="consent-section-3" class="consent-section">
 			<h3>3.1 Data Collection</h3>
 			<h4>3.1.1 How You Are Identified?</h4>
 			<p>
@@ -313,44 +314,44 @@
 			<p>We share your data in two ways:</p>
 			<p><b>3.1.4.1 </b> Study data is available only to the researchers conducting a particular study; they are
 				bound by a legal contract to not re-distribute any data with third parties or for non-study purpose.</p>
-			<p><b>3.1.4.2 </b> Collections of data (without any identifying information) will be distributed as a Public
-				research dataset. Researchers may obtain access to this dataset by agreeing to a data usage license that
-				prevents attempts to re-identify or contact POPROX users. None of these datasets include your contact
-				information.
-			</p>
+				<p><b>3.1.4.2 </b> Collections of data (without any identifying information) will be distributed as a Public
+					research dataset. Researchers may obtain access to this dataset by agreeing to a data usage license that
+					prevents attempts to re-identify or contact POPROX users. None of these datasets include your contact
+					information.
+				</p>
 
-			<h3>3.2 Withdraw and Disenroll</h3>
-			<h4>3.2.1 Withdraw Data For Future Use.</h4>
-			<p>
-				If you quit POPROX, you also may choose to withdraw your data from our database. We cannot recall data
-				that has already been shared with researchers (though none of this data is associated with your email or
-				other identifying information), but we can ensure that future researchers do not see your data. If you
-				wish to withdraw your data, you must do it while we still have your contact information – after you’ve
-				withdrawn contact information we can no longer tell which data was yours.
-			</p>
+				<h3>3.2 Withdraw and Disenroll</h3>
+				<h4>3.2.1 Withdraw Data For Future Use.</h4>
+				<p>
+					If you quit POPROX, you also may choose to withdraw your data from our database. We cannot recall data
+					that has already been shared with researchers (though none of this data is associated with your email or
+					other identifying information), but we can ensure that future researchers do not see your data. If you
+					wish to withdraw your data, you must do it while we still have your contact information – after you’ve
+					withdrawn contact information we can no longer tell which data was yours.
+				</p>
 
-			<h4>3.2.2 Disenroll.</h4>
-			<p>The sponsor or the study investigator may stop your participation in the study without your consent. We
-				reserve the right to disenroll a user if:</p>
+				<h4>3.2.2 Disenroll.</h4>
+				<p>The sponsor or the study investigator may stop your participation in the study without your consent. We
+					reserve the right to disenroll a user if:</p>
 
-			<p><b>3.2.2.1</b> The newsletter bounces repeatedly from the provided email address.</p>
-			<p><b>3.2.2.2</b> No interaction is logged with the newsletter for a sustained period.</p>
-			<p><b>3.2.2.3</b> We observed behaviors harmful to the POPROX platform or studies.</p>
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree3" value="yes" id="agree3" header-id="consent-header-3" required>
-				<label for="agree3">
-					I understand the data collection and withdraw / disenroll policies of the POPROX platform.
-				</label>
-			</div>
-		</section>
+					<p><b>3.2.2.1</b> The newsletter bounces repeatedly from the provided email address.</p>
+					<p><b>3.2.2.2</b> No interaction is logged with the newsletter for a sustained period.</p>
+					<p><b>3.2.2.3</b> We observed behaviors harmful to the POPROX platform or studies.</p>
+					<div class="consent form-check">
+						<b class="action">Confirm to continue:</b>
+						<input type="checkbox" class="form-check-input" name="agree3" value="yes" id="agree3" header-id="consent-header-3" required>
+						<label for="agree3" class="form-check-label">
+							I understand the data collection and withdraw / disenroll policies of the POPROX platform.
+						</label>
+					</div>
+				</section>
 
-		<header id="consent-header-4" class="accordion-header {% if 'agree4' in missing %}error{% endif %}"
-			target-panel="consent-section-4">
-			<h2>4. Compensation</h2>
-			<div class="minmax-icon" state-lbl="+"></div>
-		</header>
-		<section id="consent-section-4" class="consent-section">
+				<header id="consent-header-4" class="accordion-header {% if 'agree4' in missing %}error{% endif %}"
+				target-panel="consent-section-4">
+				<h2>4. Compensation</h2>
+				<div class="minmax-icon" state-lbl="+"></div>
+			</header>
+			<section id="consent-section-4" class="consent-section">
 			<h3></h3>
 			<p>
 				You will not receive any monetary compensation for your participation as a subscriber to the POPROX
@@ -360,15 +361,15 @@
 			<p>Some individual studies may provide modest compensation for your time. We may also provide modest
 				compensation as a reward for participation and/or longevity. We will ask you to select from compensation
 				options that you can change later when you are ready to get paid.</p>
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree4" value="yes" id="agree4" header-id="consent-header-4" required>
-				<label for="agree4">I understand the compensation opportunity of the POPROX platform.
-				</label>
-			</div>
-		</section>
+				<div class="consent form-check">
+					<b class="action">Confirm to continue:</b>
+					<input type="checkbox" class="form-check-input" name="agree4" value="yes" id="agree4" header-id="consent-header-4" required>
+					<label for="agree4" class="form-check-label">I understand the compensation opportunity of the POPROX platform.
+					</label>
+				</div>
+			</section>
 
-		<header id="consent-header-5" class="accordion-header {% if 'agree5' in missing %}error{% endif %}"
+			<header id="consent-header-5" class="accordion-header {% if 'agree5' in missing %}error{% endif %}"
 			target-panel="consent-section-5">
 			<h2>5. Risks</h2>
 			<div class="minmax-icon" state-lbl="+"></div>
@@ -383,19 +384,19 @@
 				your right to quit the survey at any time. Since participant data will be fully de-identified, the
 				privacy concern is also addressed. There may be risks which are currently unknown.
 			</p>
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree5" value="yes" id="agree5" header-id="consent-header-5" required>
-				<label for="agree5">I understand the risks of the POPROX platform.
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree5" value="yes" id="agree5" header-id="consent-header-5" required>
+				<label for="agree5" class="form-check-label">I understand the risks of the POPROX platform.
 				</label>
 			</div>
 		</section>
 
 		<header id="consent-header-6" class="accordion-header {% if 'agree6' in missing %}error{% endif %}"
-			target-panel="consent-section-6">
-			<h2>Benefits, Alternatives to Participation, and Costs </h2>
-			<div class="minmax-icon" state-lbl="+"></div>
-		</header>
+		target-panel="consent-section-6">
+		<h2>Benefits, Alternatives to Participation, and Costs </h2>
+		<div class="minmax-icon" state-lbl="+"></div>
+	</header>
 		<section id="consent-section-6" class="consent-section">
 			<h3>6. Benefits</h3>
 			<p>
@@ -415,19 +416,19 @@
 				There will be no charge to you for your participation in this study.
 			</p>
 
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree6" value="yes" id="agree6" header-id="consent-header-6" required>
-				<label for="agree6">I understand the benefits, alternatives to participation, and costs of the POPROX
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree6" value="yes" id="agree6" header-id="consent-header-6" required>
+				<label for="agree6" class="form-check-label">I understand the benefits, alternatives to participation, and costs of the POPROX
 					platform.
 				</label>
 			</div>
 		</section>
 
 		<header id="consent-header-7" class="accordion-header {% if 'agree7' in missing %}error{% endif %}"
-			target-panel="consent-section-7">
-			<h2>9. Whom To Contact About This Study </h2>
-			<div class="minmax-icon" state-lbl="+"></div>
+		target-panel="consent-section-7">
+		<h2>9. Whom To Contact About This Study </h2>
+		<div class="minmax-icon" state-lbl="+"></div>
 		</header>
 		<section id="consent-section-7" class="consent-section">
 			<h3></h3>
@@ -435,7 +436,7 @@
 				During the study, if you experience any medical problems, suffer a research-related injury, or have
 				questions, concerns or complaints about the study such as:
 			</p>
-			<ul style="margin-left:6em;">
+			<ul>
 				<li>Whom to contact in the case of a research-related injury or illness;</li>
 				<li>Payment or compensation for being in the study, if any;</li>
 				<li>Your responsibilities as a research participant;</li>
@@ -444,9 +445,9 @@
 				<li>Results of tests and/or procedures;</li>
 			</ul>
 			<p><b><u>
-						Please contact the study investigator at the telephone number listed on the first page of this
-						consent document.
-					</u></b></p>
+				Please contact the study investigator at the telephone number listed on the first page of this
+				consent document.
+			</u></b></p>
 			<p>
 				If you seek emergency care, or hospitalization is required, alert the treating physician that you are
 				participating in this research study.
@@ -456,7 +457,7 @@
 				of research participants. If you have any questions about your rights as a research participant,
 				contact:
 			</p>
-			<ul style="margin-left:6em;">
+			<ul>
 				<li>
 					<b><u>By mail</u></b>:
 					<div class="ml-4">
@@ -477,19 +478,17 @@
 				Please reference the following number when contacting the Study Subject Adviser: <u>Pro00080473</u>.
 			</p>
 
-
-
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree7" value="yes" id="agree7" header-id="consent-header-7" required>
-				<label for="agree7">I understand the contact information for the study.
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree7" value="yes" id="agree7" header-id="consent-header-7" required>
+				<label for="agree7" class="form-check-label">I understand the contact information for the study.
 				</label>
 			</div>
 		</section>
 
 
 		<header id="consent-header-8" class="accordion-header {% if 'agree8' in missing %}error{% endif %}"
-			target-panel="consent-section-8">
+		target-panel="consent-section-8">
 			<h2>Final Confirmation</h2>
 			<div class="minmax-icon" state-lbl="+"></div>
 		</header>
@@ -497,14 +496,14 @@
 			<h3>Final Confirmation</h3>
 			<p>
 				If you have questions for us, you can reach us at <a target="_blank"
-					href="mailto:support@poprox.ai">support@poprox.ai</a>. If you have no further questions and
+				href="mailto:support@poprox.ai">support@poprox.ai</a>. If you have no further questions and
 				would like to enroll in/subscribe to POPROX News, please click below and submit.
 			</p>
 
-			<div class="consent">
-				<b class="action">Check to continue:</b><br>
-				<input type="checkbox" name="agree8" value="yes" id="agree8" header-id="consent-header-8" required>
-				<label for="agree8">I have had an opportunity to review the agreement. I have no more questions
+			<div class="consent form-check">
+				<b class="action">Confirm to continue:</b>
+				<input type="checkbox" class="form-check-input" name="agree8" value="yes" id="agree8" header-id="consent-header-8" required>
+				<label for="agree8" class="form-check-label">I have had an opportunity to review the agreement. I have no more questions
 					and agree to participate in POPROX.
 				</label>
 			</div>
@@ -517,8 +516,9 @@
 			</p>
 		</section>
 		<div class="consent">
-			<button id="submit-btn" class="button is-primary" type="submit">Submit Form</button>
+			<button id="submit-btn" class="btn btn-primary mt-3" type="submit">Submit</button>
 		</div>
 	</form>
+</div>
 </div>
 {% endblock %}
