@@ -55,9 +55,9 @@ footer {
 .card {
     border: none;
     border-radius: 15px;
-    background-color: rgba(46, 128, 118, 0.2);
+    background-color: #a3abbd22;
     color: #000000;
-    box-shadow: 0 6px 12px rgba(46, 128, 118, 0.3);
+    box-shadow: 0 6px 12px #a3abbd99;
     padding: 15px;
     /* text-align: center; */
     transition: all 0.3s ease-in-out;
@@ -67,7 +67,7 @@ footer {
 
 /* Buttons */
 .btn {
-    background-color: #000000;
+    background-color: #008e82aa;
     color: #ffffff;
     font-weight: bold;
     border: none;
@@ -77,12 +77,12 @@ footer {
 }
 
 .btn:hover {
-    background-color: rgb(46, 128, 119);
+    background-color: #008e82;
     color: #ffffff;
 }
 
 .btn:disabled {
-	background-color: #000000;
+	background-color: #a3abbd;
 }
 
 .form-control {
@@ -242,7 +242,7 @@ h5 {
 
 .accordion-header {
 	cursor: pointer;
-	background-color: #ececec;
+	background-color: #008e8244;
 	display: flex;
 	padding: 1rem;
 	margin-bottom: 0.1rem;
@@ -250,11 +250,11 @@ h5 {
 }
 
 .accordion-header.checked {
-	background-color: #22771133;
+	background-color: #008e8288;
 }
 
 .accordion-header.error {
-	background-color: #ef333363;
+	background-color: #a62091;
 }
 
 .consent-section {
