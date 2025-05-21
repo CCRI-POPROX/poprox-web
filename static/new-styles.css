@@ -226,6 +226,10 @@ h5 {
 	margin-left: 4rem;
 } */
 
+.action-summary {
+	font-weight: bold;
+}
+
 .consent {
 	margin: 2rem;
 }
@@ -235,6 +239,12 @@ h5 {
     margin-right: 0.5em;
 }
 
+/* put a box around all consent boxes except the final submit button. */
+.consent:has(b.action) {
+	padding: 1ex;
+	border: solid 3px #ffa17a;
+	border-radius: 9px;
+}
 
 .minmax-icon {
 	font-size: 1.5rem;
