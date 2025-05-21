@@ -79,9 +79,19 @@ h5 {
 	margin-left: 4rem;
 }
 
+.action-summary {
+	font-weight: bold;
+}
 
 .consent {
 	margin: 2rem;
+}
+
+/* put a box around all consent boxes except the final submit button. */
+.consent:has(b.action) {
+	padding: 1ex;
+	border: solid 3px #227711;
+	border-radius: 9px;
 }
 
 .minmax-icon {

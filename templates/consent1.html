@@ -104,12 +104,6 @@
 <div class="content box">
 	<h1>POPROX News Subscriber Consent Form</h1>
 
-	<p>
-		(A copy of this form can be downloaded
-		<a href="/static/Subscriber_Agreement_v2.pdf">here</a>; it will be
-		emailed to you if you consent)
-	</p>
-
 	<div class="container is-max-tablet">
 		<table class="table">
 			<tr>
@@ -145,6 +139,14 @@
 		<p>{{ error }}</p>
 	</div>
 	{% endif %}
+
+	<p class="action-summary">This form consists of 9 sections and a final confirmation. Read and accept each section to confirm your registration.</p>
+
+	<p>
+		This onboarding process is a little different from most services you've probably signed up for!  That is deliberate &mdash; since we are a research project, we want to make sure that you are giving your informed consent to participate in 
+		research studies on POPROX.  A copy of this form can be downloaded <a href="/static/Subscriber_Agreement_v2.pdf">here</a>; it will be emailed to you if you consent
+	</p>
+
 	<form id="content" method="GET" action="/consent2">
 		<header id="consent-header-1" class="accordion-header {% if 'agree1' in missing %}error{% endif %}"
 			target-panel="consent-section-1">
@@ -224,6 +226,7 @@
 			</p>
 
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree1" value="yes" id="agree1" header-id="consent-header-1" required>
 				<label for="agree1">I understand my eligibility, the consent procedure, and the nature of POPROX as an
 					experimental research platform.</label>
@@ -262,6 +265,7 @@
 				specific study.
 			</p>
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree2" value="yes" id="agree2" header-id="consent-header-2" required>
 				<label for="agree2">
 					I understand the definition of POPROX studies and opt-out options.
@@ -333,6 +337,7 @@
 			<p><b>3.2.2.2</b> No interaction is logged with the newsletter for a sustained period.</p>
 			<p><b>3.2.2.3</b> We observed behaviors harmful to the POPROX platform or studies.</p>
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree3" value="yes" id="agree3" header-id="consent-header-3" required>
 				<label for="agree3">
 					I understand the data collection and withdraw / disenroll policies of the POPROX platform.
@@ -356,6 +361,7 @@
 				compensation as a reward for participation and/or longevity. We will ask you to select from compensation
 				options that you can change later when you are ready to get paid.</p>
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree4" value="yes" id="agree4" header-id="consent-header-4" required>
 				<label for="agree4">I understand the compensation opportunity of the POPROX platform.
 				</label>
@@ -378,6 +384,7 @@
 				privacy concern is also addressed. There may be risks which are currently unknown.
 			</p>
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree5" value="yes" id="agree5" header-id="consent-header-5" required>
 				<label for="agree5">I understand the risks of the POPROX platform.
 				</label>
@@ -409,6 +416,7 @@
 			</p>
 
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree6" value="yes" id="agree6" header-id="consent-header-6" required>
 				<label for="agree6">I understand the benefits, alternatives to participation, and costs of the POPROX
 					platform.
@@ -472,6 +480,7 @@
 
 
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree7" value="yes" id="agree7" header-id="consent-header-7" required>
 				<label for="agree7">I understand the contact information for the study.
 				</label>
@@ -493,6 +502,7 @@
 			</p>
 
 			<div class="consent">
+				<b class="action">Check to continue:</b><br>
 				<input type="checkbox" name="agree8" value="yes" id="agree8" header-id="consent-header-8" required>
 				<label for="agree8">I have had an opportunity to review the agreement. I have no more questions
 					and agree to participate in POPROX.
