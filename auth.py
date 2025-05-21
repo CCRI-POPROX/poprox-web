@@ -113,7 +113,7 @@ class Auth:
         message = json.dumps(
             {
                 "email_to": email,
-                "email_subject": "Welcome to Poprox",
+                "email_subject": "Welcome to POPROX",
                 "email_body": html,
             }
         )
@@ -139,7 +139,7 @@ class Auth:
         message = json.dumps(
             {
                 "email_to": email,
-                "email_subject": "Poprox - Record of Consent",
+                "email_subject": "POPROX - Record of Consent",
                 "email_body": html,
             }
         )

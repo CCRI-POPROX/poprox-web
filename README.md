@@ -1,4 +1,4 @@
-# Poprox Project
+# POPROX Project
 
 ## How to run the project on your local system
 
