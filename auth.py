@@ -121,7 +121,11 @@ class Auth:
             sqs.send_message(queue_url=queue_url, message_body=message)
         else:
             logger.error("No email queue url is sent. This is OK in development.")
-            logger.error("Email not sent: " + message)
+            logger.error("to:", email)
+            logger.error("subject:", "POPROX - Record of Consent")
+            import html_previewer
+
+            html_previewer.preview(html)
 
     def send_post_consent(self):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")
@@ -147,4 +151,8 @@ class Auth:
             sqs.send_message(queue_url=queue_url, message_body=message)
         else:
             logger.error("No email queue url is sent. This is OK in development.")
-            logger.error("Email not sent: " + message)
+            logger.error("to:", email)
+            logger.error("subject:", "POPROX - Record of Consent")
+            import html_previewer
+
+            html_previewer.preview(html)
