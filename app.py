@@ -18,6 +18,7 @@ from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
+from admin.admin_blueprint import admin
 from auth import Auth
 from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
@@ -44,6 +45,9 @@ app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
+
+app.register_blueprint(admin)
+
 
 auth = Auth(app)
 

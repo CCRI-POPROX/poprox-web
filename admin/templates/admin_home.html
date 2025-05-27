@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+        function load_data_to_google(raw_data, header) {
+            for (var column in raw_data[0]) {
+                if(header.indexOf(column) == -1)
+                header.push(column)
+            }
+            var data = [header]
+            for (var row of raw_data) {
+                var new_row = []
+                for (var col of header) {
+                    new_row.push(row[col])
+                }
+                data.push(new_row)
+            }
+            return google.visualization.arrayToDataTable(data)
+        }
+
+      async function drawChart() {
+        var raw_data = await (await fetch("/admin/api/onboarding")).json()
+
+        var data = load_data_to_google(raw_data, ['date'])
+
+        var options = {
+          title: 'Onboarding',
+          curveType: 'none',
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+</head>
+<body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+</body>
+</html>
