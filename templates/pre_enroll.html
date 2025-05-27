@@ -45,9 +45,8 @@
 		<form action="{{url_for('pre_enroll_post')}}" method="post">
 			<input type="hidden" id="source" name="source" value="{{source}}" >
 			<input type="hidden" id="subsource" name="subsource" value="{{subsource}}" >
-			<div class="form-group">
-				<label class="label" for="email">Email</label>
-					<input class="form-control"name="email" id="email" type="email" placeholder="Email" required>
+			<div class="form-group row">
+				<input class="form-control col col-md-1"name="email" id="email" type="email" placeholder="Email" required autofocus>
 			</div>
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" id="us_area" name="us_area" required >
@@ -58,8 +57,8 @@
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" id="legal_age" name="legal_age" required>
 				<label class="form-check-label" for="legal_age">
-					I am legally considered an adult&nbsp;&nbsp;<span class="hint--top-left hint--large" aria-label="In most of the United states this means you are at least 18 years old, except in Alabama and Nebraska where adulthood begins at 19 or in Mississippi and Puerto Rico where it begins at 21">(?)</span>
-				</label>
+					I am legally considered an adult
+				</label>&nbsp;&nbsp;<span class="hint--top-left hint--large" aria-label="In most of the United states this means you are at least 18 years old, except in Alabama and Nebraska where adulthood begins at 19 or in Mississippi and Puerto Rico where it begins at 21">(?)</span>
 			</div>
 			<button type="submit" class="btn btn-primary mt-3">Submit</button>
 		</form>
