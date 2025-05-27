@@ -61,7 +61,7 @@ provider:
     SEND_EMAIL_QUEUE_URL: ${cf:poprox-serverless-interfaces-${self:provider.stage}.SendEmailQueue}
     POPROX_DEFAULT_RECS_ENDPOINT_URL: ${cf:poprox-default-recommender-${self:provider.stage}.HttpApiUrl}
     GENERATE_RECS_QUEUE_URL: ${cf:poprox-serverless-interfaces-${self:provider.stage}.GenerateNewsletterQueue}
-    POPROX_WEB_ADMIN_PASS: ${ssm:/poprox/web/app_secret}
+    POPROX_WEB_ADMIN_PASS: ${ssm:/poprox/web/app_admin_pass}
 
   memorySize: 512
   timeout: 900
