@@ -97,6 +97,11 @@ footer {
 	width: 30%;
 }
 
+input[type="email"] {
+    margin: 10px;
+    margin-top: 0px;
+}
+
 /*
 * css for topics.html
 */
