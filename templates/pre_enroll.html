@@ -29,17 +29,27 @@
 {% endif %}
 <div class="card">
 	<div class="card-body">
-		<h2 class="card-title">POPROX</h2>
-		<p class="card-text">POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests.
-			The service is free, and your email will remain private.
-			POPROX, which stands for Platform for OPen Recommendation and Online eXperimentation, was developed at the University of Minnesota with support from four other universities.
-			This project enables researchers to test new algorithms and presentation methods for news.
-			Occasionally, you will be asked to provide feedback on your experience with POPROX and the news content.
+		<h2 class="card-tile">What's POPROX?</h2>
+		<p>Platform for OPen Recommendation and Online eXperimentation (POPROX) is a research platform that helps
+			academic researchers learn how to recommend news that's engaging and relevant for you by testing new
+			algorithms and presentation methods. It was developed at the University of Minnesota with support from
+			four other universities.
 		</p>
 
-		<h2 class="card-title">Getting Started</h2>
-		<p class="card-text">If you're already receiving POPROX emails and want to adjust your settings, please click the link at the bottom of any POPROX email.	</p>
-		<p class="card-text">To enroll, please provide your email address and confirm that you qualify:</p>
+		<h2 class="card-title">What's In It For Me?</h2>
+		<p class="card-text">POPROX delivers an ad-free personalized daily email newsletter featuring stories from
+			the Associated Press, tailored to your interests based on your reading, preferences, and feedback.
+			The service is free, and your email will remain private. Occasionally, we'll ask you to provide feedback
+			on your experience with POPROX and the news articles we recommend.
+		</p>
+
+		<h2 class="card-title">How Do I Sign Up?</h2>
+		<p class="card-text">As a research project, the POPROX Terms and Conditions and Privacy Policy are described
+			in our <a href="https://user.poprox.ai/static/Subscriber_Agreement_v2.pdf">Informed Consent to Participate
+			in Research Agreement</a>. We'll walk you through the sections of the agreement step-by-step in the next 
+			part of the onboarding process.
+		</p>
+		<p class="card-text">First, please provide your email address and confirm that you qualify to participate in research studies:</p>
 	</div>
 	<div class="card-body">
 		<form action="{{url_for('pre_enroll_post')}}" method="post">
@@ -62,6 +72,7 @@
 			</div>
 			<button type="submit" class="btn btn-primary mt-3">Submit</button>
 		</form>
+		
 	</div>
 </div>
 
