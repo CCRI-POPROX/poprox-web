@@ -6,6 +6,7 @@ requests
 flask-sqlalchemy
 psycopg2-binary
 tqdm
+markdown
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git
