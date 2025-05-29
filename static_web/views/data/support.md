@@ -8,4 +8,4 @@ We thank the National Science Foundation for its support under the following gra
 - 2232552 (Clemson),
 - 2409199 (Drexel),
 - 2232551 (Minnesota), and
-- 2232554 (Northwestern)
+- 2232554 (Northwestern).

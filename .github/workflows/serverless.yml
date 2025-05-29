@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - kluver/feature/static_web
 
 jobs:
   deploy:
