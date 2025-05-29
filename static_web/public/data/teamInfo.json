@@ -1,0 +1,220 @@
+{
+    "title": "Principal Investigators ",
+    "teamMembers": [
+        {
+            "name": "Bart Knijnenburg",
+            "dig": "Clemson University",
+            "img": "/img/team/team-member-four.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:bartk@clemson.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/usabart"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://www.usabart.nl/"
+                }
+            ]
+        },
+        {
+            "name": "Daniel Kluver",
+            "dig": "University of Minnesota",
+            "img": "/img/team/team-member-three.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:kluver@cs.umn.edu"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://www-users.cse.umn.edu/~kluve018/"
+                }
+            ]
+        },
+        {
+            "name": "Edward Malthouse",
+            "dig": "Northwestern University",
+            "img": "/img/team/team-member-six.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:ecm@northwestern.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/edward-malthouse-b448263"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://www.medill.northwestern.edu/directory/faculty/edward-c-malthouse.html"
+                }
+            ]
+        },
+        {
+            "name": "Joseph Konstan",
+            "dig": "University of Minnesota",
+            "img": "/img/team/team-member-five.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:konstan@umn.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/joseph-konstan-a415365"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://konstan.umn.edu/"
+                }
+            ]
+        },
+        {
+            "name": "Michael Ekstrand",
+            "dig": "Boise State University",
+            "img": "/img/team/team-member-two.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mdekstrand@drexel.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/mdekstrand"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://md.ekstrandom.net/"
+                }
+            ]
+        },
+        {
+            "name": "Robin Burke",
+            "dig": "University of Colorado Boulder",
+            "img": "/img/team/team-member-one.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:robin.burke@colorado.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/robin-burke-b878303"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://www.that-recsys-lab.net/home/people/burke"
+                }
+            ]
+        }
+    ],
+    "title2": "Advisory Board",
+    "advisoryBoard": [
+        {
+            "name": "Casey Fiesler",
+            "dig": "University of Colorado Boulder",
+            "img": "/img/team/team-member-seven.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:casey.fiesler@colorado.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/casey-fiesler-bb3493243"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://caseyfiesler.com/"
+                }
+            ]
+        },
+        {
+            "name": "Peter Brusilovsky",
+            "dig": "University of Pittsburgh",
+            "img": "/img/team/team-member-eight.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:peterb@pitt.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/brusilovsky"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://sites.pitt.edu/~peterb/"
+                }
+            ]
+        },
+        {
+            "name": "Jan Golbeck",
+            "dig": "University of Maryland, College Park",
+            "img": "/img/team/team-member-ten.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:jen@jengolbeck.com"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://www.cs.umd.edu/~golbeck/"
+                }
+            ]
+        },
+        {
+            "name": "Chirag Shah",
+            "dig": "University of Washington",
+            "img": "/img/team/team-member-nine.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:chirags@uw.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/shah-chirag"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://ischool.uw.edu/people/faculty/profile/chirags"
+                }
+            ]
+        },
+        {
+            "name": "Julian McAuley",
+            "dig": "University of California, San Diego",
+            "img": "/img/team/team-member-eleven.jpg",
+            "social": [
+                {
+                    "icon": "inbox",
+                    "link": "mailto:jmcauley@ucsd.edu"
+                },
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/julian-mcauley-3a321b27a"
+                },
+                {
+                    "icon": "link",
+                    "link": "https://cseweb.ucsd.edu/~jmcauley/"
+                }
+            ]
+        },
+        {
+            "name": "Ullas Gargi",
+            "dig": "Meta",
+            "img": "/img/team/team-member-twelve.jpg",
+            "social": [
+                {
+                    "icon": "linkedin",
+                    "link": "https://www.linkedin.com/in/ullas"
+                }
+            ]
+        }
+    ]
+}
