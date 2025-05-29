@@ -32,6 +32,7 @@ from poprox_concepts.domain.demographics import (
 )
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
+from static_web.blueprint import static_web
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
@@ -46,6 +47,7 @@ HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
 auth = Auth(app)
+app.register_blueprint(static_web)
 
 
 @app.route(f"{URL_PREFIX}/email_redirect/<path>")
@@ -224,8 +226,7 @@ def consent2():
         return redirect(url_for("topics"))
 
 
-@app.route(f"{URL_PREFIX}/")
-@app.route(f"{URL_PREFIX}")
+@app.route(f"{URL_PREFIX}/user_home")
 @auth.requires_login
 def home():
     error = request.args.get("error_description")
