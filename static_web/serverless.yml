@@ -1,0 +1,59 @@
+service: poprox-static-website
+frameworkVersion: "3"
+useDotenv: true
+
+plugins:
+  - serverless-s3-deploy
+  - serverless-cloudfront-invalidate # add as the last plugin
+
+custom:
+  assets:
+    auto: true
+
+    targets:
+      - bucket: poprox-static-website
+        files:
+          - source: _site/
+            globs: '**/*'
+
+  cloudfrontInvalidate:
+    - distributionId: "E2VGE51RMH5HZZ"
+      autoInvalidate: true # Can be set to false to avoid automatic invalidation after the deployment. Useful if you want to manually trigger the invalidation later. Defaults to true.
+      items: # one or more paths required
+        - "/*"
+
+provider:
+  name: aws
+  region: ${opt:region, "us-east-1"}
+  stage: ${opt:stage, "prod"}
+
+resources:
+  # AWS CloudFormation Template
+  Resources:
+    poproxStaticWebsiteBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: poprox-static-website
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+
+    StaticSiteS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: poproxStaticWebsiteBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource:
+                Fn::Join: ["", ["arn:aws:s3:::", {"Ref": "poproxStaticWebsiteBucket"}, "/*"]]

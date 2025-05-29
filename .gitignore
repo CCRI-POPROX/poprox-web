@@ -1,3 +1,9 @@
+static_web/node_modules
+static_web/package-lock.json
+static_web/.env
+static_web/_site
+static_web/.serverless/
+
 .serverless/
 node_modules/
 .vscode

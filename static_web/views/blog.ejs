@@ -1,0 +1,51 @@
+<%- include('partials/head'); %>
+    <%- include('partials/navbar'); %>
+
+        <div class="container mt-4">
+            <h2 class="text-center">Blog Posts</h2>
+            <div id="blog-container" class="row"></div>
+        </div>
+
+        <script>
+            async function fetchBlogs() {
+                const response = await fetch('/blogs');
+                const blogs = await response.json();
+                const container = document.getElementById('blog-container');
+
+                blogs.forEach(blog => {
+                    const card = document.createElement('div');
+                    card.classList.add('col-md-4', 'mb-4');
+                    card.innerHTML = `
+                        <div class="card">
+                            ${blog.image ? `<img src="${blog.image}" class="card-img-top" alt="${blog.title}">` : ''}
+                            <div class="card-body">
+                                <h5 class="card-title">${blog.title}</h5>
+                                <p class="card-text">${blog.description}</p>
+                                <button class="btn btn-primary" onclick="loadBlogContent('${blog.file}')">Read More</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            async function loadBlogContent(file) {
+                try {
+                    const response = await fetch(`/blogcontent/${encodeURIComponent(file)}`);
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch content");
+                    }
+                    const content = await response.text();
+                    const blogContainer = document.getElementById('blog-container');
+
+                    // Render the Markdown content properly formatted
+                    blogContainer.innerHTML = `<div class="col-12 markdown-content">${content}</div>`;
+                } catch (error) {
+                    console.error("Error loading blog content:", error);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', fetchBlogs);
+        </script>
+
+        <%- include('partials/footer'); %>
