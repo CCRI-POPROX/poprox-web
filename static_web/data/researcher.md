@@ -24,7 +24,7 @@ For right now, we are prioritizing experiments from US researchers. We hope to m
 - Get results, analyze
 - Publish results including datasets, manifest, and optionally code
 ### Becoming an researcher
-The first step to becoming a POPROX researcher is to fill out the [Intake Form](/documents/intake-form.docx). If you'd like to consult with us before doing that, please email the team at [poprox@umn.edu](poprox@umn.edu) .
+The first step to becoming a POPROX researcher is to fill out the [Intake Form](/documents/intake-form.docx). If you'd like to consult with us before doing that, please email the team at [poprox@umn.edu](mailto:poprox@umn.edu) .
 
 If you'd like to learn more about using the platform, see the [researcher documentation](http://docs.poprox.ai)
 

@@ -19,7 +19,7 @@ custom:
       # This libopenblas belongs to numpy and might increase size of lambda unnecessarily
       - "**/libopenblasp-*.dynlib*"
   customDomain:
-    domainName: user.poprox.ai
+    domainName: poprox.ai
     basePath: ''
     apiType: http
     endpointType: REGIONAL

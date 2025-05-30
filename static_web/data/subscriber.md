@@ -20,7 +20,7 @@ POPROX News is a research platform where researchers can study different ways to
 The content and/or appearance of your daily newsletter may change from time to time as you get moved into different experiments. We will ask your permission to put you in any experiments that are intentionally deceptive or harmful.  But experiments to better personalize the newsletter will simply show up and disappear over time. If you really don’t like the newsletters of your current experimental condition, you can opt out using a link at the bottom and we won’t enroll you for that condition again.
 
 ### Sounds great! Where do I sign up?
-[Sign up here](https://user.poprox.ai/enroll?source=web-sub)
+[Sign up here](/enroll?source=web-sub)
 
 ### Current subscribers
 #### Subscriber dashboard
@@ -28,4 +28,4 @@ If you are an existing newsletter subscriber, you can find your subscriber dashb
 This page allows you to adjust your interests, opt out of the current experiment, manage your subscription, and/or leave the system altogether.
 
 ####  Consent form and contact info for subscribers
-POPROX News subscribers must acknowledge [this consent form](https://user.poprox.ai/static/Subscriber_Agreement_v2.pdf) to receive newsletters and participate in studies. If you have questions, please contact us at [poprox@umn.edu](poprox@umn.edu) .
+POPROX News subscribers must acknowledge [this consent form](/static/Subscriber_Agreement_v2.pdf) to receive newsletters and participate in studies. If you have questions, please contact us at [poprox@umn.edu](mailto:poprox@umn.edu) .
