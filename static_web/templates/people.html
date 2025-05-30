@@ -1,0 +1,47 @@
+{% extends "static_layout.html" %}
+
+{% block content %}
+
+    <div class="container p-5">
+        <h2>{{ teamInfo.title }}</h2>
+
+        <!-- Team Members Grid -->
+        <div class="team-grid">
+            {% for member in teamInfo.teamMembers %}
+                <div class="team-member">
+                    <img src="{{ member.img }}" alt="{{ member.name }}" class="member-img">
+                    <h4>{{ member.name }}</h4>
+                    <p>{{ member.dig }}</p>
+                    <div class="social-links">
+                        {% for link in member.social %}
+                            <a href="{{ link.link }}" target="_blank" class="social-icon {{ link.icon }}">
+                                <i class="bi bi-{{ link.icon }}"></i>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>{{ teamInfo.title2 }}</h2>
+
+        <!-- Advisory Board Grid -->
+        <div class="advisory-grid">
+            {% for advisor in teamInfo.advisoryBoard %}
+                <div class="advisor">
+                    <img src="{{ advisor.img }}" alt="{{ advisor.name }}" class="advisor-img">
+                    <h4>{{ advisor.name }}</h4>
+                    <p>{{ advisor.company }}</p>
+                    <div class="social-links">
+                        {% for link in advisor.social %}
+                            <a href="{{ link.link }}" target="_blank" class="social-icon {{ link.icon }}">
+                                <i class="bi bi-{{ link.icon }}"></i>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
