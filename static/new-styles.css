@@ -19,6 +19,7 @@ body {
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex-grow:0;
+    max-height: 80px;
 }
 
 .navbar-brand {
@@ -26,6 +27,10 @@ body {
     color: #ffffff !important;
     font-size: 1.8rem;
     letter-spacing: 1px;
+}
+
+.navbar .logo {
+    max-height: 70px;
 }
 
 .nav-link {
