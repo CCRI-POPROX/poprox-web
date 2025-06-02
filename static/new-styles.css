@@ -13,11 +13,11 @@ body {
     /* background-image: url("/img/background.jpg"); */
 }
 
-/* Navigation Bar */
-
-.navbar.bg-dark {
+.bg-dark {
     background-color: #212A37 !important;
 }
+
+/* Navigation Bar */
 
 .navbar {
     background-color: #f8f8ff;
