@@ -71,7 +71,11 @@ footer {
     /* text-align: center; */
     transition: all 0.3s ease-in-out;
     margin-bottom: 20px;
+}
 
+.card-body {
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
 /* Buttons */
