@@ -76,7 +76,14 @@ def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
     subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
-    return render_template("pre_enroll.html", source=source, subsource=subsource, error=error)
+
+    # To test a source, subsource pair with a custom template just add that to this dictionary
+    templates = {}
+    template = "pre_enroll.html"
+    if (source, subsource) in templates:
+        template = templates[(source, subsource)]
+
+    return render_template(template, source=source, subsource=subsource, error=error)
 
 
 @app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
