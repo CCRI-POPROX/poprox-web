@@ -2,6 +2,8 @@ import logging
 import os
 
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.teams import DbTeamRepository
 from sqlalchemy import create_engine
 
 logger = logging.getLogger(__name__)
@@ -34,16 +36,23 @@ def get_or_make_account(email, source, subsource):
 def get_account(account_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
+        team_repo = DbTeamRepository(conn)
+        expt_repo = DbExperimentRepository(conn)
         result = account_repo.fetch_accounts([account_id])
         if len(result) != 1:
             return None
         else:
             result = result[0]
-            return {
+            result = {
                 "account_id": result.account_id,
                 "email": result.email,
                 "status": result.status,
             }
+            result["teams"] = team_repo.fetch_teams_for_account(result["account_id"])
+            result["experiments"] = expt_repo.fetch_experiments_by_team(list(result["teams"]))
+            result["teams"] = {str(k): v.model_dump() for k, v in result["teams"].items()}
+            result["experiments"] = {str(k): v.model_dump() for k, v in result["experiments"].items()}
+            return result
 
 
 def finish_consent(account_id, consent_version):

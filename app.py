@@ -19,8 +19,7 @@ from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from admin.admin_blueprint import admin
-from auth import Auth
-from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
+from experimenter.experimenter_blueprint import exp
 from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -34,6 +33,8 @@ from poprox_concepts.domain.demographics import (
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
+from util.auth import auth
+from util.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
@@ -48,9 +49,9 @@ HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
 app.register_blueprint(admin)
+app.register_blueprint(exp)
 
 
-auth = Auth(app)
 app.register_blueprint(static_web)
 
 

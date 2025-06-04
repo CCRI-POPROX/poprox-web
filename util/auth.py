@@ -5,12 +5,12 @@ from functools import wraps
 from os import environ as env
 
 import jinja2
-from flask import Flask, redirect, request, session, url_for
+from flask import redirect, request, session, url_for
 from poprox_platform.aws import sqs
 from werkzeug.wrappers import Response
 
-from db.postgres_db import get_account, get_or_make_account
 from poprox_concepts.api.tracking import SignUpToken, to_hashed_base64
+from util.postgres_db import get_account, get_or_make_account
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -25,7 +25,7 @@ STATUS_REDIRECTS = {
 
 
 class Auth:
-    def __init__(self, app: Flask) -> None:
+    def __init__(self) -> None:
         pass
 
     def enroll(self, email, source, subsource) -> Response:
@@ -66,6 +66,18 @@ class Auth:
         else:
             return None
 
+    def get_account_teams(self):
+        if self.is_logged_in():
+            return session["account"]["teams"]
+        else:
+            return None
+
+    def get_account_experiments(self):
+        if self.is_logged_in():
+            return session["account"]["experiments"]
+        else:
+            return None
+
     def requires_login(self, f):
         @wraps(f)
         def decorated(*args, **kwargs):
@@ -74,6 +86,38 @@ class Auth:
             if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
                 return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
             elif self.is_logged_in():
+                return f(*args, **kwargs)
+            else:
+                return redirect(url_for("pre_enroll_get"))
+
+        return decorated
+
+    def requires_experiment_team(self, f):
+        @wraps(f)
+        def decorated(experiment_id, *args, **kwargs):
+            endpoint = request.endpoint
+            expected_endpoint = STATUS_REDIRECTS.get(self.get_account_status())
+            if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
+                return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
+            elif self.is_logged_in() and experiment_id not in self.get_account_experiments():
+                return redirect(url_for("experimenter.expt_home"))
+            elif self.is_logged_in() and experiment_id in self.get_account_experiments():
+                return f(experiment_id, *args, **kwargs)
+            else:
+                return redirect(url_for("pre_enroll_get"))
+
+        return decorated
+
+    def requires_experimenter(self, f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            endpoint = request.endpoint
+            expected_endpoint = STATUS_REDIRECTS.get(self.get_account_status())
+            if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
+                return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
+            elif self.is_logged_in() and len(self.get_account_teams()) == 0:
+                return redirect(url_for("home"))
+            elif self.is_logged_in() and len(self.get_account_teams()) > 0:
                 return f(*args, **kwargs)
             else:
                 return redirect(url_for("pre_enroll_get"))
@@ -148,3 +192,6 @@ class Auth:
         else:
             logger.error("No email queue url is sent. This is OK in development.")
             logger.error("Email not sent: " + message)
+
+
+auth = Auth()
