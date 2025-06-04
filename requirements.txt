@@ -4,6 +4,7 @@ gunicorn
 python-dotenv
 requests
 flask-sqlalchemy
+flask_httpauth
 psycopg2-binary
 tqdm
 markdown
