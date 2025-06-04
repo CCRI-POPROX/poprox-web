@@ -86,7 +86,7 @@ def pre_enroll_get():
     return render_template(template, source=source, subsource=subsource, error=error)
 
 
-@app.route(f"{URL_PREFIX}/enroll", methods=["POST"])
+@app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])
 def pre_enroll_post():
     source = request.form.get("source", DEFAULT_SOURCE)
     subsource = request.form.get("subsource", DEFAULT_SOURCE)
@@ -100,7 +100,7 @@ def pre_enroll_post():
         return render_template("pre_enroll_sent.html")
 
 
-@app.route(f"{URL_PREFIX}/enroll/<token_raw>", methods=["GET"])
+@app.route(f"{URL_PREFIX}/confirm_subscription/<token_raw>", methods=["GET"])
 def enroll_with_token(token_raw):
     try:
         token: SignUpToken = from_hashed_base64(token_raw, HMAC_KEY, SignUpToken)
