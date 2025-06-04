@@ -27,53 +27,53 @@
 	<p>{{ error }}</p>
 </div>
 {% endif %}
-<div class="card">
-	<div class="card-body">
-		<h2 class="card-tile">What's POPROX?</h2>
-		<p>Platform for OPen Recommendation and Online eXperimentation (POPROX) is a research platform that helps
-			academic researchers learn how to recommend news that's engaging and relevant for you by testing new
-			algorithms and presentation methods. It was developed at the University of Minnesota with support from
-			four other universities.
-		</p>
-
-		<h2 class="card-title">What's In It For Me?</h2>
-		<p class="card-text">POPROX delivers an ad-free personalized daily email newsletter featuring stories from
-			the Associated Press, tailored to your interests based on your reading, preferences, and feedback.
-			The service is free, and your email will remain private. Occasionally, we'll ask you to provide feedback
-			on your experience with POPROX and the news articles we recommend.
-		</p>
-
-		<h2 class="card-title">How Do I Sign Up?</h2>
-		<p class="card-text">As a research project, the POPROX <a href="/static/Subscriber_Agreement_v2.pdf#page=1">Terms and Conditions</a> and <a href="/static/Subscriber_Agreement_v2.pdf#page=3">Privacy Policy</a> are described
-			in our <a href="/static/Subscriber_Agreement_v2.pdf">Informed Consent to Participate
-			in Research Agreement</a>. We'll walk you through the sections of the agreement step-by-step in the next
-			part of the onboarding process.
-		</p>
-		<p class="card-text">First, please provide your email address and confirm that you qualify to participate in research studies:</p>
-	</div>
-	<div class="card-body">
-		<form action="{{url_for('pre_enroll_post')}}" method="post">
-			<input type="hidden" id="source" name="source" value="{{source}}" >
-			<input type="hidden" id="subsource" name="subsource" value="{{subsource}}" >
-			<div class="form-group row">
-				<input class="form-control col col-md-1"name="email" id="email" type="email" placeholder="Email" required autofocus>
-			</div>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="us_area" name="us_area" required >
-				<label  class="form-check-label" for="us_area">
-					I live in the United States.
-				</label>
-			</div>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="legal_age" name="legal_age" required>
-				<label class="form-check-label" for="legal_age">
-					I am legally considered an adult
-				</label>&nbsp;&nbsp;<span class="hint--top-left hint--large" aria-label="In most of the United states this means you are at least 18 years old, except in Alabama and Nebraska where adulthood begins at 19 or in Mississippi and Puerto Rico where it begins at 21">(?)</span>
-			</div>
-			<button type="submit" class="btn btn-primary mt-3">Submit</button>
-		</form>
-
-	</div>
+<div class="card-body">
+	<h2 class="card-title text-center">Stay Informed, Your Way</h2>
+	<h5 class="card-title text-center">The stories that matter to you delivered to your inbox daily—no ads, just news.</h5>
 </div>
+<div class="card-body">
+
+	<h5 class="card-title">What's POPROX?</h5>
+	<p>POPROX is a news recommendation research platform that helps researchers learn about the role of personalization in news and journalism.
+		It's funded by the National Science Foundation and developed at the University of Minnesota.
+	</p>
+
+	<h5 class="card-title">How Does It Work?</h5>
+	<p class="card-text">Each day, we use your interests, reading history, and feedback to select the most interesting and engaging AP News articles just for you.
+	</p>
+
+	<h5 class="card-title">How Do I Sign Up?</h5>
+	<p class="card-text">Please provide your email address and confirm that you qualify to participate in research studies:</p>
+
+	<form action="{{url_for('pre_enroll_post')}}" method="post">
+		<input type="hidden" id="source" name="source" value="{{source}}" >
+		<input type="hidden" id="subsource" name="subsource" value="{{subsource}}" >
+		<div class="form-group row">
+			<label for="email">Email:</label>
+			<input class="form-control col col-md-1" name="email" id="email" type="email" autocomplete="email" placeholder="Email" required>
+		</div>
+		<div class="form-check">
+			<input type="checkbox" class="form-check-input" id="us_area" name="us_area" required >
+			<label  class="form-check-label" for="us_area">
+				I live in the United States.
+			</label>
+		</div>
+		<div class="form-check">
+			<input type="checkbox" class="form-check-input" id="legal_age" name="legal_age" required>
+			<label class="form-check-label" for="legal_age">
+				I am legally considered an adult
+			</label>&nbsp;&nbsp;<span class="hint--top-left hint--large" aria-label="In most of the United states this means you are at least 18 years old, except in Alabama and Nebraska where adulthood begins at 19 or in Mississippi and Puerto Rico where it begins at 21">(?)</span>
+		</div>
+		<button type="submit" class="btn btn-primary mt-3">Subscribe</button>
+	</form>
+</div>
+<div class="card-body">
+	<h5 class="card-title">What Else Should I Know?</h5>
+	<p class="card-text">As a research project, the POPROX <a href="/static/Subscriber_Agreement_v2.pdf#page=1">Terms and Conditions</a> and <a href="/static/Subscriber_Agreement_v2.pdf#page=3">Privacy Policy</a> are described
+		in our <a href="/static/Subscriber_Agreement_v2.pdf">Informed Consent to Participate
+		in Research Agreement</a>.
+	</p>
+</div>
+
 
 {% endblock %}

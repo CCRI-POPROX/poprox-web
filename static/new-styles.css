@@ -1,8 +1,8 @@
 /* General Styles */
 body {
     /* font-family: ui-monospace; */
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #f8f8ff;
+    color: #212A37;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -13,23 +13,32 @@ body {
     /* background-image: url("/img/background.jpg"); */
 }
 
+.bg-dark {
+    background-color: #212A37 !important;
+}
+
 /* Navigation Bar */
 
 .navbar {
-    background-color: #ffffff;
+    background-color: #f8f8ff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex-grow:0;
+    max-height: 80px;
 }
 
 .navbar-brand {
     font-weight: bold;
-    color: #ffffff !important;
+    color: #f8f8ff !important;
     font-size: 1.8rem;
     letter-spacing: 1px;
 }
 
+.navbar .logo {
+    max-height: 70px;
+}
+
 .nav-link {
-    color: #ffffff !important;
+    color: #f8f8ff !important;
     font-weight: 500;
 }
 
@@ -44,8 +53,8 @@ body>div {
 /* Footer */
 
 footer {
-    background-color: #000000;
-    color: #000000;
+    background-color: #212A37;
+    color: #f8f8ff;
     padding: 15px;
     text-align: center;
     font-size: 1rem;
@@ -60,13 +69,16 @@ footer {
     border: none;
     border-radius: 15px;
     background-color: #a3abbd22;
-    color: #000000;
+    color: #212A37;
     box-shadow: 0 6px 12px #a3abbd99;
     padding: 15px;
     /* text-align: center; */
     transition: all 0.3s ease-in-out;
     margin-bottom: 20px;
+}
 
+.card-body {
+    padding: 10px;
 }
 
 /* Buttons */
