@@ -3,8 +3,6 @@ from os import environ as env
 
 from flask import Blueprint, jsonify, render_template
 from flask_httpauth import HTTPBasicAuth
-from poprox_storage.aws import SESSION
-from poprox_storage.aws.cloudwatch import Cloudwatch
 from poprox_storage.repositories.accounts import DbAccountRepository
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -45,14 +43,7 @@ def onboarding_dash():
         "enroll email click",
     ] + status_stage
 
-    cloudwatch = Cloudwatch(SESSION)
-    metric_values = cloudwatch.get_metric_daily_count(
-        "poprox-web/onboarding",
-        ["enroll page hits", "enroll form submission", "enroll email click"],
-        start_date,
-        end_date,
-    )
-    metric_values = {k.date(): v for k, v in metric_values.items()}
+    metric_values = {}
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
 
