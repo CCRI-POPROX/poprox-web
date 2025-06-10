@@ -9,8 +9,8 @@ from flask import Flask, redirect, request, session, url_for
 from poprox_platform.aws import sqs
 from werkzeug.wrappers import Response
 
-from db.postgres_db import get_account, get_or_make_account
-from poprox_concepts.api.tracking import SignUpToken, to_hashed_base64
+from db.postgres_db import create_token, get_account, get_or_make_account
+from poprox_concepts.api.tracking import SignUpLinkData, to_hashed_base64
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -97,10 +97,16 @@ class Auth:
     def send_enroll_token(self, source, subsource, email):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")
 
-        token = SignUpToken(
-            email=email, source=source, subsource=subsource, created_at=datetime.now(timezone.utc).astimezone()
+        token = create_token()
+
+        link_data = SignUpLinkData(
+            email=email,
+            source=source,
+            subsource=subsource,
+            created_at=datetime.now(timezone.utc).astimezone(),
+            token_id=token.token_id,
         )
-        token_signed = to_hashed_base64(token, HMAC_KEY)
+        link_data_signed = to_hashed_base64(link_data, HMAC_KEY)
 
         jinja_env = jinja2.Environment(
             loader=jinja2.FileSystemLoader("email_templates"),
@@ -108,8 +114,8 @@ class Auth:
         )
 
         template = jinja_env.get_template("enroll_token_email.html")
-        enroll_link = url_for("enroll_with_token", token_raw=token_signed, _external=True)
-        html = template.render(enroll_link=enroll_link)
+        enroll_link = url_for("enroll_with_token", link_data_raw=link_data_signed, _external=True)
+        html = template.render(enroll_link=enroll_link, token=token)
         message = json.dumps(
             {
                 "email_to": email,
@@ -126,6 +132,7 @@ class Auth:
             import html_previewer
 
             html_previewer.preview(html)
+        return redirect(enroll_link)
 
     def send_post_consent(self):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")
