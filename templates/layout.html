@@ -42,6 +42,9 @@
 
                                     <li><a href="{{url_for('topics')}}">Topic Selection</a></li> <!-- added topic selection link here -->
                                     <li><a href="{{url_for('onboarding_survey')}}">Demographics and Compensation</a></li> <!-- added user demographic link here -->
+                                    {% if auth.get_account_teams()|length > 0%}
+                                    <li><a href="{{url_for('experimenter.expt_home')}}">Experimenter Dashboard</a></li>
+                                    {% endif %}
                                 </ul>
                             {% else %}
                                 <p class="menu-label">
