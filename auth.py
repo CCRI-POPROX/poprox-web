@@ -6,7 +6,7 @@ from os import environ as env
 
 import jinja2
 from flask import Flask, redirect, request, session, url_for
-from poprox_platform.aws import sqs
+from poprox_storage.aws import sqs
 from werkzeug.wrappers import Response
 
 from db.postgres_db import get_account, get_or_make_account
