@@ -78,4 +78,5 @@ def create_token() -> Token:
 
 
 def get_token(token_id) -> Token | None:
+    # ASSUMPTION -- this code or up-stream from this code validates expiration.
     return Token(token_id=token_id, code="abcde", created_at=datetime.now(timezone.utc).astimezone())

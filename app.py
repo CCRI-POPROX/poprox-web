@@ -1,6 +1,6 @@
 # ruff: noqa: E402
 import datetime
-from datetime import timedelta, timezone
+from datetime import timedelta
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
@@ -44,8 +44,6 @@ URL_PREFIX = env.get("URL_PREFIX", "/")
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
-
-ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
 app.register_blueprint(admin)
 
@@ -102,7 +100,7 @@ def pre_enroll_post():
 @app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["GET"])
 def enroll_with_token(link_data_raw):
     try:
-        token: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
+        link_data: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
     except ValueError:
         return redirect(
             url_for(
@@ -110,9 +108,8 @@ def enroll_with_token(link_data_raw):
                 error="The enrollment link you used was invalid. Please request a new enrollment link below.",
             )
         )
-    # TODO: make the token time out, not the link.
-    now = datetime.datetime.now(timezone.utc).astimezone()
-    if (not token) or (now - token.created_at > ENROLL_TOKEN_TIMEOUT):
+    token = get_token(link_data.token_id)
+    if (not link_data) or (not token):
         return redirect(
             url_for(
                 "pre_enroll_get",
@@ -136,9 +133,8 @@ def enroll_with_token_post(link_data_raw):
                 error="The enrollment link you used was invalid. Please request a new enrollment link below.",
             )
         )
-    # TODO: make the token time out, not the link.
-    now = datetime.datetime.now(timezone.utc).astimezone()
-    if (not link_data) or (now - link_data.created_at > ENROLL_TOKEN_TIMEOUT):
+    token = get_token(link_data.token_id)
+    if (not link_data) or (not token):
         return redirect(
             url_for(
                 "pre_enroll_get",
@@ -149,7 +145,6 @@ def enroll_with_token_post(link_data_raw):
         )
     else:
         user_code = request.form.get("code")
-        token = get_token(link_data.token_id)
         if token.code == user_code:
             return auth.enroll(link_data.email, link_data.source, link_data.subsource)
         else:
