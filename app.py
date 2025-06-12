@@ -154,7 +154,7 @@ def enroll_with_token_post(link_data_raw):
             return auth.enroll(link_data.email, link_data.source, link_data.subsource)
         else:
             # this would be a good place to delay if we wanted to prevent brute-force
-            return render_template("enroll_with_token.html", link_data_raw=link_data_raw, error="Incorrect code!")
+            return render_template("enroll_with_token.html", link_data_raw=link_data_raw, code_error="Incorrect code!")
 
 
 @app.route(f"{URL_PREFIX}/logout")

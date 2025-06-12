@@ -32,11 +32,22 @@
 	<h5 class="card-title text-center">The stories that matter to you delivered to your inbox daily—no ads, just news.</h5>
 </div>
 <div class="card-body">
+	<p>
+		Thanks for signing up to receive a POPROX daily personalized email newsletter.
+        The start reading, please confirm your email address for a validation code and enter it below.
+		Once you do that, we'll ask about your interests, demographics, and compensation preferences, then send you your first newsletter!
+	</p>
 
 	<form action="{{url_for('enroll_with_token_post', link_data_raw=link_data_raw)}}" method="post">
 		<div class="form-group row">
 			<label for="code">Code:</label>
-			<input class="form-control col col-md-1" name="code" id="code" type="text" placeholder="code" required>
+			<input class="form-control col col-md-1{% if code_error is defined %} is-invalid{% endif %}" name="code" id="code" type="text" placeholder="code" required>
+
+			{% if code_error is defined %}
+			<div class="invalid-feedback">
+				{{code_error}}
+			</div>
+			{% endif %}
 		</div>
 		<button type="submit" class="btn btn-primary mt-3">Subscribe</button>
 	</form>
