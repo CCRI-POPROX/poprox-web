@@ -113,8 +113,8 @@ def enroll_with_token(link_data_raw):
         return redirect(
             url_for(
                 "pre_enroll_get",
-                source=token.source,
-                subsource=token.subsource,
+                source=link_data.source,
+                subsource=link_data.subsource,
                 error="The enrollment link you used was expired. Please request a new enrollment link below.",
             )
         )
