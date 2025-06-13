@@ -1,6 +1,6 @@
 # ruff: noqa: E402
 import datetime
-from datetime import timedelta, timezone
+from datetime import timedelta
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
@@ -20,8 +20,8 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from admin.admin_blueprint import admin
 from auth import Auth
-from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection
-from poprox_concepts.api.tracking import LoginLinkData, SignUpToken
+from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection, get_token
+from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
@@ -44,8 +44,6 @@ URL_PREFIX = env.get("URL_PREFIX", "/")
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
-
-ENROLL_TOKEN_TIMEOUT = timedelta(days=1)
 
 app.register_blueprint(admin)
 
@@ -96,33 +94,62 @@ def pre_enroll_post():
     if (not legal_age) or (not us_area) or (not email):
         return render_template("pre_enroll.html", source=source, subsource=subsource)
     else:
-        auth.send_enroll_token(source, subsource, email)
-        return render_template("pre_enroll_sent.html")
+        return auth.send_enroll_token(source, subsource, email)
 
 
-@app.route(f"{URL_PREFIX}/confirm_subscription/<token_raw>", methods=["GET"])
-def enroll_with_token(token_raw):
+@app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["GET"])
+def enroll_with_token(link_data_raw):
     try:
-        token: SignUpToken = from_hashed_base64(token_raw, HMAC_KEY, SignUpToken)
+        link_data: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
     except ValueError:
         return redirect(
             url_for(
-                "pre_enroll_post",
+                "pre_enroll_get",
                 error="The enrollment link you used was invalid. Please request a new enrollment link below.",
             )
         )
-    now = datetime.datetime.now(timezone.utc).astimezone()
-    if (not token) or (now - token.created_at > ENROLL_TOKEN_TIMEOUT):
+    token = get_token(link_data.token_id)
+    if (not link_data) or (not token):
         return redirect(
             url_for(
-                "pre_enroll_post",
+                "pre_enroll_get",
                 source=token.source,
                 subsource=token.subsource,
                 error="The enrollment link you used was expired. Please request a new enrollment link below.",
             )
         )
     else:
-        return auth.enroll(token.email, token.source, token.subsource)
+        return render_template("enroll_with_token.html", link_data_raw=link_data_raw)
+
+
+@app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["POST"])
+def enroll_with_token_post(link_data_raw):
+    try:
+        link_data: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
+    except ValueError:
+        return redirect(
+            url_for(
+                "pre_enroll_get",
+                error="The enrollment link you used was invalid. Please request a new enrollment link below.",
+            )
+        )
+    token = get_token(link_data.token_id)
+    if (not link_data) or (not token):
+        return redirect(
+            url_for(
+                "pre_enroll_get",
+                source=link_data.source,
+                subsource=link_data.subsource,
+                error="The enrollment link you used was expired. Please request a new enrollment link below.",
+            )
+        )
+    else:
+        user_code = request.form.get("code")
+        if token.code == user_code:
+            return auth.enroll(link_data.email, link_data.source, link_data.subsource)
+        else:
+            # this would be a good place to delay if we wanted to prevent brute-force
+            return render_template("enroll_with_token.html", link_data_raw=link_data_raw, code_error="Incorrect code!")
 
 
 @app.route(f"{URL_PREFIX}/logout")

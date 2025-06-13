@@ -1,6 +1,19 @@
 {% extends "email_template.html" %}
 {% block body %}
-<h1> Welcome to POPROX! </h1>
-<hr>
-<p>To start receiving daily personalized email newsletters, <a href="{{enroll_link}}">confirm your email address</a> and acknowledge our consent form. We'll also ask about your interests, demographics, and compensation preferences. Completing the onboarding process will take about ten minutes.</p>
+<div>
+    <h1> Please Confirm you account! </h1>
+    <hr>
+    <p>Thanks for signing up to receive a POPROX daily personalized email newsletter.
+        To start reading, please confirm your email address using the code below! Your code is:
+    </p>
+    <div class="token_code">
+        {{token.code}}
+    </div>
+    <p>
+        This code will be valid for 1 hour please use the token in this time.
+        You can enter this code at the POPROX enrollment page, or if you closed that tab, you can <a href="{{link_data_raw}}">click here.</a>
+        Once you enter this code we'll ask about your interests, demographics, and compensation preferences, then send you your first newsletter!
+    </p>
+</div>
+
 {% endblock %}
