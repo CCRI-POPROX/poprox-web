@@ -13,6 +13,15 @@
 <meta property="twitter:url" content="https://poprox.ai/enroll">
 <meta name="twitter:title" content="POPROX Newsletter">
 <meta name="twitter:description" content="POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests">
+
+<script>
+	document.addEventListener("DOMContentLoaded", ()=>{
+		let code_input = document.getElementById("code")
+		code_input.addEventListener("input", ()=>{
+			code_input.value = code_input.value.toUpperCase()
+		})
+	});
+</script>
 {% endblock %}
 
 {% block sidebar %}
