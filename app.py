@@ -2,9 +2,11 @@
 import datetime
 from datetime import timedelta, timezone
 from os import environ as env
+import logging
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
+
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -13,6 +15,7 @@ if ENV_FILE:
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.clicks import DbClicksRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
@@ -34,6 +37,8 @@ from poprox_concepts.domain.demographics import (
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
+
+logger = logging.getLogger(__name__)
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
@@ -521,6 +526,22 @@ def onboarding_survey():
         auth=auth,
         user_demographic_information=user_demographic_information,
     )
+
+
+@app.route(f"{URL_PREFIX}/track/<path>", methods=["GET"])
+def track_email_click(path):
+    try:
+        headers = {k: v for k, v in request.headers.items()}  # convert to conventional dict
+        params = from_hashed_base64(path, HMAC_KEY, TrackingLinkData)
+        logger.info(f"Processing message: {params.model_dump_json()}")
+        with DB_ENGINE.connect() as conn:
+            click_repo = DbClicksRepository(conn)
+            click_repo.store_click(params.newsletter_id, params.account_id, params.article_id, headers)
+            return redirect(params.url)
+    except ValueError as e:
+        # Don't retry if it doesn't have path parameters
+        logger.error(f"Error processing message: {e}")
+        return "Bad Request. Does not have required parameters", 400
 
 
 if __name__ == "__main__":
