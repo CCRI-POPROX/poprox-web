@@ -11,4 +11,3 @@ markdown
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git
-git+ssh://git@github.com/CCRI-POPROX/poprox-platform.git

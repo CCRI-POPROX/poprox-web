@@ -10,7 +10,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_platform.newsletter.assignments import enqueue_newsletter_request
+from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository

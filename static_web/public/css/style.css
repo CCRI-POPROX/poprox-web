@@ -1,187 +1,207 @@
-/* General Styles */
 body {
-    /* font-family: ui-monospace; */
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #f8f8ff;
+    color: #212a37;
     margin: 0;
     padding: 0;
     min-height: 100vh;
     min-width: 100vw;
     position: relative;
-    /* background-image: url("/img/background.jpg"); */
+    display: flex;
+    flex-direction: column
 }
 
-/* Navigation Bar */
-.navbar {
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+h1 {
+    text-align: center
 }
-
-.navbar-brand {
-    font-weight: bold;
-    color: #ffffff !important;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-}
-
-.nav-link {
-    color: #ffffff !important;
-    font-weight: 500;
-}
-
-.nav-link:hover {
-    color:  rgb(46, 128, 119) !important;
-    text-decoration: none;
-}
-
-/* Headings */
 
 h2 {
-    color: #000000;
-    text-align: center;
+    color: #000;
     font-size: 2.5rem;
     text-transform: capitalize;
     letter-spacing: 2px;
-    margin: 20px;
-    margin-bottom: 20px;
+    margin: 20px
 }
 
 h3 {
-    color: rgb(46, 128, 119);
-    font-weight: bolder;
+    color: #2e8077;
+    font-weight: bolder
 }
 
-/* Cards */
-.card {
-    border: none;
-    border-radius: 15px;
-    background-color: rgba(46, 128, 118, 0.581);
-    color: #000000;
-    box-shadow: 0 6px 12px rgba(46, 128, 118, 0.1);
-    padding: 15px;
-    text-align: center;
-    transition: all 0.3s ease-in-out;
-    margin-bottom: 20px;
+.card,footer,h2 {
+    text-align: center
+}
 
+.card {
+    background-color: rgba(46,128,118,.581);
+    box-shadow: 0 6px 12px rgba(46,128,118,.1)
 }
 
 .card:hover {
-    box-shadow: 0 12px 24px rgba(46, 128, 118, 0.1);
-    transform: translateY(-5px);
-}
-
-/* Buttons */
-.btn {
-    background-color: #000000;
-    color: #ffffff;
-    font-weight: bold;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: rgb(46, 128, 119);
-    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(46,128,118,.1);
+    transform: translateY(-5px)
 }
 
 body::after {
-    content: '';
+    content: "";
     display: block;
-    height: 60px;
-    /* Set same as footer's height */
-  }
-
-
-/* About Page */
-
-.team-grid, .advisory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 70px;
-    justify-items: center;
+    height: 60px
 }
 
-.team-member, .advisor {
+.advisory-grid,.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    gap: 70px;
+    justify-items: center
+}
+
+.advisor,.team-member {
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0,0,0,.1);
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
     padding: 20px;
     width: 250px;
-    transition: transform 0.3s;
+    transition: transform .3s
 }
 
-.team-member:hover, .advisor:hover {
-    transform: scale(1.05);
+.advisor:hover,.team-member:hover {
+    transform: scale(1.05)
 }
 
-.member-img, .advisor-img {
+.advisor-img,.member-img {
     width: 100%;
     height: 200px;
-    /* border-radius: 50%; */
-    margin-bottom: 15px;
+    margin-bottom: 15px
 }
 
 .social-links {
-    margin-top: 10px;
+    margin-top: 10px
 }
 
 .social-icon {
     margin: 0 10px;
     font-size: 24px;
-    color: rgba(46, 128, 118);
-    text-decoration: none;
+    color: rgba(46,128,118);
+    text-decoration: none
 }
 
 .social-icon:hover {
-    color:  rgba(46, 128, 118, 0.581);
+    color: rgba(46,128,118,.581)
 }
 
-/* About */
 .markdown-content {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0,0,0,.1);
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
     padding: 20px;
     width: 100%;
     margin: 0 auto;
+    white-space: pre-wrap
+}
+
+code,pre {
     white-space: pre-wrap;
+    word-wrap: break-word
 }
 
 pre {
     background-color: #f7f7f7;
     padding: 20px;
     border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    font-family: "Courier New",Courier,monospace
 }
 
 ul {
     list-style-type: disc;
-    padding-left: 20px;
+    padding-left: 20px
 }
-
 
 code {
-    display: block;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    display: block
 }
 
-
-/* Footer */
 footer {
-    background-color: #000000;
-    color: #000000;
-    padding: 15px;
-    text-align: center;
-    font-size: 1rem;
-    letter-spacing: 1px;
     position: absolute;
     bottom: 0;
-    width: 100%;
     height: 70px;
+    background-color: #212a37;
+    color: #f8f8ff;
+    padding: 15px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    width: 100%;
+    flex-grow: 0
 }
+
+.bg-dark {
+    background-color: #212a37!important
+}
+
+.navbar {
+    background-color: #f8f8ff;
+    box-shadow: 0 4px 8px rgba(0,0,0,.1);
+    flex-grow: 0;
+    max-height: 80px
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #f8f8ff!important;
+    font-size: 1.8rem;
+    letter-spacing: 1px
+}
+
+.navbar .logo {
+    max-height: 70px
+}
+
+.nav-link {
+    color: #f8f8ff!important;
+    font-weight: 500
+}
+
+.nav-link:hover {
+    color: #2e8077!important;
+    text-decoration: none
+}
+
+body>div {
+    flex-grow: 1
+}
+
+.card {
+    border: 0;
+    border-radius: 15px;
+    background-color: #a3abbd22;
+    color: #212a37;
+    box-shadow: 0 6px 12px #a3abbd99;
+    padding: 15px;
+    transition: all .3s ease-in-out;
+    margin-bottom: 20px
+}
+
+.card-body {
+    padding: 10px;
+    text-align: start
+}
+
+.btn {
+    background-color: #008e82aa;
+    color: #fff;
+    font-weight: 700;
+    border: 0;
+    border-radius: 20px;
+    padding: 10px 20px;
+    transition: background-color .3s ease
+}
+
+.btn:hover {
+    background-color: #008e82;
+    color: #fff
+}
+
+.btn:disabled {
+    background-color: #a3abbd
+}
+
+
