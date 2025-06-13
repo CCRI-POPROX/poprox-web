@@ -528,7 +528,7 @@ def onboarding_survey():
     )
 
 
-@app.route(f"{URL_PREFIX}/track/<path>", methods=["GET"])
+@app.route(f"{URL_PREFIX}/redirect/<path>", methods=["GET"])
 def track_email_click(path):
     try:
         headers = {k: v for k, v in request.headers.items()}  # convert to conventional dict
