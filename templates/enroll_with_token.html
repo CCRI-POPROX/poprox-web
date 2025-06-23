@@ -1,0 +1,64 @@
+{% extends "new-layout.html" %}
+
+{% block header %}
+<meta property="og:title" content="POPROX" >
+<meta property="og:type" content="website" >
+<meta property="og:url" content="https://poprox.ai/enroll" >
+<meta property="og:image" content="https://poprox.ai/assets/images/logos_and_icons/POPROX24-temp00A-01.png" >
+<meta property="og:site_name" content="POPROX">
+<meta property="og:description" content="POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="user.poprox.ai">
+<meta property="twitter:url" content="https://poprox.ai/enroll">
+<meta name="twitter:title" content="POPROX Newsletter">
+<meta name="twitter:description" content="POPROX is a personalized news service that delivers a daily, ad-free email newsletter featuring stories from the Associated Press, tailored to your interests">
+
+<script>
+	document.addEventListener("DOMContentLoaded", ()=>{
+		let code_input = document.getElementById("code")
+		code_input.addEventListener("input", ()=>{
+			code_input.value = code_input.value.toUpperCase()
+		})
+	});
+</script>
+{% endblock %}
+
+{% block sidebar %}
+<!-- show no sidebar -->
+<div class="column is-1"></div>
+{% endblock %}
+
+{% block content %}
+
+{% if error %}
+<div class="error-flash">
+	<p>{{ error }}</p>
+</div>
+{% endif %}
+<div class="card-body">
+	<h2 class="card-title text-center">Stay Informed, Your Way</h2>
+	<h5 class="card-title text-center">The stories that matter to you delivered to your inbox daily—no ads, just news.</h5>
+</div>
+<div class="card-body">
+	<p>
+		Thanks for signing up to receive a POPROX daily personalized email newsletter.
+        The start reading, please confirm your email address for a validation code and enter it below.
+		Once you do that, we'll ask about your interests, demographics, and compensation preferences, then send you your first newsletter!
+	</p>
+
+	<form action="{{url_for('enroll_with_token_post', link_data_raw=link_data_raw)}}" method="post">
+		<div class="form-group row">
+			<label for="code">Code:</label>
+			<input class="form-control col col-md-1{% if code_error is defined %} is-invalid{% endif %}" name="code" id="code" type="text" placeholder="code" required>
+
+			{% if code_error is defined %}
+			<div class="invalid-feedback">
+				{{code_error}}
+			</div>
+			{% endif %}
+		</div>
+		<button type="submit" class="btn btn-primary mt-3">Subscribe</button>
+	</form>
+</div>
+{% endblock %}

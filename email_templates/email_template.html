@@ -2,187 +2,231 @@
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <meta content="width=device-width; initial-scale=1" name="viewport" </head>
+    <meta content="width=device-width; initial-scale=1" name="viewport">
+</head>
 
-    <head>
-        {# https://designmodo.com/html-css-emails/
-        I have not dug into the issue as much as I would like, but it sounds like
-        some email readers literally just delete the first head element. #}
-        <style>
+<head>
+    {# https://designmodo.com/html-css-emails/
+    I have not dug into the issue as much as I would like, but it sounds like
+    some email readers literally just delete the first head element. #}
+    <style>
+        body {
+            margin-left: 0;
+            margin-right: 0;
+            font-family: 'Unify Sans',Tahoma,Geneva,sans-serif;
+        }
+
+        a,
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 100%;
+            background-color: #008f83;
+            text-align: center;
+            margin-bottom: 2rem;
+            max-width: 610px;
+        }
+
+        .logo img {
+            height: 3rem;
+            margin: 1rem;
+            max-width: 90%;
+        }
+
+
+        div.system_news {
+            width: 100%;
+            max-width: 610px;
+            padding:20px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            background-color: rgb(0, 60, 94);
+            color: #f8f8ff;
+            font-size: 1.4rem;
+            line-height: 1.8rem;
+            text-align: center;
+        }
+
+        div.system_news a {
+            color: #008f83;
+        }
+
+        div.survey {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        div.body-content {
+            background-color: #f8f8ff;
+            border: 1px solid #bdbdc5;
+            max-width: 610px;
+            padding:20px;
+            margin: auto;
+        }
+
+        div.article {
+            display: block;
+            width: 100%;
+            max-width: 650px;
+            margin-bottom: 2rem;
+        }
+
+        div.article img {
+            margin-bottom: 0.75rem;
+        }
+
+        div.article .figure {
+            display: none;
+        }
+
+        div.article .figure img {
+            display: none;
+        }
+
+        div.article .headline {
+            font-family: 'Unify Serif',Georgia,serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            line-height: 1.8rem;
+            color: #008f83;
+            padding-bottom: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        div.article .subhead {
+            font-size: 1rem;
+        }
+
+        div.article .content {
+            margin-bottom: 0rem;
+            color: #212A37;
+            width: 100%;
+        }
+
+        div.article .tools {
+            color: #008f83;
+            text-align: right;
+        }
+
+        div.article div.content img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        div.footer {
+            text-align: center;
+            background-color: #003c5e;
+            max-width: 650px;
+        }
+
+        div.footer a {
+            display: inline-block;
+            width: 7em;
+            color: #008f83;
+            font-weight: bold;
+            vertical-align: top;
+            margin: 1em;
+        }
+
+        div.footer a img {
+            width: 60%;
+            margin: 0% 10%;
+        }
+
+        div.article .content {
+            margin-bottom: 0;
+        }
+        div.token_code {
+            font-size:2em;
+            text-align: center;
+            font-weight: bold;
+            padding:0.5em;
+        }
+    </style>
+    <style>
+        /* At the top level of your code */
+        @media screen and (min-width: 768px) {
+
             body {
-                margin-left: 0;
-                margin-right: 0;
-                font-family: Arial, sans-serif;
-            }
-
-            a,
-            a:link,
-            a:visited,
-            a:hover,
-            a:active {
-                text-decoration: none;
-            }
-
-            div.article {
-                width: 100%;
-                display: flex;
-                max-width: 1200px;
-            }
-
-            .logo {
-                width: 100%;
-                background-color: #008f83;
-                text-align: center;
-                margin-top: 2rem;
-                margin-bottom: 2rem;
-                max-width: 1200px;
+                margin-left: 15% !important;
+                margin-right: 15% !important;
             }
 
             .logo img {
-                height: 3rem;
-                margin: 1rem;
-                max-width: 90%;
+                height: 6rem !important;
             }
 
-
-            div.system_news {
-                margin-top: 1rem;
-                margin-bottom: 1rem;
-                padding-left: 1rem;
-                background-color: rgb(0, 60, 94);
-                color: white;
-            }
-
-            div.survey {
-                padding-top: 2rem;
-                padding-bottom: 2rem;
+            div.system-news {
+                font-size: 1.3rem !important;
+                line-height: 1.5rem !important;
             }
 
             div.article {
-                display: block;
-                padding-bottom: 2rem;
+                display: flex !important;
             }
 
+
             div.article .figure {
-                display: none;
+                display: block !important;
+                width: 18rem !important;
+                height: 12rem !important;
+                margin-right: 1rem !important;
             }
 
             div.article .figure img {
-                display: none;
+                display: block !important;
+                width: 18rem !important;
+                height: 12rem !important;
+                object-fit: cover !important;
             }
 
             div.article .headline {
-                padding-bottom: 0;
-                font-size: 1.4rem;
-                color: #008f83;
-                margin-bottom: 0;
+                font-size: 1.3rem !important;
+                margin-bottom: 0.5rem !important;
+                line-height: 1.5rem !important;
             }
 
             div.article .subhead {
-                font-size: 1rem;
+                font-size: 1rem !important;
             }
 
             div.article .content {
-                margin-bottom: 0rem;
-                color: #003c5e;
-                width: 100%;
-            }
-
-            div.article .tools {
-                color: #008f83;
-                text-align: right;
+                margin-bottom: 1rem !important;
             }
 
             div.article div.content img {
-                display: block;
-                width: 100%;
-                height: auto;
+                display: none !important;
             }
 
-            div.footer {
-                text-align: center;
-                background-color: #003c5e;
-                max-width: 1200px;
-            }
-
-            div.footer a {
-                display: inline-block;
-                width: 8em;
-                color: #008f83;
-                font-weight: bold;
-                vertical-align: top;
-                margin: 1em;
-            }
-
-            div.footer a img {
-                width: 70%;
-                margin: 0% 15%;
-            }
-
-            div.article .content {
-                margin-bottom: 0;
-            }
-        </style>
-        <style>
-            /* At the top level of your code */
-            @media screen and (min-width: 768px) {
-
-                body {
-                    margin-left: 15% !important;
-                    margin-right: 15% !important;
-                }
-
-                .logo img {
-                    height: 6rem !important;
-                }
-
-                div.article {
-                    display: flex !important;
-                }
-
-
-                div.article .figure {
-                    display: block !important;
-                    width: 24rem !important;
-                    height: 16rem !important;
-                    margin-right: 2rem !important;
-                }
-
-                div.article .figure img {
-                    display: block !important;
-                    width: 24rem !important;
-                    height: 16rem !important;
-                    object-fit: cover !important;
-                }
-
-                div.article .headline {
-                    font-size: 1.8rem !important;
-                    margin-bottom: 1rem !important;
-                }
-
-                div.article .subhead {
-                    font-size: 1.2rem !important;
-                }
-
-                div.article .content {
-                    margin-bottom: 2rem !important;
-                }
-
-                div.article div.content img {
-                    display: none !important;
-                }
-
-            }
-        </style>
-    </head>
+        }
+    </style>
+</head>
 
 <body>
-    <div class="logo">
-        <img alt="POPROX News Logo" src="https://poprox.ai/assets/images/logos_and_icons/logo_white.png"></h1>
-    </div>
+    <div class="body-content">
+        <div class="logo">
+            <img alt="Poprox News Logo" src="https://poprox.ai/assets/images/logos_and_icons/logo_white.png"></h1>
+        </div>
 
-    {% block body %}
-    {% endblock %}
+        {% block body %}
+        {% endblock %}
+
+        <div class="footer">
+            <a
+                href="mailto:poprox@umn.edu?subject={{'Contact POPROX' | urlencode}}&body={{'Hello,\n\nI would like to get in touch regarding...' | urlencode}}">
+                <img alt="Contact us" src="https://poprox.ai/assets/images/logos_and_icons/POPROX24-icon-05.png">
+                Contact us
+            </a>
+            {% block footer %}
+            {% endblock %}
+        </div>
+    </div>
 </body>
 
 </html>
