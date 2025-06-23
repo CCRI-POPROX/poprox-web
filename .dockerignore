@@ -1,0 +1,10 @@
+.git
+.vscode
+.gitignore
+Makefile
+README.md
+.env
+__pycache__
+.ruff_cache
+.serverless
+node_modules

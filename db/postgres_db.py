@@ -1,8 +1,12 @@
 import logging
 import os
+from datetime import datetime, timedelta, timezone
 
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.tokens import DbTokenRepository
 from sqlalchemy import create_engine
+
+from poprox_concepts.api.tracking import Token
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -15,6 +19,7 @@ db_name = os.environ.get("POPROX_DB_NAME", "poprox")
 
 DB_URL = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 DB_ENGINE = create_engine(DB_URL, echo=False)
+TOKEN_EXPIRATION = timedelta(hours=1)  # tokens for email are valid for 1 hour.
 
 
 def get_or_make_account(email, source, subsource):
@@ -67,3 +72,23 @@ def finish_onboarding(account_id):
         account_repo.update_status(account_id, "onboarding_done")
         account_repo.store_subscription_for_account(account_id)
         conn.commit()
+
+
+def create_token() -> Token:
+    with DB_ENGINE.connect() as conn:
+        token_repo = DbTokenRepository(conn)
+        return token_repo.create_token()
+
+
+def get_token(token_id) -> Token | None:
+    now = datetime.now(timezone.utc).astimezone()
+    with DB_ENGINE.connect() as conn:
+        token_repo = DbTokenRepository(conn)
+        token = token_repo.fetch_token_by_id(token_id)
+        if token is None:
+            return None
+        elif (now - token.created_at) > TOKEN_EXPIRATION:
+            # token is too old for this purpose
+            return None
+        else:
+            return token
