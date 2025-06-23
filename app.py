@@ -1,12 +1,11 @@
 # ruff: noqa: E402
 import datetime
+import logging
 from datetime import timedelta
 from os import environ as env
-import logging
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
-
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -22,9 +21,8 @@ from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from admin.admin_blueprint import admin
-from auth import Auth
-from db.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection, get_token
-from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData
+from experimenter.experimenter_blueprint import exp
+from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
@@ -37,6 +35,8 @@ from poprox_concepts.domain.demographics import (
 from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
+from util.auth import auth
+from util.postgres_db import DB_ENGINE, finish_consent, finish_onboarding, finish_topic_selection, get_token
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +51,9 @@ app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 app.register_blueprint(admin)
+app.register_blueprint(exp)
 
 
-auth = Auth(app)
 app.register_blueprint(static_web)
 
 

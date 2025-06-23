@@ -3,12 +3,10 @@ from os import environ as env
 
 from flask import Blueprint, jsonify, render_template
 from flask_httpauth import HTTPBasicAuth
-from poprox_storage.aws import SESSION
+from poprox_storage.aws import DB_ENGINE, SESSION
 from poprox_storage.aws.cloudwatch import Cloudwatch
 from poprox_storage.repositories.accounts import DbAccountRepository
 from werkzeug.security import check_password_hash, generate_password_hash
-
-from db.postgres_db import DB_ENGINE
 
 admin = Blueprint("admin", __name__, template_folder="templates", url_prefix="/admin")
 auth = HTTPBasicAuth()
