@@ -38,9 +38,7 @@ def edit_team(team_id):
         team_repo = DbTeamRepository(conn)
         account_repo = DbAccountRepository(conn)
         team = team_repo.fetch_team_by_id(team_id)
-        print(team.members)
         members = account_repo.fetch_accounts(team.members)
-        print(members)
         return render_template("admin_edit_team.html", team=team, members=members)
 
 
