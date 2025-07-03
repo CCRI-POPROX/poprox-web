@@ -13,14 +13,20 @@
   {% endif %}
 
   <h1>Team Management</h1>
-  <h2>{{team.team_name}}</h2>
+  <h2>{{team.team_name}} ({{team.team_id}})</h2>
+  <h3>Rename</h3>
+  <form method="post" action = "{{url_for('admin.edit_team_name', team_id=team.team_id)}}">
+    <input type="text" id="team_name" name="team_name" placeholder="team_name" required>
+    <input type="submit">
+  </form>
+  <h3>Members</h3>
   <ul>
     {% for member in members %}
     <li>{{member.email}}</li>
     {% endfor %}
   </ul>
 
-  <h2>Add Member</h2>
+  <h3>Add Member</h3>
   <form method="post" action="{{url_for('admin.add_to_team', team_id = team.team_id)}}">
     <input type="email" id="email" name="email" placeholder="who">
     <input type="submit">
