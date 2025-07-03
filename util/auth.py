@@ -108,6 +108,22 @@ class Auth:
 
         return decorated
 
+    def requires_team_member(self, f):
+        @wraps(f)
+        def decorated(team_id, *args, **kwargs):
+            endpoint = request.endpoint
+            expected_endpoint = STATUS_REDIRECTS.get(self.get_account_status())
+            if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
+                return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
+            elif self.is_logged_in() and team_id not in self.get_account_teams():
+                return redirect(url_for("experimenter.expt_home"))
+            elif self.is_logged_in() and team_id in self.get_account_teams():
+                return f(team_id, *args, **kwargs)
+            else:
+                return redirect(url_for("pre_enroll_get"))
+
+        return decorated
+
     def requires_experimenter(self, f):
         @wraps(f)
         def decorated(*args, **kwargs):
