@@ -7,6 +7,12 @@
 
 </head>
 <body>
+
+  {% if error %}
+    <div class="error">{{error}}</div>
+  {% endif %}
+
+
   <h1>Team Management</h1>
   <table>
     <tr><th>Team Name</th><th>Actions</th></tr>

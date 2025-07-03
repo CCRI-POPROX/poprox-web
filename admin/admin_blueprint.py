@@ -24,10 +24,11 @@ def verify_password(username, password):
 @admin.route("/")
 @admin_auth.login_required
 def show():
+    error = request.args.get("error")
     with DB_ENGINE.connect() as conn:
         team_repo = DbTeamRepository(conn)
         teams = team_repo.fetch_teams()
-        return render_template("admin_home.html", teams=teams)
+        return render_template("admin_home.html", error=error, teams=teams)
 
 
 @admin.route("/team/<team_id>")
@@ -52,7 +53,9 @@ def add_to_team(team_id):
         account_repo = DbAccountRepository(conn)
         account = account_repo.fetch_account_by_email(email)
         if account is None:
-            return "error, who is that."
+            return redirect(
+                url_for("admin.edit_team", team_id=team_id, error=f"No account for email: '{email}' found ")
+            )
         team_repo._insert_team_membership(team_id, account.account_id)
         conn.commit()
         return redirect(url_for("admin.edit_team", team_id=team_id))
