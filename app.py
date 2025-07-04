@@ -22,7 +22,7 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
-from mobile_api import mobile_api
+from mobile_api.mobile_api import mobile_api
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -51,10 +51,10 @@ app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
+# Register Blueprints at the top
+app.register_blueprint(mobile_api)
 app.register_blueprint(admin)
 app.register_blueprint(exp)
-
-
 app.register_blueprint(static_web)
 
 
@@ -571,9 +571,6 @@ def track_email_click(path):
         logger.error(f"Error processing message: {e}")
         return "Bad Request. Does not have required parameters", 400
 
-
-# Register Blueprint
-app.register_blueprint(mobile_api, url_prefix=URL_PREFIX)
 
 if __name__ == "__main__":
     app.run(debug=True)
