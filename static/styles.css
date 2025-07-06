@@ -173,10 +173,17 @@ h5 {
 
 }
 
+.feedback-class {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .emoji-button {
 	background: none;
 	border: none;
-	font-size: 1.4em;
+	font-size: 1.5em;
 	cursor: pointer;
 
 	width: 1.7em;
@@ -186,13 +193,16 @@ h5 {
 	align-items: center;
 	justify-content: center;
 }
+.emoji-button:last-child {
+  margin-right: 1rem;
+}
 
 .highlight_green{
-	background-color:lightgreen;
+	background-color:rgb(204, 248, 204);
 	font-size: 1.7em;
 }
 
 .highlight_red{
-	background-color:orangered;
+	background-color:rgb(250, 200, 183);
 	font-size: 1.7em;
 }

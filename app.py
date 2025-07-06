@@ -5,7 +5,7 @@ from datetime import timedelta
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -306,9 +306,13 @@ def feedback():
         image_repo = DbImageRepository(conn)
 
         if request.method == "POST":
-            article_feedback_type = request.form.get("articlefeedbackType")
-            newsletter_id = request.form.get("newsletter_id")
-            impression_id = request.form.get("impression_id")
+            if request.is_json:
+                data = request.get_json()
+            else:
+                data = request.form
+            article_feedback_type = data.get("articlefeedbackType")
+            newsletter_id = data.get("newsletter_id")
+            impression_id = data.get("impression_id")
 
             # newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
 
@@ -320,6 +324,9 @@ def feedback():
             newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
             conn.commit()
+
+            if request.is_json:
+                return jsonify({"status": "ok", "feedback": is_article_positive})
 
         else:
             newsletter_id = request.args.get("newsletter_id")
