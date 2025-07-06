@@ -82,34 +82,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 impression_id: formData.get("impression_id"),
                 articlefeedbackType: clickedButton?.value || null
             };
+			const response = await fetch(form.action, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(payload)
+			});
 
-            try {
-                const response = await fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Requested-With": "XMLHttpRequest"
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok && clickedButton) {
-                    form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
-                        btn.classList.remove("highlight_green", "highlight_red");
-                    });
-                    if (clickedButton.value === "positive") {
-                        clickedButton.classList.add("highlight_green");
-                    } else {
-                        clickedButton.classList.add("highlight_red");
-                    }
-
-                    console.log("Feedback sent:", payload.articlefeedbackType);
-                } else {
-                    console.error("Feedback failed");
-                }
-            } catch (err) {
-                console.error("Error submitting feedback:", err);
-            }
+			if (response.ok && clickedButton) {
+				form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
+					btn.classList.remove("highlight_green", "highlight_red");
+				});
+				if (clickedButton.value === "positive") {
+					clickedButton.classList.add("highlight_green");
+				} else {
+					clickedButton.classList.add("highlight_red");
+				}
+			}
         });
     });
 });
