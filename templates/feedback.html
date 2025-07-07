@@ -8,6 +8,51 @@
     {% endif %}
 {% endblock %}
 
+{% block header %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".feedback-form").forEach(form => {
+        let clickedButton = null;
+
+        form.querySelectorAll("button[name='articlefeedbackType']").forEach(button => {
+            button.addEventListener("click", () => {
+                clickedButton = button;
+            });
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const payload = {
+                newsletter_id: formData.get("newsletter_id"),
+                impression_id: formData.get("impression_id"),
+                articlefeedbackType: clickedButton?.value || null
+            };
+			const response = await fetch(form.action, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(payload)
+			});
+
+			if (response.ok && clickedButton) {
+				form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
+					btn.classList.remove("highlight_green", "highlight_red");
+				});
+				if (clickedButton.value === "positive") {
+					clickedButton.classList.add("highlight_green");
+				} else {
+					clickedButton.classList.add("highlight_red");
+				}
+			}
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="box">
 	{% if updated %}
@@ -62,48 +107,7 @@
 </div>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".feedback-form").forEach(form => {
-        let clickedButton = null;
 
-        form.querySelectorAll("button[name='articlefeedbackType']").forEach(button => {
-            button.addEventListener("click", () => {
-                clickedButton = button;
-            });
-        });
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const payload = {
-                newsletter_id: formData.get("newsletter_id"),
-                impression_id: formData.get("impression_id"),
-                articlefeedbackType: clickedButton?.value || null
-            };
-			const response = await fetch(form.action, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(payload)
-			});
-
-			if (response.ok && clickedButton) {
-				form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
-					btn.classList.remove("highlight_green", "highlight_red");
-				});
-				if (clickedButton.value === "positive") {
-					clickedButton.classList.add("highlight_green");
-				} else {
-					clickedButton.classList.add("highlight_red");
-				}
-			}
-        });
-    });
-});
-</script>
 
 
 {% endblock %}
