@@ -8,6 +8,51 @@
     {% endif %}
 {% endblock %}
 
+{% block header %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".feedback-form").forEach(form => {
+        let clickedButton = null;
+
+        form.querySelectorAll("button[name='articlefeedbackType']").forEach(button => {
+            button.addEventListener("click", () => {
+                clickedButton = button;
+            });
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const payload = {
+                newsletter_id: formData.get("newsletter_id"),
+                impression_id: formData.get("impression_id"),
+                articlefeedbackType: clickedButton?.value || null
+            };
+			const response = await fetch(form.action, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(payload)
+			});
+
+			if (response.ok && clickedButton) {
+				form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
+					btn.classList.remove("highlight_green", "highlight_red");
+				});
+				if (clickedButton.value === "positive") {
+					clickedButton.classList.add("highlight_green");
+				} else {
+					clickedButton.classList.add("highlight_red");
+				}
+			}
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="box">
 	{% if updated %}
@@ -19,7 +64,7 @@
 	{% endif %}
 
 
-		<h2>Here is your Today's News Recommendations.</h2>
+		<h2>Help us understand which recommendations were relevant for you</h2>
 		{% for impression in impressions %}
 		<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 				<div class="column is-4">
@@ -28,28 +73,41 @@
 						<img src="{{image.url}}">
 					{% endif %}
 				</div>
-				<div class="column is-7">
-
-						<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
-						<p>{{ impression.subhead }}</p>
+				<div class="column is-6">
+					<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
+					<p>{{ impression.subhead }}</p>
 				</div>
-				<div class="column is-1">
-					<form action="{{ url_for('feedback') }}" method="POST">
-					<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
-					<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
-					<button type="submit" name="articlefeedbackType" value="positive"
-					class="emoji-button {% if impression.feedback == true %}highlight_green{% endif %}"
-					>
-						👍
-					</button>
-					<button type="submit" name="articlefeedbackType" value="negative"
-					class="emoji-button {% if impression.feedback == false %}highlight_red{% endif %}"
-					>
-						👎
-					</button>
-				</form>
+				<div class="column is-2">
+					<form class="feedback-form feedback-class" action="{{ url_for('feedback') }}" method="POST">
+						<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
+						<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
+
+						<button type="submit"
+						name="articlefeedbackType"
+						value="positive"
+						class="emoji-button {% if impression.feedback == true %}highlight_green{% endif %}"
+						title="Show more articles like this"
+						>
+							👍
+
+						</button>
+
+						<button type="submit"
+						name="articlefeedbackType"
+						value="negative"
+						class="emoji-button {% if impression.feedback == false %}highlight_red{% endif %}"
+						title="Don't show articles like this"
+						>
+							👎
+						</button>
+					</form>
 				</div>
 		</div>
 		{% endfor %}
 </div>
+
+
+
+
+
 {% endblock %}
