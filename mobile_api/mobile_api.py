@@ -2,13 +2,12 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from flask import Blueprint, jsonify, request, session
-from poprox_platform.tracking import LoginLinkData, SignUpLinkData, from_hashed_base64, to_hashed_base64
-from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.clicks import DbClicksRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
 from sqlalchemy import select
 
+from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, from_hashed_base64, to_hashed_base64
 from poprox_concepts.domain import Account, Article
 from util.auth import auth
 from util.postgres_db import DB_ENGINE, create_token, get_account, get_account_by_email, get_token
@@ -155,7 +154,7 @@ def track_click():
 @auth.requires_login
 def submit_feedback():
     try:
-        account_id = auth.get_account_id()
+        account_id = auth.get_account_id()  # noqa: F841
         impression_id = request.json.get("impression_id")
         if not impression_id:
             return jsonify({"error": "Impression ID is required"}), 400
