@@ -99,7 +99,9 @@ def finish_onboarding(account_id):
 def create_token() -> Token:
     with DB_ENGINE.connect() as conn:
         token_repo = DbTokenRepository(conn)
-        return token_repo.create_token()
+        token = token_repo.create_token()
+        conn.commit()
+        return token
 
 
 def get_token(token_id) -> Token | None:
