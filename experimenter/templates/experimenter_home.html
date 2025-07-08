@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-
-
 </head>
 <body>
+    <h1> Your Teams </h1>
+    <ul>
+        {% for team in teams.values() %}
+        <li><a href="{{url_for('experimenter.team_dashboard', team_id=team.team_id)}}">{{team.team_name}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h1>Your Experiments</h1>
     <ul>
       {% for expt in experiments.values() %}
       <li><a href="{{url_for('experimenter.expt_dashboard', experiment_id=expt.experiment_id)}}">{{expt.description}}</a></li>
