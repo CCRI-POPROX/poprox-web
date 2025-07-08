@@ -6,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    {% if request.args.error %}
+        <div class="error">{{request.args.error}}</div>
+    {% endif %}
+
     <h1> Your Teams </h1>
     <ul>
         {% for team in teams.values() %}

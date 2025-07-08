@@ -73,11 +73,11 @@ def add_to_team(team_id):
         account = account_repo.fetch_account_by_email(email)
         if account is None:
             return redirect(
-                url_for("admin.edit_team", team_id=team_id, error=f"No account for email: '{email}' found ")
+                url_for("admin.team_details", team_id=team_id, error=f"No account for email: '{email}' found ")
             )
         team_repo.insert_team_membership(team_id, account.account_id)
         conn.commit()
-        return redirect(url_for("admin.edit_team", team_id=team_id))
+        return redirect(url_for("admin.team_details", team_id=team_id))
 
 
 @admin.post("/team")

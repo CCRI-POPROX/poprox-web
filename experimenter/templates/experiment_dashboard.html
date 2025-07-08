@@ -9,6 +9,9 @@
 
 </head>
 <body>
+    {% if request.args.error %}
+        <div class="error">{{request.args.error}}</div>
+    {% endif %}
     No content here yet! Here's your experiment metadata in one ugly json dump!
     <pre>
         <code>
