@@ -11,37 +11,10 @@ from sqlalchemy import select
 
 from poprox_concepts.domain import Account, Article
 from util.auth import auth
-from util.postgres_db import DB_ENGINE, create_token, get_account, get_token
+from util.postgres_db import DB_ENGINE, create_token, get_account, get_account_by_email, get_token
 
 # Blueprint for mobile API routes
 mobile_api = Blueprint("mobile_api", __name__, url_prefix="/api")
-
-
-@mobile_api.route("/send_enroll_token", methods=["POST"])
-def send_enroll_token_api():
-    email = request.json.get("email")
-    source = request.json.get("source", "mobile")
-    subsource = request.json.get("subsource", "app")
-    if not email:
-        return jsonify({"error": "Email is required"}), 400
-    try:
-        # Check if account exists
-        account = auth.get_account_by_email(email)
-        if not account:
-            return jsonify({"error": "Account not found. Please sign up via web."}), 400
-        token = create_token()
-        link_data = SignUpLinkData(
-            email=email,
-            source=source,
-            subsource=subsource,
-            created_at=datetime.now(timezone.utc).astimezone(),
-            token_id=token.token_id,
-        )
-        link_data_raw = to_hashed_base64(link_data, auth.HMAC_KEY)
-        auth.send_enroll_token(source, subsource, email)
-        return jsonify({"message": "Token sent successfully", "link_data_raw": link_data_raw}), 200
-    except Exception:
-        return jsonify({"error": "Internal server error"}), 500
 
 
 @mobile_api.route("/enroll_with_token", methods=["POST"])
@@ -53,11 +26,13 @@ def enroll_with_token_api():
         token = get_token(link_data.token_id)
         if not token or token.code != user_code:
             return jsonify({"error": "Invalid or expired code"}), 400
-        # Check if account exists
-        account = auth.get_account_by_email(link_data.email)
+        # Validate account and check onboarding status
+        account = get_account_by_email(link_data.email)
         if not account:
             return jsonify({"error": "Account not found. Please sign up via web."}), 400
-        # Login instead of enrolling
+        if account["status"] != "onboarding_done":
+            return jsonify({"error": "Please complete onboarding via web before logging in."}), 400
+        # Login with validated account
         auth.login_via_account_id(account["account_id"])
         login_data = LoginLinkData(account_id=account["account_id"], endpoint="home", data={})
         session["account"] = get_account(account["account_id"])
