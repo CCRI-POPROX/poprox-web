@@ -89,4 +89,4 @@ def new_team():
         team = Team(team_id=uuid4(), team_name=team_name, members=[])
         team_repo.store_team(team)
         conn.commit()
-        return redirect(url_for("admin.edit_team", team_id=team.team_id))
+        return redirect(url_for("admin.team_details", team_id=team.team_id))
