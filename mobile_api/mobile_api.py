@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from os import environ as env
 from uuid import UUID
 
 from flask import Blueprint, jsonify, request, session
@@ -11,6 +12,8 @@ from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, from_has
 from poprox_concepts.domain import Account, Article
 from util.auth import auth
 from util.postgres_db import DB_ENGINE, create_token, get_account, get_account_by_email, get_token
+
+HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 # Blueprint for mobile API routes
 mobile_api = Blueprint("mobile_api", __name__, url_prefix="/api")
@@ -38,7 +41,7 @@ def send_enroll_token_api():
             created_at=datetime.now(timezone.utc).astimezone(),
             token_id=token.token_id,
         )
-        link_data_raw = to_hashed_base64(link_data, auth.HMAC_KEY)
+        link_data_raw = to_hashed_base64(link_data, HMAC_KEY)
         auth.send_enroll_token(source, subsource, email)
         return jsonify({"message": "Token sent successfully", "link_data_raw": link_data_raw}), 200
     except Exception:
@@ -50,7 +53,7 @@ def enroll_with_token_api():
     link_data_raw = request.json.get("link_data_raw")
     user_code = request.json.get("code")
     try:
-        link_data = from_hashed_base64(link_data_raw, auth.HMAC_KEY, SignUpLinkData)
+        link_data = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
         token = get_token(link_data.token_id)
         if not token or token.code != user_code:
             return jsonify({"error": "Invalid or expired code"}), 400
@@ -67,7 +70,7 @@ def enroll_with_token_api():
             {
                 "message": "Login successful",
                 "account_id": str(account["account_id"]),
-                "auth_token": to_hashed_base64(login_data, auth.HMAC_KEY),
+                "auth_token": to_hashed_base64(login_data, HMAC_KEY),
             }
         ), 200
     except ValueError:
