@@ -100,7 +100,12 @@ class Auth:
             if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
                 return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
             elif self.is_logged_in() and experiment_id not in self.get_account_experiments():
-                return redirect(url_for("experimenter.expt_home"))
+                return redirect(
+                    url_for(
+                        "experimenter.expt_home",
+                        error="you must be part of the experiment team for the chosen experiment to view this page",
+                    )
+                )
             elif self.is_logged_in() and experiment_id in self.get_account_experiments():
                 return f(experiment_id, *args, **kwargs)
             else:
@@ -116,7 +121,12 @@ class Auth:
             if self.is_logged_in() and expected_endpoint is not None and endpoint != expected_endpoint:
                 return redirect(url_for(STATUS_REDIRECTS[self.get_account_status()]))
             elif self.is_logged_in() and team_id not in self.get_account_teams():
-                return redirect(url_for("experimenter.expt_home"))
+                return redirect(
+                    url_for(
+                        "experimenter.expt_home",
+                        error="you must be part of the chosen experiment team to view this page",
+                    )
+                )
             elif self.is_logged_in() and team_id in self.get_account_teams():
                 return f(team_id, *args, **kwargs)
             else:
