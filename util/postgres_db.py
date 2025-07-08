@@ -60,6 +60,19 @@ def get_account(account_id):
             return result
 
 
+def get_account_by_email(email):
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        account = account_repo.fetch_account_by_email(email)
+        if account:
+            return {
+                "account_id": account.account_id,
+                "email": account.email,
+                "status": account.status,
+            }
+        return None
+
+
 def finish_consent(account_id, consent_version):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
