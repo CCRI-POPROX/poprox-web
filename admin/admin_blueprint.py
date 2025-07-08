@@ -83,7 +83,7 @@ def add_to_team(team_id):
 @admin.post("/team")
 @admin_auth.login_required
 def new_team():
-    team_name = request.form.get("team_name", "untiteled team")
+    team_name = request.form.get("team_name", "untitled team")
     with DB_ENGINE.connect() as conn:
         team_repo = DbTeamRepository(conn)
         team = Team(team_id=uuid4(), team_name=team_name, members=[])
