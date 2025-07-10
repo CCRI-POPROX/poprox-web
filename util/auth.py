@@ -163,10 +163,11 @@ class Auth:
     def logout(error_description=None) -> str:
         session.clear()
 
-    def send_enroll_token(self, source, subsource, email):
+    def send_enroll_token(self, source, subsource, email, token=None):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")
 
-        token = create_token()
+        if token is None:
+            token = create_token()
 
         link_data = SignUpLinkData(
             email=email,

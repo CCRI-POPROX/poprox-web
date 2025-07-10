@@ -42,7 +42,7 @@ def send_enroll_token_api():
             token_id=token.token_id,
         )
         link_data_raw = to_hashed_base64(link_data, HMAC_KEY)
-        auth.send_enroll_token(source, subsource, email)
+        auth.send_enroll_token(source, subsource, email, token)
         return jsonify({"message": "Token sent successfully", "link_data_raw": link_data_raw}), 200
     except Exception:
         return jsonify({"error": "Internal server error"}), 500
