@@ -101,11 +101,11 @@ def get_newsletters():
     with DB_ENGINE.connect() as conn:
         newsletter_repo = DbNewsletterRepository(conn)
         image_repo = DbImageRepository(conn)
-        accounts = [Account(account_id=account_id)]
-        newsletters = newsletter_repo.fetch_newsletters_since(days_ago=1, accounts=accounts)  # Changed to 1 day
-        # Take only the latest newsletter
-        if newsletters:
-            newsletters = [max(newsletters, key=lambda n: n.created_at)]
+        accounts = [Account(account_id=account_id, status="active")]  # Added status field
+
+        # Fetch newsletters
+        newsletters = newsletter_repo.fetch_newsletters_since(days_ago=7, accounts=accounts)
+
         result = []
         for newsletter in newsletters:
             impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter.newsletter_id])
@@ -119,8 +119,7 @@ def get_newsletters():
                     "subhead": imp.subhead,
                     "url": imp.article.url,
                     "preview_image": images.get(str(imp.article.preview_image_id), {}).get("url")
-                    if imp.article.preview_image_id
-                    else None,
+                    if imp.article.preview_image_id else None,
                     "position": imp.position,
                 }
                 articles.append(article_data)
@@ -132,8 +131,11 @@ def get_newsletters():
                     "articles": articles,
                 }
             )
-        # No commit since this is read-only
+
+        # Sort newsletters from newest to oldest
+        result.sort(key=lambda x: x["created_at"], reverse=True)
         return jsonify({"newsletters": result}), 200
+
 
 
 @mobile_api.route("/track/click", methods=["POST"])
