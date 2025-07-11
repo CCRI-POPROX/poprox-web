@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+{% extends "admin_main_layout.html" %}
 
-</head>
-<body>
 
-  {% if error %}
-    <div class="error">{{error}}</div>
-  {% endif %}
+
+{% block content %}
 
   <h1>Team Management</h1>
   <h2>{{team.team_name}} ({{team.team_id}})</h2>
@@ -31,5 +23,4 @@
     <input type="email" id="email" name="email" placeholder="who">
     <input type="submit">
   </form>
-</body>
-</html>
+  {% endblock %}

@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-</head>
-<body>
-
-  {% if error %}
-    <div class="error">{{error}}</div>
-  {% endif %}
+{% extends "admin_main_layout.html" %}
 
 
-  <h1>Team Management</h1>
-  <table>
-    <tr><th>Team Name</th><th>Actions</th></tr>
-    {% for team in teams.values() %}
-    <tr>
-        <td>{{team.team_name}}</td>
-        <td><a href="{{url_for('admin.team_details', team_id=team.team_id)}}">edit</a></td>
-    </tr>
-    {% endfor %}
-  </table>
-  <h4>New Team</h4>
-  <form action="{{url_for('admin.new_team')}}" method="post">
-    <input type="text" placeholder="team_name" id="team_name" name="team_name" required>
-    <input type="submit">
-  </form>
-</body>
-</html>
+
+{% block content %}
+
+(This space left empty until someone bothers to fill it. See the links in the top-right)
+
+{% endblock %}
