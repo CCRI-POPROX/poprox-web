@@ -89,7 +89,7 @@ def get_newsletters():
             return {}
 
         images_table = image_repo.tables.get("images")
-        if not images_table:
+        if images_table is None:
             return {}
 
         query = select(images_table.c.image_id, images_table.c.url).where(images_table.c.image_id.in_(image_ids))
