@@ -1,0 +1,26 @@
+{% extends "admin_main_layout.html" %}
+
+
+
+{% block content %}
+
+  <h1>Account Management</h1>
+
+  <h2>Account Search</h2>
+  <form action="{{url_for('admin.account_search')}}" method="GET">
+    <label for="account_email_query">SQL like syntax account search by email:</label><br>
+    <input id="account_email_query" name="account_email_query" value="{{request.args.account_email_query or ''}}">
+    <input type="submit">
+  </form>
+  <form action="{{url_for('admin.account_search')}}" method="GET">
+    <label for="account_id">direct match by id:</label><br>
+    <input id="account_id" name="account_id">
+    <input type="submit">
+  </form>
+
+  <ul>
+  {% for account in accounts %}
+    <li><a href="{{url_for('admin.account_detail', account_id=account.account_id)}}">{{account.email}}</a></li>
+  {% endfor %}
+  </ul>
+  {% endblock %}

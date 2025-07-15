@@ -1,0 +1,32 @@
+{% extends "admin_main_layout.html" %}
+
+
+
+{% block content %}
+
+  <h1>Account Management</h1>
+  <form method="post" action="{{url_for('admin.update_account_detail', account_id = account.account_id)}}">
+    <dl>
+    {% for key, value in account.model_dump().items() %}
+      <dt>{{key}}</dt>
+      {% if key == "source" and account.internal %}
+        <dd>(INTERNAL)</dd>
+      {% endif %}
+      {% if key == "source" and account.external %}
+        <dd>(EXTERNAL)</dd>
+      {% endif %}
+      {% if key in editable %}
+        <dd>
+          <input value="{{value}}" id="{{key}}" name="{{key}}" placeholder="{{value}}">
+        </dd>
+      {% else %}
+        <dd>
+          {{value}}
+        </dd>
+      {% endif %}
+    {% endfor %}
+    </dl>
+    <input type="submit">
+  </form>
+
+  {% endblock %}

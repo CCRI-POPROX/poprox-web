@@ -1,0 +1,21 @@
+{% extends "admin_main_layout.html" %}
+
+
+
+{% block content %}
+  <h1>Team Management</h1>
+  <table>
+    <tr><th>Team Name</th><th>Actions</th></tr>
+    {% for team in teams.values() %}
+    <tr>
+        <td>{{team.team_name}}</td>
+        <td><a href="{{url_for('admin.team_details', team_id=team.team_id)}}">edit</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h4>New Team</h4>
+  <form action="{{url_for('admin.new_team')}}" method="post">
+    <input type="text" placeholder="team_name" id="team_name" name="team_name" required>
+    <input type="submit">
+  </form>
+  {% endblock %}
