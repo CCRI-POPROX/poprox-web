@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "new-layout.html" %}
 
 {% block sidebar %}
 <!-- no sidebar -->
@@ -7,61 +7,17 @@
 
 {% block header %}
 <script>
-	const precheck = new Array("agree1", "agree2", "agree3", "agree4", "agree5", "agree6", "agree7", "agree8")
+	const precheck = new Array("agree1", "agree2", "agree3", "agree4", "agree5", "agree6", "agree7", "agree8");
 	let checklist = {}
-
-	function slidetoggle(evt) {
-		const headerEle = ['DIV', 'H2'].includes(evt.target.tagName) ?
-			evt.target.parentElement : evt.target;
-		const targetId = headerEle.getAttribute("target-panel");
-		const txtPanel = document.getElementById(targetId);
-
-		if (!txtPanel) return;
-
-		const isExpanded = txtPanel.style.height !== "0px";
-		const newHeight = isExpanded ? "0px" : txtPanel.scrollHeight + "px";
-
-		txtPanel.style.height = newHeight;
-
-		const headerIcon = headerEle.getElementsByClassName("minmax-icon")[0];
-		if (headerIcon) {
-			headerIcon.setAttribute("state-lbl", isExpanded ? "+" : "-");
-		}
-	}
-
-	function fix_heights() {
-		for (const headerEle of document.querySelectorAll('*[target-panel]')) {
-			const targetId = headerEle.getAttribute("target-panel");
-			const txtPanel = document.getElementById(targetId);
-			if (txtPanel && txtPanel.clientHeight > 0) {
-				txtPanel.style.height = "0px"
-				txtPanel.style.transition = "height 0.0s"
-				txtPanel.style.height = txtPanel.scrollHeight + "px"
-				setTimeout(() => {
-					txtPanel.style.transition = "height 1s"
-				}, 1);
-			}
-		}
-	}
-
 	function update(evt) {
 		const checkbox = evt.target;
 		const header = document.getElementById(checkbox.getAttribute("header-id"));
 
 		if (checkbox.checked) {
-			if (header.classList.contains("error")) header.classList.remove("error");
+			header.classList.contains("error") && header.classList.remove("error");
 
 			header.classList.add("checked");
 			checklist[checkbox.id] = true;
-			header.dispatchEvent(new MouseEvent('click')); // collapse current block
-
-			// expand the next section by clicking on the next header
-			const nextHeader = header.nextElementSibling.nextElementSibling;
-
-			if (nextHeader) {
-				nextHeader.scrollIntoView(true, { behavior: "smooth", block: "start" });
-				nextHeader.dispatchEvent(new MouseEvent('click'));
-			}
 		} else {
 			header.classList.remove("checked");
 			checklist[checkbox.id] = false;
@@ -71,31 +27,18 @@
 		const submitBtn = document.getElementById("submit-btn");
 
 		submitBtn.disabled = !(checktest.length === precheck.length);
-
-		const ctSections = document.getElementsByClassName("consent-section");
-		Array.from(ctSections).forEach((ele, idx) =>
-			console.log(ele.style.height, idx, ele.scrollHeight));
 	}
 
 	window.addEventListener('DOMContentLoaded', function () {
-		const accHeaders = document.getElementsByClassName("accordion-header");
+		// const accHeaders = document.getElementsByClassName("accordion-header");
 		const checkboxes = document.getElementsByTagName("input");
-		const ctSections = document.getElementsByClassName("consent-section");
+		// const ctSections = document.getElementsByClassName("consent-section");
 
 		document.getElementById("submit-btn").disabled = true;
-
-		Array.from(accHeaders).forEach((ele) =>
-			ele.addEventListener('click', slidetoggle));
 
 		Array.from(checkboxes).filter(inp => inp.type === 'checkbox')
 			.forEach((ele) =>
 				ele.addEventListener('change', update));
-
-		// Initializing a style parameter to avoid an initial jitter
-		Array.from(ctSections).forEach((ele, idx) =>
-			ele.style.height = (idx === 0 ? ele.scrollHeight : 0) + "px");
-
-		window.addEventListener("resize", fix_heights)
 	})
 </script>
 {% endblock %}
