@@ -1,14 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+{% extends "experimenter_main_layout.html" %}
 
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{team.team_name}}</li>
+{% endblock %}
 
+{% block content %}
 
-</head>
-<body>
-    team.
-</body>
-</html>
+<h2>{{team.team_name}} ({{team.team_id}})</h2>
+<h3>Members</h3>
+<ul>
+  {% for member in members %}
+  <li>{{member.email}}</li>
+  {% endfor %}
+</ul>
+<h3>Add Member</h3>
+<form method="post" action="{{url_for('experimenter.add_to_team', team_id = team.team_id)}}">
+  <input type="email" id="email" name="email" placeholder="who">
+  <input type="submit">
+</form>
+
+{% endblock %}
