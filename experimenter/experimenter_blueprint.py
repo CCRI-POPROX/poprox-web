@@ -1,4 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, redirect, render_template, request, url_for
+from poprox_storage.aws import DB_ENGINE
+from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.experience import DbExperiencesRepository
+from poprox_storage.repositories.teams import DbTeamRepository
 
 from util.auth import auth
 
@@ -28,9 +32,43 @@ def expt_dashboard(experiment_id):
 ## TEAM SPECIFIC TASKS and endpoints
 
 
-@exp.route("/team/<team_id>")
+@exp.get("/team/<team_id>")
+@exp.get("/team/<team_id>/members")
 @auth.requires_team_member
-def team_dashboard(team_id):
-    return render_template(
-        "team_dashboard.html",
-    )
+def team_dash_members(team_id):
+    with DB_ENGINE.connect() as conn:
+        team_repo = DbTeamRepository(conn)
+        account_repo = DbAccountRepository(conn)
+        team = team_repo.fetch_team_by_id(team_id)
+        members = account_repo.fetch_accounts(team.members)
+        return render_template("team_dash_members.html", team=team, members=members)
+
+
+@exp.get("/team/<team_id>/experiences")
+@auth.requires_team_member
+def team_dash_experiences(team_id):
+    with DB_ENGINE.connect() as conn:
+        team_repo = DbTeamRepository(conn)
+        experience_repo = DbExperiencesRepository(conn)
+        experiences = experience_repo.fetch_experiences_by_team(team_id)
+        team = team_repo.fetch_team_by_id(team_id)
+        return render_template("team_dash_experiences.html", team=team, experiences=experiences)
+
+
+@exp.post("/team/<team_id>/members")
+@auth.requires_team_member
+def add_to_team(team_id):
+    email = request.form.get("email", "")
+    with DB_ENGINE.connect() as conn:
+        team_repo = DbTeamRepository(conn)
+        account_repo = DbAccountRepository(conn)
+        account = account_repo.fetch_account_by_email(email)
+        if account is None:
+            return redirect(
+                url_for(
+                    "experimenter.team_dash_members", team_id=team_id, error=f"No account for email: '{email}' found "
+                )
+            )
+        team_repo.insert_team_membership(team_id, account.account_id)
+        conn.commit()
+        return redirect(url_for("experimenter.team_dash_members", team_id=team_id))

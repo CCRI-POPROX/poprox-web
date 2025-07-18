@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+{% extends "experimenter_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{experiment.name}}</li>
+{% endblock %}
 
 
-
-</head>
-<body>
-    {% if request.args.error %}
-        <div class="error">{{request.args.error}}</div>
-    {% endif %}
     No content here yet! Here's your experiment metadata in one ugly json dump!
     <pre>
         <code>
             {{experiment|tojson}}
         </code>
     </pre>
-</body>
-</html>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "experimenter_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{team.team_name}}</li>
+{% endblock %}
+
+{% block content %}
+<h2>{{team.team_name}} ({{team.team_id}})</h2>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Members</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('experimenter.team_dash_experiences', team_id=team.team_id)}}">Algorithm Testing</a>
+  </li>
+</ul>
+<h3>Members</h3>
+<ul>
+  {% for member in members %}
+  <li>{{member.email}}</li>
+  {% endfor %}
+</ul>
+<h3>Add Member</h3>
+<form method="post" action="{{url_for('experimenter.add_to_team', team_id = team.team_id)}}">
+  <input type="email" id="email" name="email" placeholder="who">
+  <input type="submit">
+</form>
+{% endblock %}

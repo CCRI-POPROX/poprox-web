@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% if request.args.error %}
-        <div class="error">{{request.args.error}}</div>
-    {% endif %}
+{% extends "experimenter_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">experimenter dashboard</li>
+
+{% endblock %}
+
+{% block content %}
 
     <h1> Your Teams </h1>
     <ul>
         {% for team in teams.values() %}
-        <li><a href="{{url_for('experimenter.team_dashboard', team_id=team.team_id)}}">{{team.team_name}}</a></li>
+        <li><a href="{{url_for('experimenter.team_dash_members', team_id=team.team_id)}}">{{team.team_name}}</a></li>
         {% endfor %}
     </ul>
 
@@ -23,5 +20,4 @@
       <li><a href="{{url_for('experimenter.expt_dashboard', experiment_id=expt.experiment_id)}}">{{expt.description}}</a></li>
       {% endfor %}
       </ul>
-</body>
-</html>
+{% endblock %}
