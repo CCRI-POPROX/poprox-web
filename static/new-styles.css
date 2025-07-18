@@ -47,6 +47,16 @@ body {
     text-decoration: none;
 }
 
+.nav-tabs .nav-link {
+    color:  rgb(46, 128, 119) !important;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+    color:  #212A37 !important;
+    text-decoration: none;
+}
+
 body>div {
     flex-grow: 1;
 }

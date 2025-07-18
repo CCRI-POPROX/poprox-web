@@ -6,8 +6,16 @@
 {% endblock %}
 
 {% block content %}
-
 <h2>{{team.team_name}} ({{team.team_id}})</h2>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Members</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('experimenter.team_dash_experiences', team_id=team.team_id)}}">Algorithm Testing</a>
+  </li>
+</ul>
 <h3>Members</h3>
 <ul>
   {% for member in members %}
@@ -19,5 +27,4 @@
   <input type="email" id="email" name="email" placeholder="who">
   <input type="submit">
 </form>
-
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends "experimenter_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{team.team_name}}</li>
+{% endblock %}
+
+{% block content %}
+<h2>{{team.team_name}} ({{team.team_id}})</h2>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="{{url_for('experimenter.team_dash_members', team_id=team.team_id)}}">Members</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Algorithm Testing</a>
+  </li>
+</ul>
+<h3>Active Algorithm Test Experiences</h3>
+<ul>
+  {% for experience in experiences %}
+      {% if experience.active %}
+        <li>{{experience|tojson}}</li>
+      {% endif %}
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -10,7 +10,7 @@
     <h1> Your Teams </h1>
     <ul>
         {% for team in teams.values() %}
-        <li><a href="{{url_for('experimenter.team_dashboard', team_id=team.team_id)}}">{{team.team_name}}</a></li>
+        <li><a href="{{url_for('experimenter.team_dash_members', team_id=team.team_id)}}">{{team.team_name}}</a></li>
         {% endfor %}
     </ul>
 
