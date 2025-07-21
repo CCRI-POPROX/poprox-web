@@ -17,11 +17,102 @@
   </li>
 </ul>
 <h3>Active Algorithm Test Experiences</h3>
-<ul>
-  {% for experience in experiences %}
-      {% if experience.active %}
-        <li>{{experience|tojson}}</li>
-      {% endif %}
-  {% endfor %}
-</ul>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Start</th>
+      <th scope="col">End</th>
+      <th scope="col">Template</th>
+      <th scope="col">Recommender</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for experience in experiences %}
+        {% if experience.active %}
+          <tr>
+            <td>
+              <a href="{{url_for('experimenter.team_edit_experience_form', team_id = team.team_id, experience_id=experience.experience_id)}}">edit</a>
+            </td>
+            <td>{{experience.name}}</td>
+            <td>{{experience.start_date}}</td>
+            <td>
+              {% if experience.end_date != None %}
+                {{experience.end_date}}
+              {% endif %}
+            </td>
+            <td>
+              {% if experience.template == None %}
+                (system default)
+              {% else %}
+                {{experience.template}}
+              {% endif %}
+            </td>
+            <td>{{recommenders[experience.recommender_id]}}</td>
+            <td>
+              <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
+                <input type="checkbox" required/>
+                <button type="submit" class="btn btn-warning btn-sm">TEST</button>
+              </form>
+            </td>
+          </tr>
+        {% endif %}
+    {% endfor %}
+    <tr>
+      <tr>
+        <td colspan="7"><a href="{{url_for('experimenter.team_edit_experience_form', team_id = team.team_id)}}">Set up new experience</a></td>
+      </tr>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Non-active Algorithm Test Experiences</h3>
+<p>(These either start in the future, or are marked as over.
+  You can edit them to re-activate)
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Start</th>
+      <th scope="col">End</th>
+      <th scope="col">Template</th>
+      <th scope="col">Recommender</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for experience in experiences %}
+        {% if not experience.active %}
+          <tr>
+            <td><a href="{{url_for('experimenter.team_edit_experience_form', team_id = team.team_id, experience_id=experience.experience_id)}}">edit</a></td>
+            <td>{{experience.name}}</td>
+            <td>{{experience.start_date}}</td>
+            <td>
+              {% if experience.end_date != None %}
+                {{experience.end_date}}
+              {% endif %}
+            </td>
+            <td>
+              {% if experience.template == None %}
+                (system default)
+              {% else %}
+                {{experience.template}}
+              {% endif %}
+            </td>
+            <td>{{recommenders[experience.recommender_id]}}</td>
+            <td>
+              <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
+                <input type="checkbox" required/>
+                <button type="submit" class="btn btn-warning btn-sm">TEST</button>
+              </form>
+            </td>
+          </tr>
+        {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

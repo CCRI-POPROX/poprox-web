@@ -1,0 +1,52 @@
+{% extends "experimenter_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
+<li class="breadcrumb-item"><a href="{{url_for('experimenter.team_dash_experiences', team_id=team.team_id)}}">{{team.team_name}}</a></li>
+<li class="breadcrumb-item active" aria-current="page">
+  {% if experience != None %}
+    {{experience.name}}
+  {% else %}
+    New Test Experience
+  {% endif %}
+</li>
+{% endblock %}
+
+{% block content %}
+
+{% if experience %}
+<form class="row g-3" method="post" action="{{url_for('experimenter.team_edit_experience_post',team_id=team.team_id, experience_id=experience.experience_id)}}">
+{% else %}
+<form class="row g-3" method="post" action="{{url_for('experimenter.team_edit_experience_post',team_id=team.team_id)}}">
+
+{% endif %}
+  <div class="form-group col-4">
+    <label for="name" class="form-label"> name </label>
+    <input id="name" required name="name" type="text" class="form-control col-6" value="{{experience.name if experience else ''}}" placeholder="name">
+    <small id="name_help" class="form-text text-muted">This will label all experience-emails</small>
+  </div>
+  <div class="form-group col-8">
+    <label for="recommender_url" class="form-label"> recommender_url </label>
+    <input id="recommender_url" required name="recommender_url" type="url" class="form-control" value="{{recommender_url if recommender_url else ''}}">
+    <small id="recommender_url_help" class="form-text text-muted">Example: <code>https://n2gfr5emwj.execute-api.us-east-1.amazonaws.com/?pipeline=nrms_feedback_filter</code></small>
+  </div>
+
+  <div class="form-group col-4">
+    <label for="start_date" class="form-label"> start date (inclusive) </label>
+    <input id="start_date" required name="start_date" type="date" class="form-control" value="{{experience.start_date if experience else today}}">
+  </div>
+  <div class="form-group col-4">
+    <label for="end_date" class="form-label"> end date (inclusive) </label>
+    <input id="end_date" name="end_date" type="date" class="form-control" value="{{experience.end_date if experience.end_date else ''}}">
+    <small id="end_date_help" class="form-text text-muted">Leave unset if unsure -- you can always set it later.</small>
+  </div>
+  <div class="form-group col-4">
+    <label for="template" class="form-label"> template </label>
+    <input id="template" name="template" type="text" class="form-control" value="{{experience.template if experience.template else ''}}">
+    <small id="template_help" class="form-text text-muted">Leave empty to use system default</small>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{% endblock %}

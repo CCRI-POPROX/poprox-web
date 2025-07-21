@@ -50,7 +50,7 @@
 	<form action="{{url_for('enroll_with_token_post', link_data_raw=link_data_raw)}}" method="post">
 		<div class="form-group row">
 			<label for="code">Code:</label>
-			<input class="form-control col col-md-1{% if code_error is defined %} is-invalid{% endif %}" name="code" id="code" type="text" placeholder="code" required>
+			<input class="form-control form-control-30 col col-md-1{% if code_error is defined %} is-invalid{% endif %}" name="code" id="code" type="text" placeholder="code" required>
 
 			{% if code_error is defined %}
 			<div class="invalid-feedback">
@@ -58,7 +58,7 @@
 			</div>
 			{% endif %}
 		</div>
-		<button type="submit" class="btn btn-primary mt-3">Subscribe</button>
+		<button type="submit" class="pr-btn btn btn-primary mt-3">Subscribe</button>
 	</form>
 </div>
 {% endblock %}

@@ -58,9 +58,12 @@
                             {% endblock %}
                         </ol>
                       </nav>
-                    {% if request.args.error %}
-                    <div class="error">{{request.args.error}}</div>
-                    {% endif %}
+                      {% if request.args.error %}
+                      <div class="alert alert-warning">{{request.args.error}}</div>
+                      {% endif %}
+                      {% if error %}
+                      <div class="alert alert-warning">{{error}}</div>
+                      {% endif %}
                     {% block content %}
                     {% endblock %}
                 </div>
