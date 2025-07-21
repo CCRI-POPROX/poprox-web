@@ -201,51 +201,10 @@ input[type="email"] {
 /*
 * css for consent1.html
 */
-/* h1 {
-	font-size: 2em;
-	text-align: center;
-	margin: 1rem;
-} */
+
  h1 {
     text-align: center;
  }
-
-/* h2 {
-	font-size: 1.5rem;
-} */
-
-/* h3 {
-	margin-top: 0.5rem;
-	font-weight: bolder;
-	font-size: 1.25rem;
-} */
-
-/* h4 {
-	font-weight: bolder;
-	display: inline;
-} */
-
-/* h5 {
-	font-weight: bold;
-	display: inline;
-} */
-
-/* h2~p,
-h3 {
-	margin-left: 2rem;
-} */
-
-/* h3~p,
-h3~ul,
-h4 {
-	margin-left: 3rem;
-} */
-
-/* h4~p,
-h4~ul,
-h5 {
-	margin-left: 4rem;
-} */
 
 .consent {
     margin: 2rem;
@@ -257,7 +216,42 @@ h5 {
 	border-radius: 9px;
 }
 
+.accordion-header {
+    background-color: #ececec;
+}
 
+.accordion-header .accordion-button{
+    background-color: #ececec;
+}
+
+.accordion-header .accordion-button:not(.collapsed){
+    background-color: #ececec;
+    cursor: pointer;
+}
+
+.accordion-header.checked {
+	background-color: #22771133;
+}
+
+.accordion-header.checked .accordion-button {
+    background-color: #22771133;
+}
+
+.accordion-header.checked .accordion-button:not(.collapsed) {
+    background-color: #22771133;
+}
+
+.accordion-header.error {
+	background-color: #ef333363;
+}
+
+.accordion-header.error .accordion-button{
+	background-color: #ef333363;
+}
+
+.accordion-header.error .accordion-button:not(.collapsed){
+	background-color: #ef333363;
+}
 
 .minmax-icon {
 	font-size: 1.5rem;
@@ -268,23 +262,6 @@ h5 {
 .minmax-icon::after {
 	content: "[" attr(state-lbl) "]";
 }
-
-/* .accordion-header {
-	cursor: pointer;
-	background-color: #ececec;
-	display: flex;
-	padding: 1rem;
-	margin-bottom: 0.1rem;
-	margin-top: 0.1rem;
-}
-
-.accordion-header.checked {
-	background-color: #008e8288;
-}
-
-.accordion-header.error {
-	background-color: #a62091;
-} */
 
 .consent-section {
 	overflow: hidden;
