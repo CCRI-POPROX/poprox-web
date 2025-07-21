@@ -8,6 +8,8 @@ flask_httpauth
 psycopg2-binary
 tqdm
 markdown
+stamina
+
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git

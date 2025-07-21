@@ -47,6 +47,16 @@ body {
     text-decoration: none;
 }
 
+.nav-tabs .nav-link {
+    color:  rgb(46, 128, 119) !important;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+    color:  #212A37 !important;
+    text-decoration: none;
+}
+
 body>div {
     flex-grow: 1;
 }
@@ -82,7 +92,7 @@ footer {
 }
 
 /* Buttons */
-.btn {
+.pr-btn {
     background-color: #008e82aa;
     color: #ffffff;
     font-weight: bold;
@@ -92,16 +102,16 @@ footer {
     transition: background-color 0.3s ease;
 }
 
-.btn:hover {
+.pr-btn:hover {
     background-color: #008e82;
     color: #ffffff;
 }
 
-.btn:disabled {
+.pr-btn:disabled {
 	background-color: #a3abbd;
 }
 
-.form-control {
+.form-control-30 {
 	width: 30%;
 }
 
