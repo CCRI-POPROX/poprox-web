@@ -210,33 +210,9 @@ input[type="email"] {
     height: 36px;
 }
 
-/* .slider {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 36px;
-    background-color: transparent;
+.topic-top-row {
+    height: 2lh;
 }
-
-.slider::-moz-range-thumb {
-    width: 9px;
-    height: 36px;
-}
-
-.slider::-webkit-slider-thumb {
-    width: 9px;
-    height: 36px;
-}
-
-.slider::-webkit-slider-runnable-track {
-    height: 36px;
-} */
-
-/* range radio progress widget (ranradprowid) */
-/* .pseudo-range-slider-container {
-    position: relative;
-    width: 100%;
-} */
 
 .pseudo-range-slider {
     width: 100%;
@@ -268,18 +244,22 @@ input[type="email"] {
     height: 36px;
     z-index: 4;
 }
+
 .pseudo-range-slider::-moz-range-thumb {
-    background-color: #008e82aa;
+    background-color: #cecece;
     border: 1px solid #cecece;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 1);
+    box-shadow: 0 0 0 0.25rem #008e82aa;
+    margin-top: 10px;
     width: 13px;
     height: 36px;
     z-index: 4;
 }
+
 .pseudo-range-slider::-ms-thumb {
-    background-color: #008e82aa;
+    background-color: #cecece;
     border: 1px solid #cecece;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 0 0.25rem #008e82aa;
+    margin-top: 10px;
     width: 13px;
     height: 36px;
     z-index: 4;
@@ -303,7 +283,6 @@ input[type="email"] {
     height: 100%;
     background-color: #008e82aa; /* Progress color */
     position: absolute;
-    border-radius: 0.5em;
     top: 0;
 }
 
@@ -312,6 +291,7 @@ input[type="email"] {
     width: 0%;
     transform-origin: 100% 50%;
     transition: width 0.2s linear;
+    border-radius: 0.5em 0 0 0.5em;
 }
 
 .progress-bar-fill.positive {
@@ -319,6 +299,7 @@ input[type="email"] {
     width: 0%;
     transform-origin: 0% 50%;
     transition: width 0.2s linear;
+    border-radius: 0 0.5em 0.5em 0;
 }
 
 .value-markers {
@@ -340,30 +321,8 @@ input[type="email"] {
     line-height: 0;
     transform: translateY(-50%);
     pointer-events: auto;
+    z-index: 1;
 }
-
-.marker:hover {
-    color: #0056b3;
-}
-
-.value-labels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    position: absolute;
-    bottom: 0px; /* TODO: use bootstrap class in the html*/
-    left: 0; /* TODO: use bootstrap class in the html*/
-    right: 0; /* TODO: use bootstrap class in the html*/
-    padding-top: 5px; /* TODO: use bootstrap class in the html*/
-    font-size: 0.9rem; /* TODO: use bootstrap class in the html*/
-    color: #6c757d;
-}
-
-.value-labels span {
-    flex: 1;
-    text-align: center; /* TODO: use bootstrap class in the html*/
-}
-
 
 /* end topics.html */
 

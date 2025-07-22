@@ -23,7 +23,6 @@
         const negativeFill = topicBlock.querySelector('.progress-bar-fill.negative');
         const positiveFill = topicBlock.querySelector('.progress-bar-fill.positive');
         const markers = topicBlock.querySelectorAll('.marker');
-        const labels = topicBlock.querySelectorAll('.value-labels span');
 
         function updateSlider(valueIndex) {
             if (!rangeInput) {
@@ -65,11 +64,6 @@
 
             negativeFill.style.width = `${negativeWidth}%`;
             positiveFill.style.width = `${positiveWidth}%`;
-
-            labels.forEach(label => label.classList.remove('active-label'));
-            if (labels[valueIndex]) {
-                labels[valueIndex].classList.add('active-label');
-            }
         }
 
         function alignMarkers() {
@@ -88,13 +82,6 @@
                 marker.style.left = `${leftOffset}px`;
                 marker.style.position = 'absolute';
                 marker.style.transform = 'translateY(-50%)';
-            });
-
-            labels.forEach((label, index) => {
-                const leftOffset = (sliderWidth / totalSteps) * index;
-                label.style.left = `${leftOffset}px`;
-                label.style.position = 'absolute';
-                label.style.transform = 'translateX(-50%)';
             });
         }
 
@@ -125,10 +112,6 @@
         });
 
         window.addEventListener('resize', alignMarkers);
-
-        if (labels[middleIndex]) {
-            labels[middleIndex].classList.add('active-label');
-        }
     });
 
     function validateForm(evt) {
@@ -205,7 +188,7 @@
 				{% set input_name = topic|replace(' ', '_') + "_pref" %}
 				<div class="pref-item-block container shadow-sm rounded m-3 p-3">
 					<div class="col">
-						<div class="row mb-0">
+						<div class="topic-top-row row mb-0">
 							<div class="col">
 								<span class="fw-bold">{{topic}}</span>
 							</div>
