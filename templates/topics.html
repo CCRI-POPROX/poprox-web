@@ -98,7 +98,12 @@
             });
         }
 
-        updateSlider(middleIndex);
+     	let initialValueIndex = parseInt(rangeInput.value);
+        if (isNaN(initialValueIndex) || initialValueIndex < 0 || initialValueIndex >= discreteValues.length) {
+            initialValueIndex = middleIndex;
+        }
+        updateSlider(initialValueIndex);
+        alignMarkers();
 
         if (rangeInput) {
             rangeInput.addEventListener('input', function() {
@@ -230,7 +235,7 @@
 					</div>
 				</div>
 			{% endfor %}
-			<input class="btn btn-primary" type="submit" value="Submit">
+			<input class="btn pr-btn" type="submit" value="Submit">
 		</form>
 	</div>
 </div>
