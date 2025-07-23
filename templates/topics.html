@@ -223,7 +223,7 @@
 										type="range"
 										name={{input_name}}
 										class="form-range pseudo-range-slider"
-										min="0" max="4" step="1" value="2">
+										min="0" max="4" step="1" value="{{user_topic_preferences.get(topic,2)}}">
 									<div class="value-markers">
 										{% for intlvl in intlvls %}
 											<span class="marker" data-value="{{intlvl[1]}}">|</span>
