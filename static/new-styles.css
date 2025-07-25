@@ -428,26 +428,3 @@ input[type="email"] {
 }
 
 /* end consent1.html */
-
-
-/* css for onboarding_survey.html */
-
-.onboarding-survey ul{
-	list-style-type: none;
-	display: inline-grid;
-}
-
-.onboarding-survey ul li {
-	margin: 0.25em 0.25em 0.25em 0;
-	padding: 0.25em;
-}
-
-.onboarding-survey .field{
-	margin: 1rem;
-}
-
-.onboarding-survey input[type="text"] {
-	max-width: 200px;
-	/* margin-left: 1em; */
-
-}
