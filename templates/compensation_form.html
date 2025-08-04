@@ -1,0 +1,100 @@
+{% extends "new-layout.html" %}
+
+{% block sidebar %}
+	{% if onboarding %}
+        <div class="column is-1"></div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var compensationSelect = document.getElementById("compensationSelect");
+        compensationSelect.addEventListener("change", function(evt) {
+            console.log("Changed: ", evt.target.value);
+            const selectedVal = evt.target.value;
+            var giftCards = document.getElementById("giftcardOptions");
+            var charities = document.getElementById("charityOptions");
+
+
+            // We will hide everything and only unhide the relevant select
+            if (!charities.classList.contains("d-none")) {
+                charities.classList.add("d-none");
+            }
+            if (!giftCards.classList.contains("d-none")) {
+                giftCards.classList.add("d-none");
+            }
+            giftCards.required = false;
+            charities.required = false;
+
+            switch (selectedVal) {
+                case "giftcard":
+                    giftCards.classList.remove("d-none");
+                    giftCards.required = true;
+                    break;
+                case "donatecharity":
+                    charities.classList.remove("d-none");
+                    charities.required = true;
+                    break;
+                case "declinepayment":
+                        break;
+                default:
+                    // Do nothing
+                    break;
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="container p-4 rounded-1 bg-white shadow-sm onboarding-survey">
+    {% if updated %}
+    <div class="pref-updated-flash">
+        <p>
+            <strong>Your information have been updated.</strong>
+        </p>
+    </div>
+    {% endif %}
+    <h1>Compensation Settings</h1>
+
+    <p>
+        Please provide the following information.
+    </p>
+    <form action="{{'update_compensation_preference'}}" method="POST">
+        <label class="form-label mt-4 fw-bold" for="compensationSelect">Choose your preferred method of compensation:</label>
+        <select class="form-select"
+            id="compensationSelect"
+            title="Select a method of compensation" name="compensationSelect" required>
+            <option value="" {% if not user_compensation['method'] %} selected {% endif %}>
+                Select a method
+            </option>
+            <option value="giftcard">Gift cards</option>
+            <option value="donatecharity">Charitable donations</option>
+            <option value="declinepayment">Decline payment</option>
+        </select>
+        <select class="form-select mt-3 d-none"
+            id="giftcardOptions"
+            title="Select a gift card" name="giftcardOptions">
+            <option value="" {% if not user_compensation['option'] %} selected {% endif %}>
+                Select a gift card
+            </option>
+            {% for comp in giftcardopts %}
+                <option value="{{comp}}">{{comp}}</option>
+            {%endfor%}
+        </select>
+        <select class="form-select mt-3 d-none"
+            id="charityOptions"
+            title="Select a gift card" name="charityOptions" required>
+            <option value="" {% if not user_compensation['option'] %} selected {% endif %}>
+                Select a charitable organization
+            </option>
+            {% for comp in donationopts %}
+                <option value="{{comp}}">{{comp}}</option>
+            {%endfor%}
+        </select>
+        <input class="btn pr-btn mt-5" type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

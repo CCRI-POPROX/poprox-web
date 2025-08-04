@@ -3,12 +3,18 @@ import os
 from datetime import datetime, timedelta, timezone
 
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.teams import DbTeamRepository
 from poprox_storage.repositories.tokens import DbTokenRepository
 from sqlalchemy import create_engine
 
 from poprox_concepts.api.tracking import Token
+from poprox_concepts.domain.demographics import (
+    EMAIL_CLIENT_OPTIONS,
+    RACE_OPTIONS,
+    Demographics,
+)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -84,7 +90,14 @@ def finish_consent(account_id, consent_version):
 def finish_topic_selection(account_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        account_repo.update_status(account_id, "pending_onboarding_survey")
+        account_repo.update_status(account_id, "pending_demographic_survey")
+        conn.commit()
+
+
+def finish_demographic_survey(account_id):
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        account_repo.update_status(account_id, "pending_compensation_preference")
         conn.commit()
 
 
@@ -116,3 +129,45 @@ def get_token(token_id) -> Token | None:
             return None
         else:
             return token
+
+
+def fetch_demographic_information(account_id):
+    def convert_to_record(row: Demographics, zip5: str) -> dict:
+        race_list = row.race.split(";")  # Split the race field into individual races
+        predefined_races = [r for r in race_list if r in RACE_OPTIONS]
+        custom_races = next((r for r in race_list if r not in RACE_OPTIONS), None)
+
+        email_client_list = row.email_client.split(";")
+        predefined_email_clients = [e for e in email_client_list if e in EMAIL_CLIENT_OPTIONS]
+        custom_email_clients = next((e for e in email_client_list if e not in EMAIL_CLIENT_OPTIONS), None)
+        return {
+            "gender": row.gender,
+            "birth_year": str(row.birth_year),
+            "zip5": zip5,
+            "education": row.education,
+            "raw_race": row.race,
+            "race": ";".join(predefined_races),  # Join predefined races back into a single string
+            "race_notlisted": custom_races,
+            "raw_email_client": row.email_client,
+            "email_client": ";".join(predefined_email_clients),
+            "email_client_other": custom_email_clients,
+        }
+
+    with DB_ENGINE.connect() as conn:
+        repo = DbDemographicsRepository(conn)
+        account_repo = DbAccountRepository(conn)
+        demographics = repo.fetch_latest_demographics_by_account_id(account_id)
+        zip5 = account_repo.fetch_zip5(account_id)
+    if demographics and zip5:
+        combined_dict = convert_to_record(demographics, zip5)
+        return combined_dict
+    else:
+        return None
+
+
+def fetch_compensation_preferences(account_id):
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        compensation = account_repo.fetch_compensation(account_id)
+
+    return compensation
