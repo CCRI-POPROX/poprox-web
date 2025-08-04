@@ -1,5 +1,22 @@
 {% extends "experimenter_main_layout.html" %}
 
+{% block header %}
+<script>
+  document.addEventListener("DOMContentLoaded", ()=>{
+    for(let form of document.getElementsByClassName("experience_sender")) {
+      let button = form.getElementsByTagName("button")[0]
+      button.addEventListener("click", (e)=>{
+        console.log(form.dataset)
+        experience_name = form.dataset.experience_name
+        if (! confirm("Are you sure you want to immediately send test email from "+experience_name+"?")) {
+          e.preventDefault()
+        }
+      })
+    }
+  })
+</script>
+{% endblock %}
+
 {% block breadcrumbs %}
 <li class="breadcrumb-item"><a href="{{url_for('experimenter.expt_home')}}">experimenter dashboard</a></li>
 <li class="breadcrumb-item active" aria-current="page">{{team.team_name}}</li>
@@ -52,8 +69,7 @@
             </td>
             <td>{{recommenders[experience.recommender_id]}}</td>
             <td>
-              <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
-                <input type="checkbox" required/>
+              <form method="post" data-experience_name="{{experience.name}}" class="experience_sender" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
                 <button type="submit" class="btn btn-warning btn-sm">TEST</button>
               </form>
             </td>
@@ -105,8 +121,7 @@
             </td>
             <td>{{recommenders[experience.recommender_id]}}</td>
             <td>
-              <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
-                <input type="checkbox" required/>
+              <form method="post" data-experience_name="{{experience.name}}" class="experience_sender" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
                 <button type="submit" class="btn btn-warning btn-sm">TEST</button>
               </form>
             </td>
