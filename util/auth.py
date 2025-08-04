@@ -220,7 +220,7 @@ class Auth:
         message = json.dumps(
             {
                 "email_to": email,
-                "email_subject": "POPROX - Record of Consent",
+                "email_subject": "Welcome to POPROX",
                 "email_body": html,
             }
         )
