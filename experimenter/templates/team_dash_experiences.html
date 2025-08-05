@@ -4,11 +4,9 @@
 <script>
   document.addEventListener("DOMContentLoaded", ()=>{
     for(let form of document.getElementsByClassName("experience_sender")) {
-      let button = form.getElementsByTagName("button")[0]
-      button.addEventListener("click", (e)=>{
-        console.log(form.dataset)
-        experience_name = form.dataset.experience_name
-        if (! confirm("Are you sure you want to immediately send test email from "+experience_name+"?")) {
+      form.addEventListener("submit", (e)=>{
+        let experience_name = form.dataset.experience_name
+        if (! confirm("Are you sure you want to immediately send test email from "+experience_name+"?")){
           e.preventDefault()
         }
       })
