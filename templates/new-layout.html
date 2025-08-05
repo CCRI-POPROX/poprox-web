@@ -68,9 +68,12 @@
                             </h6>
                             <div class="list-group">
                                 {% if auth.is_logged_in() %}
-                                <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Log Out</a>
-                                <a href="{{ url_for('topics') }}" class="list-group-item list-group-item-action">Topic Selection</a>
-                                <a href="{{ url_for('onboarding_survey') }}" class="list-group-item list-group-item-action">User Demographic</a>
+                                    <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Log Out</a>
+                                    <a href="{{ url_for('topics') }}" class="list-group-item list-group-item-action">Topic Selection</a>
+                                    <a href="{{ url_for('onboarding_survey') }}" class="list-group-item list-group-item-action">User Demographic</a>
+                                    {% if auth.get_account_teams()|length > 0%}
+                                        <a href="{{url_for('experimenter.expt_home')}}" class="list-group-item list-group-item-action">Experimenter Dashboard</a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
