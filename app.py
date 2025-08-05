@@ -58,6 +58,12 @@ app.register_blueprint(exp)
 app.register_blueprint(static_web)
 
 
+@app.context_processor
+def dfault_jinja_variables():
+    """returned properties here will be added to all jinja renders"""
+    return dict(auth=auth)
+
+
 @app.route(f"{URL_PREFIX}/email_redirect/<path>")
 def email_redirect(path):
     data: LoginLinkData = from_hashed_base64(path, HMAC_KEY, LoginLinkData)
@@ -243,7 +249,7 @@ def consent1():
         # without agreeing to all sections
         missing = []
 
-    return render_template("consent1.html", error=error, missing=missing, auth=auth)
+    return render_template("consent1.html", error=error, missing=missing)
 
 
 @app.route(f"{URL_PREFIX}/consent2")
@@ -284,7 +290,6 @@ def home():
 
         return render_template(
             "home.html",
-            auth=auth,
             error=error,
             is_subscribed=is_subscribed,
         )
@@ -342,7 +347,6 @@ def feedback():
 
     return render_template(
         "feedback.html",
-        auth=auth,
         impressions=impressions,
         images=images,
     )
@@ -416,7 +420,6 @@ def topics():
         onboarding=onboarding,
         topics=GENERAL_TOPICS,
         intlvls=interest_lvls,
-        auth=auth,
         user_topic_preferences=user_topic_preferences,
     )
 
@@ -558,7 +561,6 @@ def onboarding_survey():
         clientopts=EMAIL_CLIENT_OPTIONS,
         giftcardopts=COMPENSATION_CARD_OPTIONS,
         donationopts=COMPENSATION_CHARITY_OPTIONS,
-        auth=auth,
         user_demographic_information=user_demographic_information,
     )
 
