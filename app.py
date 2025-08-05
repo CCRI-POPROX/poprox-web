@@ -522,7 +522,7 @@ def update_demographics():
             )
             return redirect(url_for("compensation_preference_form"))
         else:
-            return redirect(url_for("demographics_form", updated=True))
+            return redirect(url_for("demographic_form", updated=True))
 
 
 @app.route(f"{URL_PREFIX}/compensation_preference", methods=["GET"])
@@ -538,14 +538,14 @@ def compensation_preference_form():
         if compensation is None:
             return selected_comp
         else:
-            selected_comp["options"] = compensation
+            selected_comp["option"] = compensation
 
         if compensation in COMPENSATION_CARD_OPTIONS:
             selected_comp["method"] = "giftcard"
         elif compensation in COMPENSATION_CHARITY_OPTIONS:
             selected_comp["method"] = "donatecharity"
         else:
-            selected_comp["method"] = "declinepayment"
+            selected_comp["method"] = "Decline payment"
 
         return selected_comp
 
@@ -572,8 +572,16 @@ def update_compensation_preference():
         account_repo = DbAccountRepository(conn)
         account_id = auth.get_account_id()
 
-        compensation = validate(request.form.get("compensation"), COMPENSATION_OPTIONS)
-        account_repo.store_compensation(account_id, compensation)
+        compensation_choice = ""
+        compensation_method = request.form.get("compensation_method")
+        if compensation_method == "giftcard":
+            compensation_choice = validate(request.form.get("selected_giftcard"), COMPENSATION_OPTIONS)
+        elif compensation_method == "donatecharity":
+            compensation_choice = validate(request.form.get("selected_charity"), COMPENSATION_OPTIONS)
+        else:
+            compensation_choice = validate(compensation_method, COMPENSATION_OPTIONS)
+
+        account_repo.store_compensation(account_id, compensation_choice)
         conn.commit()
 
         if onboarding:

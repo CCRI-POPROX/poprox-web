@@ -62,36 +62,37 @@
     <p>
         Please provide the following information.
     </p>
+
     <form action="{{'update_compensation_preference'}}" method="POST">
         <label class="form-label mt-4 fw-bold" for="compensationSelect">Choose your preferred method of compensation:</label>
         <select class="form-select"
             id="compensationSelect"
-            title="Select a method of compensation" name="compensationSelect" required>
+            title="Select a method of compensation" name="compensation_method" required>
             <option value="" {% if not user_compensation['method'] %} selected {% endif %}>
                 Select a method
             </option>
-            <option value="giftcard">Gift cards</option>
-            <option value="donatecharity">Charitable donations</option>
-            <option value="declinepayment">Decline payment</option>
+            <option value="giftcard" {% if user_compensation['method']=="giftcard" %} selected {% endif %}>Gift cards</option>
+            <option value="donatecharity" {% if user_compensation['method']=="donatecharity" %} selected {% endif %}>Charitable donations</option>
+            <option value="Decline payment" {% if user_compensation['method']=="Decline payment" %} selected {% endif %}>Decline payment</option>
         </select>
-        <select class="form-select mt-3 d-none"
+        <select class="form-select mt-3 {% if user_compensation['method'] != "giftcard" %} d-none {% endif %}"
             id="giftcardOptions"
-            title="Select a gift card" name="giftcardOptions">
+            title="Select a gift card" name="selected_giftcard">
             <option value="" {% if not user_compensation['option'] %} selected {% endif %}>
                 Select a gift card
             </option>
             {% for comp in giftcardopts %}
-                <option value="{{comp}}">{{comp}}</option>
+                <option value="{{comp}}" {% if user_compensation['option']==comp %} selected {% endif %}>{{comp}}</option>
             {%endfor%}
         </select>
-        <select class="form-select mt-3 d-none"
+        <select class="form-select mt-3 {% if user_compensation['method']!="donatecharity" %} d-none {% endif %}"
             id="charityOptions"
-            title="Select a gift card" name="charityOptions" required>
+            title="Select a gift card" name="selected_charity" required>
             <option value="" {% if not user_compensation['option'] %} selected {% endif %}>
                 Select a charitable organization
             </option>
             {% for comp in donationopts %}
-                <option value="{{comp}}">{{comp}}</option>
+                <option value="{{comp}}" {% if user_compensation['option']==comp %} selected {% endif %}>{{comp}}</option>
             {%endfor%}
         </select>
         <input class="btn pr-btn mt-5" type="submit" value="Submit">

@@ -158,11 +158,12 @@ def fetch_demographic_information(account_id):
         account_repo = DbAccountRepository(conn)
         demographics = repo.fetch_latest_demographics_by_account_id(account_id)
         zip5 = account_repo.fetch_zip5(account_id)
-    if demographics and zip5:
-        combined_dict = convert_to_record(demographics, zip5)
-        return combined_dict
-    else:
-        return None
+
+        if demographics and zip5:
+            combined_dict = convert_to_record(demographics, zip5)
+            return combined_dict
+        else:
+            return None
 
 
 def fetch_compensation_preferences(account_id):

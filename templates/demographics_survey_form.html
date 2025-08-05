@@ -113,7 +113,7 @@
         }
 
 
-        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked) && compensationRadios.some(checked);
+        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked);
     }
 </script>
 {% endblock %}
@@ -171,7 +171,7 @@
 
         <label class="form-label mt-4 fw-bold" for="educationselect">What is the highest degree or level of education you have completed?</label>
         <select class="form-select"
-            id="educationselection"
+            id="educationselect"
             title="Select options for eliciting level of education." name="education"
             required="required">
             <option value="" {% if not user_demographic_information['education'] %} selected {% endif %}>
@@ -182,7 +182,7 @@
             {% endfor %}
         </select>
 
-        <label class="form-label mt-4 fw-bold" for="racechecks">Choose one or more races that you consider yourself to be:</label>
+        <p class="form-label mt-4 fw-bold">Choose one or more races that you consider yourself to be:</p>
         <p id="raceError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
             <div class="row row-cols-md-2 ms-1" id="racecheck">
@@ -208,7 +208,7 @@
                 placeholder="Please specify" value="{{ custom_race }}">
         </div>
 
-        <label class="form-label mt-4 fw-bold" for="emailclientchecks">Choose one or more preferred email client:</label>
+        <p class="form-label mt-4 fw-bold">Choose one or more preferred email client:</p>
         <p id="emailClientError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
             <div class="row row-cols-md-4 ms-1" id="emailclientchecks">
