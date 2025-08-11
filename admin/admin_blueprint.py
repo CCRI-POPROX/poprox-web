@@ -7,7 +7,7 @@ from flask_httpauth import HTTPBasicAuth
 from poprox_storage.aws import DB_ENGINE
 from poprox_storage.concepts.experiment import Team
 from poprox_storage.repositories.accounts import DbAccountRepository
-from poprox_storage.repositories.experience import DbExperiencesRepository
+from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.teams import DbTeamRepository
 from sqlalchemy.exc import IntegrityError, InternalError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -30,7 +30,19 @@ def verify_password(username, password):
 @admin_auth.login_required
 def show():
     error = request.args.get("error")
-    return render_template("admin_home.html", error=error)
+
+    with DB_ENGINE.connect() as conn:
+        experiment_repo = DbExperimentRepository(conn)
+        today = date.today()
+
+        active_experiments = experiment_repo.fetch_all_active_experiments(today)
+
+    return render_template(
+        "admin_home.html",
+        error=error,
+        active_experiments=active_experiments,
+        today=today,
+    )
 
 
 ### TEAM MANAGEMENT ###
@@ -115,7 +127,7 @@ def account_search():
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         if request.args.get("account_id"):
-            accounts = account_repo.fetch_accounts(request.args["account_id]"])
+            accounts = account_repo.fetch_accounts(request.args["account_id"])
         elif request.args.get("account_email_query"):
             accounts = account_repo.fetch_account_by_email_query(request.args["account_email_query"])
 
@@ -164,36 +176,3 @@ def update_account_detail(account_id):
             )
 
     return render_template("admin_account_detail.html", editable=["source", "subsource", "email"], account=account)
-
-
-###  ALL RUNNING EXPERIMENTS
-
-
-@admin.get("/experiments/running")
-@admin_auth.login_required
-def running_experiments():
-    with DB_ENGINE.connect() as conn:
-        experience_repo = DbExperiencesRepository(conn)
-        team_repo = DbTeamRepository(conn)
-
-        today = date.today()
-
-        active_experiences = experience_repo.fetch_active_experiences(today)
-
-        teams = {}
-        recommenders = {}
-        for experience in active_experiences:
-            if experience.team_id not in teams:
-                teams[experience.team_id] = team_repo.fetch_team_by_id(experience.team_id)
-            if experience.recommender_id not in recommenders:
-                recommenders[experience.recommender_id] = experience_repo.fetch_recommender_url_by_id(
-                    experience.recommender_id
-                )
-
-        return render_template(
-            "admin_running_experiments.html",
-            experiences=active_experiences,
-            teams=teams,
-            recommenders=recommenders,
-            today=today,
-        )
