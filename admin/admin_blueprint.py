@@ -86,9 +86,12 @@ def add_to_team(team_id):
             return redirect(
                 url_for("admin.team_details", team_id=team_id, error=f"No account for email: '{email}' found ")
             )
-        team_repo.insert_team_membership(team_id, account.account_id)
-        conn.commit()
-        return redirect(url_for("admin.team_details", team_id=team_id))
+        try:
+            team_repo.insert_team_membership(team_id, account.account_id)
+            conn.commit()
+            return redirect(url_for("admin.team_details", team_id=team_id))
+        except ValueError as e:
+            return redirect(url_for("admin.team_details", team_id=team_id, error=str(e)))
 
 
 @admin.post("/team")
