@@ -4,6 +4,35 @@
 
 {% block content %}
 
-(This space left empty until someone bothers to fill it. See the links in the top-right)
+<h2>Running Experiments</h2>
+
+{% if experiments|length > 0 %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Experiment ID</th>
+      <th>Team</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Phases</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for exp in active_experiments %}
+    <tr>
+      <td>{{ exp.description }}</td>
+      <td>{{ exp.experiment_id }}</td>
+      <td>{{ exp.owner.team_name if exp.owner else 'N/A' }}</td>
+      <td>{{ exp.start_date }}</td>
+      <td>{{ exp.end_date }}</td>
+      <td>{{ exp.phases|length }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No running experiments found.</p>
+{% endif %}
 
 {% endblock %}
