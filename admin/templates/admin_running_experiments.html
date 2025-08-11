@@ -1,0 +1,32 @@
+{% extends "admin_main_layout.html" %}
+
+{% block content %}
+<h2>Running Experiments</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Team</th>
+      <th>Recommender URL</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for exp in experiences %}
+    <tr>
+      <td>{{ exp.name }}</td>
+      <td>{{ teams[exp.team_id].team_name }}</td>
+      <td>{{ recommenders[exp.recommender_id] }}</td>
+      <td>{{ exp.start_date }}</td>
+      <td>{{ exp.end_date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if experiences|length == 0 %}
+<p>No running experiments found.</p>
+{% endif %}
+{% endblock %}

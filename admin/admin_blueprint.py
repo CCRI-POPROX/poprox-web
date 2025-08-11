@@ -1,3 +1,4 @@
+from datetime import date
 from os import environ as env
 from uuid import uuid4
 
@@ -6,6 +7,7 @@ from flask_httpauth import HTTPBasicAuth
 from poprox_storage.aws import DB_ENGINE
 from poprox_storage.concepts.experiment import Team
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.experience import DbExperiencesRepository
 from poprox_storage.repositories.teams import DbTeamRepository
 from sqlalchemy.exc import IntegrityError, InternalError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -162,3 +164,36 @@ def update_account_detail(account_id):
             )
 
     return render_template("admin_account_detail.html", editable=["source", "subsource", "email"], account=account)
+
+
+###  ALL RUNNING EXPERIMENTS
+
+
+@admin.get("/experiments/running")
+@admin_auth.login_required
+def running_experiments():
+    with DB_ENGINE.connect() as conn:
+        experience_repo = DbExperiencesRepository(conn)
+        team_repo = DbTeamRepository(conn)
+
+        today = date.today()
+
+        active_experiences = experience_repo.fetch_active_experiences(today)
+
+        teams = {}
+        recommenders = {}
+        for experience in active_experiences:
+            if experience.team_id not in teams:
+                teams[experience.team_id] = team_repo.fetch_team_by_id(experience.team_id)
+            if experience.recommender_id not in recommenders:
+                recommenders[experience.recommender_id] = experience_repo.fetch_recommender_url_by_id(
+                    experience.recommender_id
+                )
+
+        return render_template(
+            "admin_running_experiments.html",
+            experiences=active_experiences,
+            teams=teams,
+            recommenders=recommenders,
+            today=today,
+        )
