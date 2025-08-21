@@ -36,7 +36,7 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
 from util.auth import auth
-from util.computed_options import get_year_options, validate
+from util.computed_options import get_year_options
 from util.postgres_db import (
     DB_ENGINE,
     fetch_compensation_preferences,
@@ -59,6 +59,29 @@ URL_PREFIX = env.get("URL_PREFIX", "/")
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
+
+
+def validate(val, options):
+    """Convenience method to validate select options in form request.
+
+    Validates if an option parameter (val) in the form request is a valid option in options.
+
+    Args:
+        val (str): The option parameter to be validated.
+        options (list): The list of options the parameter is to be validated against.
+
+    Returns:
+        str | None: The option parameter (val) is returned if it is valid otherwise None is returned.
+    """
+    if isinstance(val, list):
+        val = [v for v in val if v in options]
+        if len(val) == 0:
+            return None
+    else:
+        if val not in options:
+            return None
+    return val
+
 
 # Register Blueprints at the top
 app.register_blueprint(mobile_api)

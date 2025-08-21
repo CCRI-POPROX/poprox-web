@@ -12,14 +12,3 @@ def get_year_options() -> list[str]:
     yearopts = ["Prefer not to say"] + yearopts
 
     return yearopts
-
-
-def validate(val, options):
-    if isinstance(val, list):
-        val = [v for v in val if v in options]
-        if len(val) == 0:
-            return None
-    else:
-        if val not in options:
-            return None
-    return val
