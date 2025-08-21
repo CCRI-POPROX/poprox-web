@@ -135,7 +135,7 @@
         With the exception of ZIP code, this data may be shared with researchers. We ask for your zip code for internal
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
     </p>
-    <form action="{{'update_demographics'}}" onsubmit="return validateForm()" method="POST">
+    <form action="{{url_for('update_demographics')}}" onsubmit="return validateForm()" method="POST">
         <label class="form-label mt-4 fw-bold" for="genderselect">What is your gender identity?</label>
         <select class="form-select" id="genderselect"
             title="Select options for eliciting gender identity." name="gender" required="required">

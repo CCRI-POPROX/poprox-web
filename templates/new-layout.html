@@ -70,7 +70,6 @@
                                 {% if auth.is_logged_in() %}
                                     <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Log Out</a>
                                     <a href="{{ url_for('topics') }}" class="list-group-item list-group-item-action">Topic Selection</a>
-                                    <a href="{{ url_for('onboarding_survey') }}" class="list-group-item list-group-item-action">User Demographic</a>
                                     <a href="{{ url_for('demographic_form') }}" class="list-group-item list-group-item-action">User Demographic</a>
                                     <a href="{{ url_for('compensation_preference_form') }}" class="list-group-item list-group-item-action">Compensation preference</a>
                                     {% if auth.get_account_teams()|length > 0%}
