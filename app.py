@@ -455,7 +455,7 @@ def demographic_form():
 
 
 @app.route(f"{URL_PREFIX}/update_demographics", methods=["POST"])
-@auth.requires_login
+@auth.requires_login_ignore_status  # part of new_account workflow.
 def update_demographics():
     onboarding = auth.get_account_status() == "pending_demographic_survey"
 
@@ -563,7 +563,7 @@ def compensation_preference_form():
 
 
 @app.route(f"{URL_PREFIX}/update_compensation_preference", methods=["POST"])
-@auth.requires_login
+@auth.requires_login_ignore_status  # part of new_account workflow.
 def update_compensation_preference():
     onboarding = auth.get_account_status() == "pending_compensation_preference"
 

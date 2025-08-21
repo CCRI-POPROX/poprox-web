@@ -20,7 +20,16 @@ HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 STATUS_REDIRECTS = {
     "new_account": "consent1",
     "pending_initial_preferences": "topics",
+    "pending_demographic_survey": "demographic_form",
+    "pending_compensation_preference": "compensation_preference_form",
 }
+
+# status order right now.:
+# 1. new_account -> consent1
+# 2. pending_initial_preferences -> "topics"
+# 3. pending_demographic_survey -> "demographic_form"
+# 4. pending_compensation_preference -> "compensation_preference_form"
+# 5. onboarding_done -> no restrictions.
 
 
 class Auth:
@@ -55,7 +64,11 @@ class Auth:
     def get_account_status(self):
         if self.is_logged_in():
             self.refresh_account_info()  # status can change over time sometimes...
-            return session["account"]["status"]
+            status = session["account"]["status"]
+            # onbaording workflow adjustment 2025-09
+            if status == "pending_onboarding_survey":
+                status = "pending_demographic_survey"
+            return status
         else:
             return None
 
