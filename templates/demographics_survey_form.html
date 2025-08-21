@@ -95,17 +95,9 @@
         const checked = (checkbox) => checkbox.checked;
         const emailCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="email_client"]')];
         const raceCheckboxes = [...document.querySelectorAll('input[type="checkbox"][name="race"]')];
-        const compensationRadios = [...document.querySelectorAll('input[type="radio"][name="compensation"]')];
-
         const errorMessage = document.getElementById('emailClientError');
-        if (!emailCheckboxes.some(checked)) {
-            errorMessage.style.display = 'block';
-            return false; // Prevent form submission
-        } else {
-            errorMessage.style.display = 'none';
-        }
-
         const raceErrorMessage = document.getElementById('raceError');
+
         if (!raceCheckboxes.some(checked)) {
             raceErrorMessage.style.display = 'block';
             return false; // Prevent form submission
@@ -113,15 +105,15 @@
             raceErrorMessage.style.display = 'none';
         }
 
-        const compensationErrorMessage = document.getElementById('compensationError');
-        if (!compensationRadios.some(checked)) {
-            compensationErrorMessage.style.display = 'block';
+        if (!emailCheckboxes.some(checked)) {
+            errorMessage.style.display = 'block';
             return false; // Prevent form submission
         } else {
-            compensationErrorMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
         }
 
-        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked) && compensationRadios.some(checked);
+
+        return emailCheckboxes.some(checked) && raceCheckboxes.some(checked);
     }
 </script>
 {% endblock %}
@@ -134,7 +126,7 @@
         </p>
     </div>
     {% endif %}
-    <h1>Demographics and Compensation Settings</h1>
+    <h1>Demographics Settings</h1>
 
     <p>
         Please provide the following information.
@@ -143,7 +135,7 @@
         With the exception of ZIP code, this data may be shared with researchers. We ask for your zip code for internal
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
     </p>
-    <form action="/demographic_survey" onsubmit="return validateForm()" method="POST">
+    <form action="{{url_for('update_demographics')}}" onsubmit="return validateForm()" method="POST">
         <label class="form-label mt-4 fw-bold" for="genderselect">What is your gender identity?</label>
         <select class="form-select" id="genderselect"
             title="Select options for eliciting gender identity." name="gender" required="required">
@@ -168,7 +160,7 @@
         </select>
 
         <label class="form-label mt-4 fw-bold" for="zip">Enter your 5 digit ZIP code</label>
-        <input class="form-control" type="text" name="zip" id="zip" placeholder="ZIP code" required="required"
+        <input class="form-control form-control-30" type="text" name="zip" id="zip" placeholder="ZIP code" required="required"
             value="{{ user_demographic_information['zip5'] }}">
         <div class="form-check mt-3 position-relative">
             <input class="form-check-input" id="zipdeny" type="checkbox" name="zip-consent" value="00000" required="required">
@@ -179,7 +171,7 @@
 
         <label class="form-label mt-4 fw-bold" for="educationselect">What is the highest degree or level of education you have completed?</label>
         <select class="form-select"
-            id="educationselection"
+            id="educationselect"
             title="Select options for eliciting level of education." name="education"
             required="required">
             <option value="" {% if not user_demographic_information['education'] %} selected {% endif %}>
@@ -190,7 +182,7 @@
             {% endfor %}
         </select>
 
-        <label class="form-label mt-4 fw-bold" for="racechecks">Choose one or more races that you consider yourself to be:</label>
+        <p class="form-label mt-4 fw-bold">Choose one or more races that you consider yourself to be:</p>
         <p id="raceError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
             <div class="row row-cols-md-2 ms-1" id="racecheck">
@@ -212,11 +204,11 @@
             {% set custom_race = user_demographic_information['race_notlisted'] if
                 user_demographic_information and 'race_notlisted' in user_demographic_information and
                 user_demographic_information.get('race_notlisted')!= None else '' %}
-            <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" class="form-control mt-3"
+            <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" class="form-control form-control-30 mt-3"
                 placeholder="Please specify" value="{{ custom_race }}">
         </div>
 
-        <label class="form-label mt-4 fw-bold" for="emailclientchecks">Choose one or more preferred email client:</label>
+        <p class="form-label mt-4 fw-bold">Choose one or more preferred email client:</p>
         <p id="emailClientError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
             <div class="row row-cols-md-4 ms-1" id="emailclientchecks">
@@ -239,54 +231,9 @@
         {% set custom_email_client = user_demographic_information['email_client_other'] if
             user_demographic_information and 'email_client_other' in user_demographic_information and
             user_demographic_information.get('email_client_other')!= None else '' %}
-        <input id="clientinput" type="hidden" name="email_client" class="form-control m-3" placeholder="Please specify"
+        <input id="clientinput" type="hidden" name="email_client" class="form-control form-control-30 m-3" placeholder="Please specify"
             value="{{ custom_email_client}}">
-
-        <label class="form-label mt-4 fw-bold" for="compensationradio">Choose your preferred method of compensation:</label>
-        <p id="compensationError" style="color: red; display: none;">Please select at least one option.</p>
-        <div class="col-lg-8 col-xl-6" id="compensationradio">
-            {% set selected_comp = user_demographic_information['compensation'] if
-                user_demographic_information and user_demographic_information.get('compensation') else '' %}
-            <p class="fst-italic mt-3 mb-2">Gift cards:</p>
-            <div class="row row-cols-md-4 ms-1">
-                {% for comp in giftcardopts %}
-                    <div class="form-check position-relative">
-                        <input class="form-check-input"
-                            id="{{comp}}_giftcard"
-                            type="radio" value="{{comp}}" name="compensation" {% if comp==selected_comp %}
-                            checked {% endif %} />
-                        <label class="form-check-label stretched-link" for="{{comp}}_giftcard">
-                            {{comp}}
-                        </label>
-                    </div>
-                {% endfor %}
-            </div>
-            <p class="fst-italic mt-3 mb-2">Charitable Donations:</p>
-            <div class="row row-cols-md-3 ms-1">
-                {% for comp in donationopts %}
-                    <div class="form-check position-relative">
-                        <input class="form-check-input"
-                            id="{{comp}}_donation"
-                            type="radio" value="{{comp}}" name="compensation" {% if comp==selected_comp %}
-                            checked {% endif %} />
-                        <label class="form-check-label stretched-link" for="{{comp}}_donation">
-                            {{comp}}
-                        </label>
-                    </div>
-                {% endfor %}
-            </div>
-            <p class="fst-italic mt-1 mb-2">Other:</p>
-            <div class="form-check mb-4 position-relative">
-                <input class="form-check-input"
-                    id="comp_decline"
-                    type="radio" value="Decline Payment" name="compensation" {% if comp==selected_comp %}
-                checked {% endif %} />
-                <label class="form-check-label stretched-link" for="comp_decline">
-                    Decline Payment
-                </label>
-            </div>
-        </div>
-        <input class="btn pr-btn mt-3" type="submit" value="Submit">
+        <input class="btn pr-btn mt-5" type="submit" value="Submit">
     </form>
 </div>
 {% endblock %}
