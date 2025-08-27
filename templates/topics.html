@@ -11,8 +11,8 @@
 {% block header %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const discreteValues = [5, 4, 3, 2, 1]; // This is the intlvls
-	const discreteLabels = ["Very interested", "Interested", "Somewhat interested", "Not particularly interested", "Not at all interested"];
+    const discreteValues = [{{intlvls | map("last") | join(', ')}}];
+	const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
     const middleIndex = Math.floor(discreteValues.length / 2);
 
     const topicBlocks = document.querySelectorAll('.pref-item-block');
@@ -24,15 +24,15 @@
         const positiveFill = topicBlock.querySelector('.progress-bar-fill.positive');
         const markers = topicBlock.querySelectorAll('.marker');
 
-        function updateSlider(valueIndex) {
+        function updateSlider(value) {
             if (!rangeInput) {
                 console.error("Error: rangeInput not found in topicBlock:", topicBlock);
                 return;
             }
-            rangeInput.value = valueIndex;
+            rangeInput.value = value;
 
             if (currentValueDisplay) {
-                const actualValue = discreteLabels[valueIndex];
+                const actualValue = discreteLabels[value-{{intlvls[0][1]}}];
                 currentValueDisplay.textContent = actualValue;
             }
 
@@ -43,7 +43,7 @@
 
             const totalSteps = discreteValues.length - 1;
             const centerNormalized = middleIndex / totalSteps;
-            const currentNormalized = valueIndex / totalSteps;
+            const currentNormalized = (value - {{intlvls[0][1]}}) / totalSteps;
 
             let negativeWidth = 0;
             let positiveWidth = 0;
@@ -106,7 +106,7 @@
                 const clickedValue = parseInt(this.dataset.value);
                 const valueIndex = discreteValues.indexOf(clickedValue);
                 if (valueIndex !== -1) {
-                    updateSlider(valueIndex);
+                    updateSlider(clickedValue);
                 }
             });
         });
@@ -206,7 +206,7 @@
 										type="range"
 										name={{input_name}}
 										class="form-range pseudo-range-slider"
-										min="0" max="4" step="1" value="{{user_topic_preferences.get(topic,2)}}">
+										min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" value="{{user_topic_preferences.get(topic,2)}}">
 									<div class="value-markers">
 										{% for intlvl in intlvls %}
 											<span class="marker" data-value="{{intlvl[1]}}">|</span>
