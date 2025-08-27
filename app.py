@@ -389,12 +389,14 @@ def feedback():
 def topics():
     onboarding = auth.get_account_status() == "pending_initial_preferences"
 
+    # NOTE -- code in topics.html implicitly assumes this is sorted smallest to largest
+    #         and that the numeric values are consecutive integers.
     interest_lvls = [
-        ("Very interested", 5),
-        ("Interested", 4),
-        ("Somewhat interested", 3),
-        ("Not particularly interested", 2),
         ("Not at all interested", 1),
+        ("Not particularly interested", 2),
+        ("Somewhat interested", 3),
+        ("Interested", 4),
+        ("Very interested", 5),
     ]
 
     def get_topic_preferences(account_id):  # for geting user topic preference
