@@ -86,8 +86,8 @@
         }
 
      	let initialValueIndex = parseInt(rangeInput.value);
-        if (isNaN(initialValueIndex) || initialValueIndex < 0 || initialValueIndex >= discreteValues.length) {
-            initialValueIndex = middleIndex;
+        if (isNaN(initialValueIndex) || initialValueIndex < {{intlvls[0][1]}} || initialValueIndex > {{intlvls[-1][1]}}) {
+            initialValueIndex = discreteValues[middleIndex];
         }
         updateSlider(initialValueIndex);
         alignMarkers();
