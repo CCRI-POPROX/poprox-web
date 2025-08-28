@@ -65,33 +65,33 @@ TOPIC_HINTS = {
         crime, culture, health, education, and other major national topics.",
     "World news": "Global news, covering international events, politics, \
         conflicts, trade, diplomacy, and issues affecting multiple countries.",
-    "Politics": "News about government and politics at all levels—local, \
+    "Politics": "Government and politics at all levels—local, \
         national, and international. Covers laws, leadership, elections, \
         policies, and global groups like the UN.",
-    "Business": "News about business, finance, markets, industries, and \
+    "Business": "Business, finance, markets, industries, and \
         economic activities worldwide, involving companies, governments, \
         and other organizations.",
-    "Entertainment": "News about movies, music, TV, books, art, and \
+    "Entertainment": "Movies, music, TV, books, art, and \
         entertainment, focusing on the artists and creators.",
-    "Sports": "News about team and individual sports at all levels, \
+    "Sports": "Team and individual sports at all levels, \
         including games, athletes, leagues, media, business, gear, and \
         major issues or controversies.",
-    "Health": "News about physical and mental health, including diseases, \
+    "Health": "Physical and mental health, including diseases, \
         treatments, medicine, injuries, and public health topics.",
-    "Science": "News about scientific discoveries, experiments, and \
+    "Science": "Scientific discoveries, experiments, and \
         knowledge in fields like biology, space, technology, and social sciences.",
-    "Technology": "News about technology, including gadgets, software, \
+    "Technology": "Technology, including gadgets, software, \
         innovations, and digital tools, plus issues and debates around their use.",
-    "Lifestyle": "News about daily life, including style, hobbies, relationships, \
+    "Lifestyle": "Daily life, including style, hobbies, relationships, \
         travel, wellness, and personal interests.",
-    "Religion": "News about religion, its role in society, and \
+    "Religion": "Religion, its role in society, and \
         related social or political issues and controversies.",
-    "Climate and environment": "News about the environment, including \
+    "Climate and environment": "The environment, including \
         nature, wildlife, and how human actions affect the planet, \
         plus efforts to manage and protect it.",
-    "Education": "News about teaching, learning, and managing schools \
+    "Education": "Teaching, learning, and managing schools \
         and other educational institutions.",
-    "Oddities": "News about weird, funny, or unusual stories that stand \
+    "Oddities": "Weird, funny, or unusual stories that stand \
         out for being surprising or quirky.",
 }
 
