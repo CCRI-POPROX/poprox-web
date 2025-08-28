@@ -40,7 +40,6 @@
 		} else {
 			if (header) {
 				header.classList.remove("checked");
-				// header.classList.add("error");
 			}
 			REQUIRED_CHECKBOXES[checkbox.id] = false;
 		}
@@ -73,14 +72,19 @@
 
 	window.addEventListener('DOMContentLoaded', function () {
 		submitButton = document.getElementById("submit-btn");
-		allCheckboxes = Array.from(document.querySelectorAll("input[type='checkbox']"));
 
-		allCheckboxes.forEach(checkbox => {
+		document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
 			if (REQUIRED_CHECKBOXES.hasOwnProperty(checkbox.id)) {
 				REQUIRED_CHECKBOXES[checkbox.id] = checkbox.checked;
 				checkbox.addEventListener('change', handleCheckboxChange);
 			}
 		});
+
+		document.querySelectorAll('.accordion-item').forEach(function (item) {
+			item.addEventListener('shown.bs.collapse', function () {
+				this.scrollIntoView({behavior: 'smooth', block: 'start'});
+			});
+		})
 
 		updateSubmitButtonState();
 	});
