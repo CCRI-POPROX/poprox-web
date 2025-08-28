@@ -202,7 +202,7 @@ class Auth:
         message = json.dumps(
             {
                 "email_to": email,
-                "email_subject": "Welcome to POPROX",
+                "email_subject": "Confirm your POPROX email address",
                 "email_body": html,
             }
         )
