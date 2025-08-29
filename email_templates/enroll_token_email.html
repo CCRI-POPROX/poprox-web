@@ -1,19 +1,21 @@
 {% extends "email_template.html" %}
 {% block body %}
 <div>
-    <h1> Please Confirm you account! </h1>
+    <h1> Confirm Your Email Address </h1>
     <hr>
-    <p>Thanks for signing up to receive a POPROX daily personalized email newsletter.
-        To start reading, please confirm your email address using the code below! Your code is:
+    <p>Thank you for signing up to receive a POPROX daily personalized email newsletter.
+        To start reading, please confirm your email address using the code below:
     </p>
     <div class="token_code">
         {{token.code}}
     </div>
     <p>
-        This code will be valid for 1 hour please use the token in this time.
-        You can enter this code at the POPROX enrollment page, or if you closed that tab, you can <a href="{{enroll_link}}">click here.</a>
-        Once you enter this code we'll ask about your interests, demographics, and compensation preferences, then send you your first newsletter!
+        This code will be valid for one hour.
+        You can enter the code at the POPROX enrollment page,
+        or you can <a href="{{enroll_link}}">click here.</a>
+        Once you confirm your email address, we'll ask about
+        your interests, demographics, and compensation preferences,
+        and then send you your first newsletter!
     </p>
 </div>
-
 {% endblock %}
