@@ -15,24 +15,47 @@
         //-------------------------------------------------race
         var raceCheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
         var raceInputField = document.getElementById('raceinput');
-
         var notListedCheckbox = Array.from(raceCheckboxes).find(cb => cb.dataset.notListed == "true");
 
+        function validateRaceSpecify(show = false) {
+            if (!notListedCheckbox) return true;
+
+            if (notListedCheckbox.checked) {
+                raceInputField.type = 'text';
+                raceInputField.required = true;
+
+                if (!raceInputField.value.trim()) {
+                    raceInputField.setCustomValidity('Please specify your race.');
+                    if (show) raceInputField.reportValidity();
+                    return false;
+                } else {
+                    raceInputField.setCustomValidity('');
+                    if (show) raceInputField.reportValidity();
+                    return true;
+                }
+            } else {
+                raceInputField.required = false;
+                raceInputField.type = 'hidden';
+                raceInputField.value = '';
+                raceInputField.setCustomValidity('');
+                return true;
+            }
+        }
+
         if (notListedCheckbox && raceInputField.value) {
-            raceInputField.setAttribute('type', 'text');
             notListedCheckbox.checked = true;
+            raceInputField.type = 'text';
+            raceInputField.required = true;
+            raceInputField.setCustomValidity('');
         }
 
         if (notListedCheckbox) {
-            notListedCheckbox.addEventListener('change', function (event) {
-                if (event.target.checked) {
-                    raceInputField.setAttribute('type', 'text');
-                } else {
-                    raceInputField.setAttribute('type', 'hidden');
-                    raceInputField.value = '';
-                }
-            });
+            notListedCheckbox.addEventListener('change', () => validateRaceSpecify(true));
         }
+        raceInputField.addEventListener('input', () => validateRaceSpecify(false));
+        raceInputField.addEventListener('blur',  () => validateRaceSpecify(true));
+
+        validateRaceSpecify(false);
         //-------------------------------------------------race
 
         //-------------------------------------------------ZIP
@@ -166,21 +189,45 @@
 
         var otherCheckbox = Array.from(emailCheckboxes).find(cb => cb.dataset.other == "true");
 
-        if (otherCheckbox && otherInputField.value) {
-            otherInputField.setAttribute('type', 'text');
-            otherCheckbox.checked = true;
+        function validateOtherClient(show = false) {
+            if (!otherCheckbox) return true;
+
+            if (otherCheckbox.checked) {
+                otherInputField.type = 'text';
+                otherInputField.required = true;
+
+                if (!otherInputField.value.trim()) {
+                    otherInputField.setCustomValidity('Please specify your email client.');
+                    if (show) otherInputField.reportValidity();
+                    return false;
+                } else {
+                    otherInputField.setCustomValidity('');
+                    if (show) otherInputField.reportValidity();
+                    return true;
+                }
+            } else {
+                otherInputField.required = false;
+                otherInputField.type = 'hidden';
+                otherInputField.value = '';
+                otherInputField.setCustomValidity('');
+                return true;
+            }
         }
 
-        if (otherCheckbox) {
-            otherCheckbox.addEventListener('change', function (event) {
-                if (event.target.checked) {
-                    otherInputField.setAttribute('type', 'text');
-                } else {
-                    otherInputField.setAttribute('type', 'hidden');
-                    otherInputField.value = '';
-                }
-            });
-        }
+            if (otherCheckbox && otherInputField.value) {
+                otherCheckbox.checked = true;
+                otherInputField.type = 'text';
+                otherInputField.required = true;
+                otherInputField.setCustomValidity('');
+            }
+
+            if (otherCheckbox) {
+                otherCheckbox.addEventListener('change', () => validateOtherClient(true));
+            }
+            otherInputField.addEventListener('input', () => validateOtherClient(false));
+            otherInputField.addEventListener('blur', () => validateOtherClient(true));
+
+            validateOtherClient(false);
         //-------------------------------------------------emailclient
     });
 
@@ -247,6 +294,7 @@
     <!-- Birthyear -->
         <label class="form-label mt-4 fw-bold" for="birthyear">Enter your birth year</label>
         <input class="form-control form-control-30" type="text" name="birthyear" id="birthyear" placeholder="yyyy" required="required"
+            inputmode="numeric" maxlength="4"  pattern="\d{4}"
             value="{% if user_demographic_information.birth_year is none %}0000{% else %}{{ user_demographic_information.birth_year }}{% endif %}">
         <div class="form-check mt-3 position-relative">
             <input class="form-check-input" id="birthyeardeny" type="checkbox" name="birthyear-consent"
@@ -260,6 +308,7 @@
     <!-- ZIP Code -->
         <label class="form-label mt-4 fw-bold" for="zip">Enter your 5 digit ZIP code</label>
         <input class="form-control form-control-30" type="text" name="zip" id="zip" placeholder="ZIP code" required="required"
+            inputmode="numeric" maxlength="5"  pattern="\d{5}"
             value="{{ user_demographic_information['zip5'] }}">
         <div class="form-check mt-3 position-relative">
             <input class="form-check-input" id="zipdeny" type="checkbox" name="zip-consent" value="00000" required="required">
