@@ -95,6 +95,7 @@ TOPIC_HINTS = {
         out for being surprising or quirky.",
 }
 
+
 def validate(val, options):
     """Convenience method to validate select options in form request.
 
@@ -232,9 +233,11 @@ def enroll_with_token_post(link_data_raw):
 
 @app.route(f"{URL_PREFIX}/logout")
 def logout():
+    source = auth.get_source()
+    subsource = auth.get_subsource()
     error_description = request.args.get("error_description")
     auth.logout(error_description)
-    return redirect(url_for("home"))
+    return redirect(url_for("pre_enroll_get", source=source, subsource=subsource))
 
 
 @app.route(f"{URL_PREFIX}/opt_out_of_experiments")

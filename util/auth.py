@@ -49,6 +49,18 @@ class Auth:
     def refresh_account_info(self):
         session["account"] = get_account(self.get_account_id())
 
+    def get_source(self):
+        if self.is_logged_in():
+            return session["account"]["source"]
+        else:
+            return None
+
+    def get_subsource(self):
+        if self.is_logged_in():
+            return session["account"]["subsource"]
+        else:
+            return None
+
     def get_email(self):
         if self.is_logged_in():
             return session["account"]["email"]
