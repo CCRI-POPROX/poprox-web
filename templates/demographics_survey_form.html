@@ -58,7 +58,10 @@
                 event.target.value = zip;
             } else if (zip.length < 5) {
                 event.target.setCustomValidity('Please enter a 5 digit ZIP code.');
-            } else {
+            } else if (!/^\d{5}$/.test(zip)) {
+                event.target.setCustomValidity('ZIP code must be numbers only.');
+            }
+            else {
                 event.target.setCustomValidity('');
                 zipConsentCheckbox.removeAttribute('required');
             }
@@ -236,7 +239,7 @@
     <!-- Gender -->
 
     <!-- Birthyear -->
-        <label class="form-label mt-4 fw-bold" for="birthyear">Enter your birth year.</label>
+        <label class="form-label mt-4 fw-bold" for="birthyear">Enter your birth year</label>
         <input class="form-control form-control-30" type="text" name="birthyear" id="birthyear" placeholder="yyyy" required="required"
             value="{% if user_demographic_information.birth_year is none %}0000{% else %}{{ user_demographic_information.birth_year }}{% endif %}">
         <div class="form-check mt-3 position-relative">
