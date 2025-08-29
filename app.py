@@ -345,6 +345,7 @@ def consent2():
 @app.route(f"{URL_PREFIX}/user_home")
 @auth.requires_login
 def home():
+    success = request.args.get("success")
     error = request.args.get("error_description")
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
@@ -357,6 +358,7 @@ def home():
         return render_template(
             "home.html",
             error=error,
+            success=success,
             is_subscribed=is_subscribed,
         )
 
@@ -653,7 +655,9 @@ def update_compensation_preference():
                 group_id=None,
                 recommender_url=DEFAULT_RECS_ENDPOINT_URL,
             )
-            return redirect(url_for("home", error_description="You have been subscribed!"))
+            completion_msg = "You have completed onboarding and are subscribed to POPROX! \
+                You can now logout and expect your first newsletter to arrive shortly."
+            return redirect(url_for("home", success=completion_msg))
         else:
             return redirect(url_for("compensation_preference_form", updated=True))
 
