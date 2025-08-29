@@ -59,7 +59,7 @@
             } else if (zip.length < 5) {
                 event.target.setCustomValidity('Please enter a 5 digit ZIP code.');
             } else if (!/^\d{5}$/.test(zip)) {
-                event.target.setCustomValidity('ZIP code must be numbers only.');
+                event.target.setCustomValidity('ZIP code must be digit only.');
             }
             else {
                 event.target.setCustomValidity('');
@@ -94,12 +94,18 @@
                 return false;
             }
 
+            if (!/^\d{4}$/.test(val)) {
+                event.target.setCustomValidity('Birth year must be 4 digit only.');
+                if (show) birthyearInput.reportValidity();
+                return false;
+            }
+
 
             const year = parseInt(val, 10);
             if (year < MIN_YEAR) {
-                birthyearInput.setCustomValidity(`Year must be ${MIN_YEAR} or later.`);
+                birthyearInput.setCustomValidity(`Brith year must be ${MIN_YEAR} or later.`);
             } else if (year > CURRENT_YEAR) {
-                birthyearInput.setCustomValidity('Year cannot be in the future.');
+                birthyearInput.setCustomValidity('Birth year cannot be in the future.');
             } else if (year > MAX_YEAR) {
                 birthyearInput.setCustomValidity(`You must be at least ${MIN_AGE} years old to register.`);
             } else {
