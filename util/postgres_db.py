@@ -41,6 +41,8 @@ def get_or_make_account(email, source, subsource):
             "account_id": result.account_id,
             "email": result.email,
             "status": result.status,
+            "source": result.source,
+            "subsource": result.subsource,
         }
 
 
@@ -58,6 +60,8 @@ def get_account(account_id):
                 "account_id": result.account_id,
                 "email": result.email,
                 "status": result.status,
+                "source": result.source,
+                "subsource": result.subsource,
             }
             result["teams"] = team_repo.fetch_teams_for_account(result["account_id"])
             result["experiments"] = expt_repo.fetch_experiments_by_team(list(result["teams"]))
