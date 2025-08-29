@@ -36,7 +36,6 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
 from util.auth import auth
-from util.computed_options import get_year_options
 from util.postgres_db import (
     DB_ENGINE,
     fetch_compensation_preferences,
@@ -504,7 +503,6 @@ def demographic_form():
     onboarding = auth.get_account_status() == "pending_demographic_survey"
 
     updated = request.args.get("updated", False)
-    yearopts = get_year_options()
 
     user_demographic_information = fetch_demographic_information(auth.get_account_id())
 
@@ -513,7 +511,6 @@ def demographic_form():
         updated=updated,
         onboarding=onboarding,
         genderopts=GENDER_OPTIONS,
-        yearopts=yearopts,
         edlevelopts=EDUCATION_OPTIONS,
         raceopts=RACE_OPTIONS,
         clientopts=EMAIL_CLIENT_OPTIONS,
@@ -526,8 +523,6 @@ def demographic_form():
 def update_demographics():
     onboarding = auth.get_account_status() == "pending_demographic_survey"
 
-    yearopts = get_year_options()
-
     with DB_ENGINE.connect() as conn:
         repo = DbDemographicsRepository(conn)
         account_repo = DbAccountRepository(conn)
@@ -539,10 +534,13 @@ def update_demographics():
                     return zip_code
             return "00000"
 
+        def birthyear_validate(raw_birthyear):
+            if raw_birthyear in {"", "0000", "0"}:
+                return None
+            return int(raw_birthyear)
+
         gender = validate(request.form.get("gender"), GENDER_OPTIONS)
-        birthyear = validate(request.form.get("birthyear"), yearopts)
-        if birthyear == "Prefer not to say":
-            birthyear = None
+        birthyear = birthyear_validate(request.form.get("birthyear"))
         education = validate(request.form.get("education"), EDUCATION_OPTIONS)
         zip5 = zip_validation(request.form.get("zip"))
         allrace = request.form.getlist("race")
@@ -563,12 +561,22 @@ def update_demographics():
         if email_client_other:
             email_client.append(email_client_other)
 
-        if all([gender, birthyear, education, zip5, race, email_client]):  # None is falsy
+        required_ok = all(
+            [
+                gender,
+                education,
+                zip5,
+                race,
+                email_client,
+            ]
+        )
+
+        if required_ok:  # None is falsy
             zip5 = zip5
             demo = Demographics(
                 account_id=account_id,
                 gender=gender,
-                birth_year=int(birthyear),
+                birth_year=birthyear,
                 zip3=str(zip5)[:3],
                 education=education,
                 race=";".join(race) if isinstance(race, list) else race,
