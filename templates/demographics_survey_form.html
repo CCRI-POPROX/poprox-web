@@ -12,6 +12,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
+        //-------------------------------------------------race
         var raceCheckboxes = document.querySelectorAll('input[type="checkbox"][name="race"]');
         var raceInputField = document.getElementById('raceinput');
 
@@ -32,16 +33,20 @@
                 }
             });
         }
+        //-------------------------------------------------race
 
+        //-------------------------------------------------ZIP
         var zipConsentCheckbox = document.querySelector('input[name="zip-consent"]');
         zipConsentCheckbox.addEventListener('change', function (event) {
             var zipInput = document.getElementById('zip');
             if (event.target.checked) {
-                zipInput.setAttribute('disabled', 'disabled');
+                zipInput.readOnly = true;
                 zipInput.value = '00000';
+                zipInput.setCustomValidity('');
             } else {
-                zipInput.removeAttribute('disabled');
+                zipInput.readOnly = false;
                 zipInput.value = '';
+                zipInput.setCustomValidity('Please enter a 5 digit ZIP code.');
             }
         });
 
@@ -68,7 +73,85 @@
         } else {
             zipConsentCheckbox.removeAttribute('required');
         }
+        //-------------------------------------------------ZIP
 
+        //-------------------------------------------------birthyear
+        function validateBirthyear(show=false) {
+            const val = birthyearInput.value.trim();
+
+            if (birthyearConsentCheckbox.checked && (val === '0000' || val === '0')) {
+                birthyearInput.setCustomValidity('');
+                if (show) birthyearInput.reportValidity();
+                return true;
+            }
+
+            if (val === '') {
+                birthyearInput.setCustomValidity('Please enter a valid birth year.');
+                if (show) birthyearInput.reportValidity();
+                return false;
+            }
+
+
+            const year = parseInt(val, 10);
+            if (year < MIN_YEAR) {
+                birthyearInput.setCustomValidity(`Year must be ${MIN_YEAR} or later.`);
+            } else if (year > CURRENT_YEAR) {
+                birthyearInput.setCustomValidity('Year cannot be in the future.');
+            } else if (year > MAX_YEAR) {
+                birthyearInput.setCustomValidity(`You must be at least ${MIN_AGE} years old to register.`);
+            } else {
+                birthyearInput.setCustomValidity('');
+                birthyearConsentCheckbox.removeAttribute('required');
+                if (show) birthyearInput.reportValidity();
+                return true;
+            }
+
+            if (show) birthyearInput.reportValidity();
+            return false;
+        }
+
+        function applyBirthyearState(checked) {
+            if (checked) {
+                birthyearInput.readOnly = true;
+                birthyearInput.value = '0000';
+                birthyearInput.setCustomValidity('');
+                birthyearConsentCheckbox.removeAttribute('required');
+            } else {
+                birthyearInput.readOnly = false;
+                if (birthyearInput.value === '0000' || birthyearInput.value === '0') {
+                    birthyearInput.value = '';
+                }
+                validateBirthyear(true);
+            }
+        }
+
+
+        const MAX_AGE = 124;
+        const MIN_AGE = 18;
+        const CURRENT_YEAR = new Date().getFullYear();
+        const MAX_YEAR = CURRENT_YEAR - MIN_AGE;
+        const MIN_YEAR = CURRENT_YEAR - MAX_AGE;
+
+        var birthyearConsentCheckbox = document.querySelector('input[name="birthyear-consent"]');
+        var birthyearInput = document.getElementById('birthyear');
+
+        birthyearConsentCheckbox.addEventListener('change', (event) => applyBirthyearState(event.target.checked));
+        birthyearInput.addEventListener('input', () => validateBirthyear(false));
+        birthyearInput.addEventListener('blur',  () => validateBirthyear(true));
+
+        const initVal = birthyearInput.value.trim();
+        if (initVal === '0000' || initVal === '0') {
+            birthyearConsentCheckbox.checked = true;
+        }
+        applyBirthyearState(birthyearConsentCheckbox.checked);
+
+        if (!birthyearConsentCheckbox.checked && birthyearInput.value.trim() === '') {
+            birthyearConsentCheckbox.setAttribute('required', 'required');
+            birthyearInput.setCustomValidity('Please enter a valid birth year.');
+        }
+        //-------------------------------------------------birthyear
+
+        //-------------------------------------------------emailclient
         var emailCheckboxes = document.querySelectorAll('input[type="checkbox"][name="email_client"]');
         var otherInputField = document.getElementById('clientinput');
 
@@ -89,6 +172,7 @@
                 }
             });
         }
+        //-------------------------------------------------emailclient
     });
 
     function validateForm(evt) {
@@ -100,14 +184,14 @@
 
         if (!raceCheckboxes.some(checked)) {
             raceErrorMessage.style.display = 'block';
-            return false; // Prevent form submission
+            return false;
         } else {
             raceErrorMessage.style.display = 'none';
         }
 
         if (!emailCheckboxes.some(checked)) {
             errorMessage.style.display = 'block';
-            return false; // Prevent form submission
+            return false;
         } else {
             errorMessage.style.display = 'none';
         }
@@ -117,6 +201,7 @@
     }
 </script>
 {% endblock %}
+
 {% block content %}
 <div class="container p-4 rounded-1 bg-white shadow-sm onboarding-survey">
     {% if updated %}
@@ -136,6 +221,8 @@
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
     </p>
     <form action="{{url_for('update_demographics')}}" onsubmit="return validateForm()" method="POST">
+
+    <!-- Gender -->
         <label class="form-label mt-4 fw-bold" for="genderselect">What is your gender identity?</label>
         <select class="form-select" id="genderselect"
             title="Select options for eliciting gender identity." name="gender" required="required">
@@ -146,19 +233,22 @@
                 selected {% endif %}>{{genderopt}}</option>
             {% endfor %}
         </select>
+    <!-- Gender -->
 
-        <label class="form-label mt-4 fw-bold" for="birthyearselect">Please select your birth year.</label>
-        <select class="form-select"
-            id="birthyearselect"
-            title="Select options for eliciting birth year." name="birthyear" required="required">
-            <option value="" {% if not user_demographic_information['birth_year'] %} selected {% endif %}>
-                Choose a year</option>
-            {% for year in yearopts %}
-                <option value="{{year}}" {% if user_demographic_information['birth_year']==year %} selected {%
-                    endif %}>{{year}}</option>
-            {% endfor %}
-        </select>
+    <!-- Birthyear -->
+        <label class="form-label mt-4 fw-bold" for="birthyear">Enter your birth year.</label>
+        <input class="form-control form-control-30" type="text" name="birthyear" id="birthyear" placeholder="yyyy" required="required"
+            value="{% if user_demographic_information.birth_year is none %}0000{% else %}{{ user_demographic_information.birth_year }}{% endif %}">
+        <div class="form-check mt-3 position-relative">
+            <input class="form-check-input" id="birthyeardeny" type="checkbox" name="birthyear-consent"
+            {% if user_demographic_information.birth_year is none %}checked{% endif %}>
+            <label class="form-check-label stretched-link" for="birthyeardeny">
+                I prefer not to share my birth year
+            </label>
+        </div>
+    <!-- Birthyear -->
 
+    <!-- ZIP Code -->
         <label class="form-label mt-4 fw-bold" for="zip">Enter your 5 digit ZIP code</label>
         <input class="form-control form-control-30" type="text" name="zip" id="zip" placeholder="ZIP code" required="required"
             value="{{ user_demographic_information['zip5'] }}">
@@ -168,7 +258,9 @@
                 I prefer not to provide my ZIP code
             </label>
         </div>
+    <!-- ZIP Code -->
 
+    <!-- Education -->
         <label class="form-label mt-4 fw-bold" for="educationselect">What is the highest degree or level of education you have completed?</label>
         <select class="form-select"
             id="educationselect"
@@ -181,7 +273,9 @@
                     {% endif %}>{{edlevel}}</option>
             {% endfor %}
         </select>
+    <!-- Education -->
 
+    <!-- Race -->
         <p class="form-label mt-4 fw-bold">Choose one or more races that you consider yourself to be:</p>
         <p id="raceError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
@@ -207,7 +301,9 @@
             <input id="raceinput" type="{{ 'text' if custom_race else 'hidden' }}" name="race" class="form-control form-control-30 mt-3"
                 placeholder="Please specify" value="{{ custom_race }}">
         </div>
+    <!-- Race -->
 
+    <!-- Email Client -->
         <p class="form-label mt-4 fw-bold">Choose one or more preferred email client:</p>
         <p id="emailClientError" style="color: red; display: none;">Please select at least one option.</p>
         <div class="col-lg-8 col-xl-6">
@@ -233,6 +329,8 @@
             user_demographic_information.get('email_client_other')!= None else '' %}
         <input id="clientinput" type="hidden" name="email_client" class="form-control form-control-30 m-3" placeholder="Please specify"
             value="{{ custom_email_client}}">
+    <!-- Email Client -->
+
         <input class="btn pr-btn mt-5" type="submit" value="Submit">
     </form>
 </div>

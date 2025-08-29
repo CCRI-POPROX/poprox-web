@@ -142,7 +142,7 @@ def fetch_demographic_information(account_id):
         custom_email_clients = next((e for e in email_client_list if e not in EMAIL_CLIENT_OPTIONS), None)
         return {
             "gender": row.gender,
-            "birth_year": str(row.birth_year),
+            "birth_year": row.birth_year,
             "zip5": zip5,
             "education": row.education,
             "raw_race": row.race,
