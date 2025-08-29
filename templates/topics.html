@@ -184,6 +184,10 @@
 	</div>
 	<div class="row">
 		<form action="/topics" method="POST">
+
+            {% set middle_intlvl_index = ( intlvls|length ) //2 %}
+            {% set default_intrest_val =  intlvls[middle_intlvl_index][1] %}
+
 			{% for topic in topics %}
 				{% set input_name = topic|replace(' ', '_') + "_pref" %}
 				<div class="pref-item-block container shadow-sm rounded m-3 p-3">
@@ -209,7 +213,7 @@
 										type="range"
 										name={{input_name}}
 										class="form-range pseudo-range-slider"
-										min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" value="{{user_topic_preferences.get(topic,intlvls[intlvls|length//2][1])}}">
+										min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" value="{{user_topic_preferences.get(topic, default_intrest_val)}}">
 									<div class="value-markers">
 										{% for intlvl in intlvls %}
 											<span class="marker" data-value="{{intlvl[1]}}">|</span>
