@@ -113,7 +113,7 @@
 
             if (val === '') {
                 birthyearInput.setCustomValidity('Please enter a valid birth year.');
-                if (show) birthyearInput.reportValidity();
+                // do not report this error -- we also set required and can rely on that here.
                 return false;
             }
 
