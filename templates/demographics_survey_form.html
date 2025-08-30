@@ -281,7 +281,7 @@
     <!-- Gender -->
         <label class="form-label mt-4 fw-bold" for="genderselect">What is your gender identity?</label>
         <select class="form-select" id="genderselect"
-            title="Select options for eliciting gender identity." name="gender" required="required">
+            title="Select options for eliciting gender identity." name="gender" required="required" autofocus>
             <option value="" {% if not user_demographic_information['gender'] %} selected {% endif %}>Select
                 an option</option>
             {% for genderopt in genderopts %}
