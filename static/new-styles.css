@@ -328,6 +328,23 @@ input[type="email"] {
     z-index: 1;
 }
 
+.pref-range-slider::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #008e82aa 0%, #008e82aa var(--fill-percentage), #ccc var(--fill-percentage), #ccc 100%);
+    height: 45px;
+    border-radius: 5px;
+    margin-top: 9px;
+    margin-bottom: 36px;
+}
+
+.pref-range-slider::-webkit-slider-thumb {
+    background-color: #cecece;
+    border: 1px solid #cecece;
+    box-shadow: 0 0 0 0.25rem #008e82aa;
+    width: 13px;
+    height: 50px;
+    z-index: 4;
+}
+
 /* end topics.html */
 
 /*

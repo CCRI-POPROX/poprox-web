@@ -10,147 +10,173 @@
 
 {% block header %}
 <script>
+//     document.addEventListener('DOMContentLoaded', function() {
+//     const discreteValues = [{{intlvls | map("last") | join(', ')}}];
+// 	const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
+//     const middleIndex = Math.floor(discreteValues.length / 2);
+
+//     const topicBlocks = document.querySelectorAll('.pref-item-block');
+
+//     topicBlocks.forEach(topicBlock => {
+//         const rangeInput = topicBlock.querySelector('.pseudo-range-slider');
+//         const currentValueDisplay = topicBlock.querySelector('.current-value-text');
+//         const negativeFill = topicBlock.querySelector('.progress-bar-fill.negative');
+//         const positiveFill = topicBlock.querySelector('.progress-bar-fill.positive');
+//         const markers = topicBlock.querySelectorAll('.marker');
+
+//         function updateSlider(value) {
+//             if (!rangeInput) {
+//                 console.error("Error: rangeInput not found in topicBlock:", topicBlock);
+//                 return;
+//             }
+//             rangeInput.value = value;
+
+//             if (currentValueDisplay) {
+//                 const actualValue = discreteLabels[value-{{intlvls[0][1]}}];
+//                 currentValueDisplay.textContent = actualValue;
+//             }
+
+//             if (!negativeFill || !positiveFill) {
+//                 console.error("Error: Progress fill elements not found in topicBlock:", topicBlock);
+//                 return;
+//             }
+
+//             const totalSteps = discreteValues.length - 1;
+//             const centerNormalized = middleIndex / totalSteps;
+//             const currentNormalized = (value - {{intlvls[0][1]}}) / totalSteps;
+
+//             let negativeWidth = 0;
+//             let positiveWidth = 0;
+
+//             if (currentNormalized < centerNormalized) {
+//                 // Moving left (negative direction)
+//                 negativeWidth = (centerNormalized - currentNormalized) * 100;
+//                 positiveWidth = 0;
+//             } else if (currentNormalized > centerNormalized) {
+//                 // Moving right (positive direction)
+//                 positiveWidth = (currentNormalized - centerNormalized) * 100;
+//                 negativeWidth = 0;
+//             } else {
+//                 // At the center (0)
+//                 negativeWidth = 0;
+//                 positiveWidth = 0;
+//             }
+
+//             negativeFill.style.width = `${negativeWidth}%`;
+//             positiveFill.style.width = `${positiveWidth}%`;
+//         }
+
+//         function alignMarkers() {
+// 			// We update the marker alignments on screenresize because CSS is static.
+// 			// This code reapplies the CSS.
+//             if (!rangeInput) {
+//                 console.error("Error: rangeInput not found for alignment in topicBlock:", topicBlock);
+//                 return;
+//             }
+//             const sliderWidth = rangeInput.offsetWidth;
+//             const totalSteps = discreteValues.length - 1;
+// 			const thumbsWidth = 13;
+
+//             markers.forEach((marker, index) => {
+//                 const leftOffset = (sliderWidth / totalSteps) * index;
+//                 marker.style.left = `${leftOffset}px`;
+//                 marker.style.position = 'absolute';
+//                 marker.style.transform = 'translateY(-50%)';
+//             });
+//         }
+
+//      	let initialValueIndex = parseInt(rangeInput.value);
+//         if (isNaN(initialValueIndex) || initialValueIndex < {{intlvls[0][1]}} || initialValueIndex > {{intlvls[-1][1]}}) {
+//             initialValueIndex = discreteValues[middleIndex];
+//         }
+//         updateSlider(initialValueIndex);
+//         alignMarkers();
+
+//         if (rangeInput) {
+//             rangeInput.addEventListener('input', function() {
+//                 const valueIndex = parseInt(this.value);
+//                 updateSlider(valueIndex);
+//             });
+//         } else {
+//             console.warn("Warning: No range input found for topicBlock:", topicBlock.id || topicBlock.className);
+//         }
+
+//         markers.forEach(marker => {
+//             marker.addEventListener('click', function() {
+//                 const clickedValue = parseInt(this.dataset.value);
+//                 const valueIndex = discreteValues.indexOf(clickedValue);
+//                 if (valueIndex !== -1) {
+//                     updateSlider(clickedValue);
+//                 }
+//             });
+//         });
+
+//         window.addEventListener('resize', alignMarkers);
+//     });
+
+//     function validateForm(evt) {
+//         const topics = document.querySelectorAll('.pref-item-block');
+//         let isValid = true;
+
+//         topics.forEach(topicBlock => {
+// 			const errorMessage = topicBlock.querySelector('.topic-error');
+//             const sliderValue = parseInt(topicBlock.querySelector('.pseudo-range-slider').value);
+// 			const sliderInput = topicBlock.querySelector('.pseudo-range-slider');
+
+// 			// FIXME: This should never be a null value because we have a default set.
+// 			// Hence, we may not need to validate at all.
+//             const isSliderSelected = !isNaN(sliderValue);
+// 			console.log("Slider Value: ", sliderValue);
+//             if (!isSliderSelected) {
+//                 if (errorMessage) {
+//                     errorMessage.style.display = 'block';
+//                 }
+//                 isValid = false;
+//             } else {
+//                 if (errorMessage) {
+//                     errorMessage.style.display = 'none';
+//                 }
+//             }
+// 			return true;
+//         });
+
+//         if (!isValid) {
+//             evt.preventDefault();
+//             return false;
+//         }
+//         return true;
+//     }
+//     const myForm = document.querySelector('form');
+//     if (myForm) {
+//         myForm.addEventListener('submit', validateForm);
+//     }
+// });
+</script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-    const discreteValues = [{{intlvls | map("last") | join(', ')}}];
-	const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
-    const middleIndex = Math.floor(discreteValues.length / 2);
+        const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
+        const topicBlocks = document.querySelectorAll('.pref-item-block');
 
-    const topicBlocks = document.querySelectorAll('.pref-item-block');
-
-    topicBlocks.forEach(topicBlock => {
-        const rangeInput = topicBlock.querySelector('.pseudo-range-slider');
-        const currentValueDisplay = topicBlock.querySelector('.current-value-text');
-        const negativeFill = topicBlock.querySelector('.progress-bar-fill.negative');
-        const positiveFill = topicBlock.querySelector('.progress-bar-fill.positive');
-        const markers = topicBlock.querySelectorAll('.marker');
-
-        function updateSlider(value) {
-            if (!rangeInput) {
-                console.error("Error: rangeInput not found in topicBlock:", topicBlock);
-                return;
-            }
-            rangeInput.value = value;
-
-            if (currentValueDisplay) {
-                const actualValue = discreteLabels[value-{{intlvls[0][1]}}];
-                currentValueDisplay.textContent = actualValue;
-            }
-
-            if (!negativeFill || !positiveFill) {
-                console.error("Error: Progress fill elements not found in topicBlock:", topicBlock);
-                return;
-            }
-
-            const totalSteps = discreteValues.length - 1;
-            const centerNormalized = middleIndex / totalSteps;
-            const currentNormalized = (value - {{intlvls[0][1]}}) / totalSteps;
-
-            let negativeWidth = 0;
-            let positiveWidth = 0;
-
-            if (currentNormalized < centerNormalized) {
-                // Moving left (negative direction)
-                negativeWidth = (centerNormalized - currentNormalized) * 100;
-                positiveWidth = 0;
-            } else if (currentNormalized > centerNormalized) {
-                // Moving right (positive direction)
-                positiveWidth = (currentNormalized - centerNormalized) * 100;
-                negativeWidth = 0;
-            } else {
-                // At the center (0)
-                negativeWidth = 0;
-                positiveWidth = 0;
-            }
-
-            negativeFill.style.width = `${negativeWidth}%`;
-            positiveFill.style.width = `${positiveWidth}%`;
-        }
-
-        function alignMarkers() {
-			// We update the marker alignments on screenresize because CSS is static.
-			// This code reapplies the CSS.
-            if (!rangeInput) {
-                console.error("Error: rangeInput not found for alignment in topicBlock:", topicBlock);
-                return;
-            }
-            const sliderWidth = rangeInput.offsetWidth;
-            const totalSteps = discreteValues.length - 1;
-			const thumbsWidth = 13;
-
-            markers.forEach((marker, index) => {
-                const leftOffset = (sliderWidth / totalSteps) * index;
-                marker.style.left = `${leftOffset}px`;
-                marker.style.position = 'absolute';
-                marker.style.transform = 'translateY(-50%)';
-            });
-        }
-
-     	let initialValueIndex = parseInt(rangeInput.value);
-        if (isNaN(initialValueIndex) || initialValueIndex < {{intlvls[0][1]}} || initialValueIndex > {{intlvls[-1][1]}}) {
-            initialValueIndex = discreteValues[middleIndex];
-        }
-        updateSlider(initialValueIndex);
-        alignMarkers();
-
-        if (rangeInput) {
-            rangeInput.addEventListener('input', function() {
-                const valueIndex = parseInt(this.value);
-                updateSlider(valueIndex);
-            });
-        } else {
-            console.warn("Warning: No range input found for topicBlock:", topicBlock.id || topicBlock.className);
-        }
-
-        markers.forEach(marker => {
-            marker.addEventListener('click', function() {
-                const clickedValue = parseInt(this.dataset.value);
-                const valueIndex = discreteValues.indexOf(clickedValue);
-                if (valueIndex !== -1) {
-                    updateSlider(clickedValue);
+        topicBlocks.forEach(topicBlock => {
+            const currentValueDisplay = topicBlock.querySelector('.current-value-text');
+            const rangeInput = topicBlock.querySelector('.pref-range-slider');
+            rangeInput.addEventListener('input', () => {
+                const min = parseFloat(rangeInput.min) || 1;
+                const max = parseFloat(rangeInput.max) || 5;
+                const value = parseFloat(rangeInput.value);
+                const percentage = ((value - min) / (max -min)) * 100;
+                rangeInput.style.setProperty('--fill-percentage', `${percentage}%`);
+                if (currentValueDisplay) {
+                    const actualValue = discreteLabels[value-min];
+                    currentValueDisplay.textContent = actualValue;
                 }
             });
         });
 
-        window.addEventListener('resize', alignMarkers);
+        // Initialize fill by dispatching input
+        const prefRangeInputs = document.getElementsByClassName('pref-range-slider');
+        [...prefRangeInputs].forEach((prefRangeInput) => prefRangeInput.dispatchEvent(new Event('input')));
     });
-
-    function validateForm(evt) {
-        const topics = document.querySelectorAll('.pref-item-block');
-        let isValid = true;
-
-        topics.forEach(topicBlock => {
-			const errorMessage = topicBlock.querySelector('.topic-error');
-            const sliderValue = parseInt(topicBlock.querySelector('.pseudo-range-slider').value);
-			const sliderInput = topicBlock.querySelector('.pseudo-range-slider');
-
-			// FIXME: This should never be a null value because we have a default set.
-			// Hence, we may not need to validate at all.
-            const isSliderSelected = !isNaN(sliderValue);
-			console.log("Slider Value: ", sliderValue);
-            if (!isSliderSelected) {
-                if (errorMessage) {
-                    errorMessage.style.display = 'block';
-                }
-                isValid = false;
-            } else {
-                if (errorMessage) {
-                    errorMessage.style.display = 'none';
-                }
-            }
-			return true;
-        });
-
-        if (!isValid) {
-            evt.preventDefault();
-            return false;
-        }
-        return true;
-    }
-    const myForm = document.querySelector('form');
-    if (myForm) {
-        myForm.addEventListener('submit', validateForm);
-    }
-});
 </script>
 {% endblock %}
 
@@ -197,31 +223,28 @@
 								<span class="fw-bold">{{topic}}</span>
                                 <span class="hint--bottom-right hint--large" aria-label="{{topic_hints[topic]}}">
                                     <sup style="font-size: 1rem;"><i class="bi bi-question-circle-fill"></i></sup>
+                                    <span class="current-value-text fst-italic ms-5"></span>
                                 </span>
-							</div>
-							<div class="col text-end">
-								<span class="current-value-text"></span>
+                                <div class="col text-end">
+                                    <span class="current-value-text"></span>
+                                </div>
 							</div>
 							<p class="topic-error" style="color: red; display: none;">Please select at least one option.</p>
 						</div>
-						<div class="row p-0 mt-3">
-							<div class="position-relative m-0 p-3 text-centered">
-								<div class="progress-bar-wrapper ms-3 me-3 ps-1 pe-1">
-									<div class="progress-bar-fill negative"></div>
-									<div class="progress-bar-fill positive"></div>
-									<input
-										type="range"
-										name={{input_name}}
-										class="form-range pseudo-range-slider"
-										min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" value="{{user_topic_preferences.get(topic, default_intrest_val)}}">
-									<div class="value-markers">
-										{% for intlvl in intlvls %}
-											<span class="marker" data-value="{{intlvl[1]}}">|</span>
-										{% endfor %}
-									</div>
-								</div>
-							</div>
-						</div>
+                        <div class="row m-3">
+                            <input
+                            name={{input_name}}
+                            value="{{user_topic_preferences.get(topic, default_intrest_val)}}"
+                            type="range" class="form-range pref-range-slider" min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" />
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-auto">
+                                {{intlvls[1][0]}}
+                            </div>
+                            <div class="col-auto">
+                                {{intlvls[4][0]}}
+                            </div>
+                        </div>
 					</div>
 				</div>
 			{% endfor %}
