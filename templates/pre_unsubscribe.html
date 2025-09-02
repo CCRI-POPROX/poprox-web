@@ -55,6 +55,9 @@
         We're sorry to see you go!
     </h2>
     <br/>
+    {% if error is defined %}
+        <div class="alert alert-warning">{{error}}</div>
+    {% endif %}
     <div class="field">
         <label class="label">Choose an option:</label>
         <div class="control">
@@ -92,7 +95,7 @@
     </div>
 
     <div class="control">
-        <button class="button is-link" id="submit-button" type="submit">Unsubscribe</button>
+        <button class="button is-link" id="submit-button" type="submit" disabled>Unsubscribe</button>
     </div>
 </form>
 {% endblock %}
