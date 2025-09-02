@@ -290,6 +290,8 @@ def pre_unsubscribe():
                 You will be switched to the standard varient of newletters."
             # send survey -- todo
             return redirect(url_for("opt_out_of_experiments"))
+        else:
+            return render_template("pre_unsubscribe.html", error="Please choose an option below")
         conn.commit()
     return render_template(("post_unsubscribe.html"), error=error_description)
 
