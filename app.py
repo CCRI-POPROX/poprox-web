@@ -18,12 +18,13 @@ from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
+from sqlalchemy import select
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
 from mobile_api.mobile_api import mobile_api
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
-from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain import AccountInterest, Entity
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
@@ -496,6 +497,115 @@ def topics():
         topic_hints=TOPIC_HINTS,
         intlvls=interest_lvls,
         user_topic_preferences=user_topic_preferences,
+    )
+
+
+@app.route(f"{URL_PREFIX}/entities", methods=["GET", "POST"])
+@auth.requires_login
+def entities():
+    # NOTE -- code in entities.html implicitly assumes this is sorted smallest to largest
+    #         and that the numeric values are consecutive integers.
+    interest_lvls = [
+        ("Not at all interested", 1),
+        ("Not particularly interested", 2),
+        ("Somewhat interested", 3),
+        ("Interested", 4),
+        ("Very interested", 5),
+    ]
+
+    def get_entity_preferences(account_id):
+        with DB_ENGINE.connect() as conn:
+            repo = DbAccountInterestRepository(conn)
+            # Get the raw results with entity_type
+            current_interest_tbl = repo.tables["account_current_interest_view"]
+            entity_tbl = repo.tables["entities"]
+            query = (
+                select(
+                    current_interest_tbl.c.entity_id,
+                    current_interest_tbl.c.preference,
+                    current_interest_tbl.c.frequency,
+                    entity_tbl.c.name,
+                    entity_tbl.c.entity_type,
+                )
+                .join(entity_tbl, current_interest_tbl.c.entity_id == entity_tbl.c.entity_id)
+                .where(current_interest_tbl.c.account_id == account_id)
+            )
+            results = conn.execute(query).all()
+            
+        preferences_list = [
+            {
+                "entity_name": row.name,
+                "preference": row.preference,
+                "entity_type": row.entity_type
+            }
+            for row in results
+        ]
+        preferences_dict = {row.name: row.preference for row in results}
+        return preferences_list, preferences_dict
+
+    def get_pref(entity_name):
+        pref_score = request.form.get(entity_name.replace(" ", "_") + "_pref", None)
+        if pref_score:
+            return int(pref_score)
+        else:
+            return None
+
+    updated = False
+    searched_entities = []
+    search_query = ""
+
+    if request.method == "POST":
+        with DB_ENGINE.connect() as conn:
+            repo = DbAccountInterestRepository(conn)
+            account_id = auth.get_account_id()
+
+            # Check if it's a search
+            search_query = request.form.get("search_query", "").strip()
+            if search_query:
+                searched_entities = repo.fetch_entities_by_partial_name(search_query, limit=20)
+            else:
+                # Handle ratings submission or removal
+                save_entity = request.form.get("save")
+                remove_entity = request.form.get("remove")
+                
+                if save_entity:
+                    # Save a single entity preference
+                    entity_name = save_entity
+                    pref_key = entity_name.replace(" ", "_") + "_pref"
+                    score = request.form.get(pref_key)
+                    if score:
+                        entity_id = repo.fetch_entity_by_name(entity_name)
+                        if entity_id:
+                            interest = AccountInterest(
+                                account_id=account_id,
+                                entity_id=entity_id,
+                                entity_name=entity_name,
+                                preference=int(score),
+                                frequency=None,
+                            )
+                            repo.store_topic_preferences(account_id, [interest])
+                            conn.commit()
+                            updated = True
+                
+                elif remove_entity:
+                    # Remove a single entity preference
+                    entity_name = remove_entity
+                    entity_id = repo.fetch_entity_by_name(entity_name)
+                    if entity_id:
+                        repo.remove_topic_preference(account_id, entity_id)
+                        conn.commit()
+                        updated = True
+
+    user_entity_preferences_list, user_entity_preferences_dict = get_entity_preferences(auth.get_account_id())
+
+    return render_template(
+        "entities.html",
+        updated=updated,
+        searched_entities=searched_entities,
+        search_query=search_query,
+        intlvls=interest_lvls,
+        user_entity_preferences=user_entity_preferences_list,
+        user_entity_preferences_dict=user_entity_preferences_dict,
     )
 
 

@@ -1,0 +1,397 @@
+{% extends "layout.html" %}
+
+{% block sidebar %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+
+    {% if updated %}
+    <div class="pref-updated-flash">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        Your preferences have been updated successfully!
+    </div>
+    {% endif %}
+
+    <!-- Header Section -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary mb-3">Entity Preferences</h2>
+        <p class="text-muted">Search for entities (people, organizations, etc.) and rate your interest level.</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <h4 class="mb-3 fw-semibold">Search for Entities</h4>
+        <p class="mb-3 opacity-75">Find people, organizations, Locations or Event you're interested in</p>
+        <form action="/entities" method="POST" class="d-flex justify-content-center align-items-center flex-wrap">
+            <input type="text" name="search_query" class="search-input" placeholder="Search entities..." value="{{search_query}}">
+            <button class="search-btn" type="submit">
+                <i class="bi bi-search me-2"></i>Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Rating Guide Section -->
+    <div class="rating-guide">
+        <div class="guide-labels">
+            <span><strong>1:</strong> Not at all interested</span>
+            <span><strong>2:</strong> Not particularly interested</span>
+            <span><strong>3:</strong> Somewhat interested</span>
+            <span><strong>4:</strong> Interested</span>
+            <span><strong>5:</strong> Very interested</span>
+        </div>
+    </div>
+
+    <style>
+    /* Card layout */
+    .entity-card {
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg,#ffffff 0%, #fbfcfd 100%);
+        border-radius: 16px;
+        border: 1px solid rgba(15,23,42,0.08);
+        box-shadow: 0 10px 32px rgba(2,6,23,0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        margin-bottom: 1.5rem;
+        padding: 1.25rem;
+        position: relative;
+    }
+    .entity-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(2,6,23,0.12); }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .entity-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .entity-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 0.25rem 0;
+        line-height: 1.3;
+    }
+
+    .entity-type {
+        font-size: 0.8rem;
+        color: #64748b;
+        background: rgba(15, 23, 42, 0.05);
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+
+    .entity-description {
+        font-size: 0.85rem;
+        color: #64748b;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    .rating-badge {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(2,6,23,0.15);
+        flex-shrink: 0;
+    }
+    .rating-badge.rating-1 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .rating-badge.rating-2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .rating-badge.rating-3 { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .rating-badge.rating-4 { background: linear-gradient(135deg, #10b981, #059669); }
+    .rating-badge.rating-5 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+    .slider-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .pref-range-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 25%, rgba(249, 115, 22, 0.1) 50%, rgba(16, 185, 129, 0.1) 75%, rgba(6, 182, 212, 0.1) 100%);
+        outline: none;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        margin-bottom: 0.75rem;
+    }
+    .pref-range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #0f172a;
+        box-shadow: 0 8px 16px rgba(2,6,23,0.12);
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .pref-range-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+    .pref-range-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #0f172a;
+        cursor: pointer;
+    }
+
+    .slider-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .rating-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn.small {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        border: 1px solid rgba(15,23,42,0.1);
+        color: #334155;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .btn.small.remove-btn {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        border: 1px solid rgba(239,68,68,0.2);
+        color: #dc2626;
+        margin-left: 0.5rem;
+    }
+    .btn.small.remove-btn:hover {
+        background: linear-gradient(135deg, #fecaca, #fca5a5);
+        color: #b91c1c;
+    }
+
+    .search-section { background: linear-gradient(135deg, #008e82 0%, #006b5a 100%); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; color: white; text-align: center; }
+    .search-input { background: rgba(255,255,255,0.95); border:none; border-radius:20px; padding:0.5rem 1rem; font-size:0.9rem; width:100%; max-width:350px }
+    .search-btn { background:white; color:#008e82; border:none; border-radius:20px; padding:0.5rem 1.25rem; font-weight:600; margin-left:0.5rem }
+
+    .rating-guide { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border:1px solid #dee2e6; border-radius:8px; padding:0.75rem; margin-bottom:1rem; font-size:0.8rem }
+    .guide-labels { display:flex; justify-content:space-between; color:#6c757d; font-weight:500 }
+
+    .pref-updated-flash { background: linear-gradient(135deg, #6bcf7f 0%, #4ecdc4 100%); color:white; padding:0.75rem 1rem; border-radius:8px; margin-bottom:1.5rem; font-weight:600 }
+
+    .section-divider { height:1px; background: linear-gradient(90deg, transparent 0%, #dee2e6 20%, #dee2e6 80%, transparent 100%); margin:2rem 0; position:relative }
+    .section-divider::before { content:''; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:white; padding:0 0.75rem; font-size:0.8rem; color:#6c757d; font-weight:500 }
+    .your-entities .section-divider::before { content:'YOUR PREFERENCES' }
+    .search-results .section-divider::before { content:'SEARCH RESULTS' }
+
+    .empty-state { text-align:center; padding:2rem 1rem; color:#6c757d }
+    .empty-state i { font-size:3rem; margin-bottom:1rem; opacity:0.5 }
+
+    .update-btn { background: linear-gradient(135deg, #008e82 0%, #006b5a 100%); border:none; border-radius:20px; padding:0.625rem 1.5rem; font-weight:600; color:white; font-size:0.9rem; transition:all 0.2s ease; box-shadow:0 2px 8px rgba(0,142,130,0.2) }
+    .update-btn:hover { background: linear-gradient(135deg, #006b5a 0%, #004d42 100%); transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,142,130,0.3) }
+
+    /* Grid layout for Your Preferences section */
+    .your-entities .entity-card {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(2,6,23,0.06);
+    }
+    .your-entities .entity-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(2,6,23,0.1);
+    }
+
+    .your-entities .card-header {
+        margin-bottom: 0.75rem;
+    }
+
+    .your-entities .entity-name {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .your-entities .rating-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .your-entities .slider-section {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+    }
+
+    .your-entities .rating-labels {
+        font-size: 0.7rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .your-entities .slider-controls {
+        gap: 0.75rem;
+    }
+
+    .your-entities .btn.small {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* Grid container for preferences */
+    .preferences-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    @media (max-width:768px){
+        .entity-card { padding: 1rem; }
+        .card-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+        .rating-badge { align-self: flex-end; }
+        .slider-controls { flex-direction: column; align-items: stretch; }
+
+        .preferences-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+    </style>
+
+    <!-- Search Results -->
+    <div class="search-results">
+        <div class="section-divider"></div>
+        {% if searched_entities and searched_entities|length > 0 %}
+            {% for entity in searched_entities %}
+            <form action="/entities" method="POST" class="entity-form">
+                <div class="entity-card">
+                    <div class="card-header">
+                        <div class="entity-info">
+                            <h3 class="entity-name">{{ entity.name }}</h3>
+                            <span class="entity-type">{{ entity.entity_type }}</span>
+                            {% if entity.description %}
+                            <p class="entity-description">{{ entity.description }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="rating-badge" data-entity-id="{{ entity.id }}">{{ user_entity_preferences_dict.get(entity.name, 3) }}</div>
+                    </div>
+
+                    <div class="slider-section">
+                        <div class="rating-labels">
+                            <span>Not interested</span>
+                            <span>Very interested</span>
+                        </div>
+                        <input type="range" name="{{ entity.name.replace(' ', '_') }}_pref" min="1" max="5" value="{{ user_entity_preferences_dict.get(entity.name, 3) }}" class="pref-range-slider" data-entity-id="{{ entity.id }}">
+                        <div class="slider-controls">
+                            <small style="color:#64748b">Adjust your interest level</small>
+                            <button class="btn small" name="save" value="{{ entity.name }}" type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-search-heart"></i>
+            <h4 class="fw-semibold text-muted mb-3">No results</h4>
+            <p class="text-muted mb-4">Try searching for another entity.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Your Preferences -->
+    <div class="your-entities mt-4">
+        <div class="section-divider"></div>
+        {% if user_entity_preferences and user_entity_preferences|length > 0 %}
+            <div class="preferences-grid">
+                {% for pref in user_entity_preferences %}
+                {% set entity_name = pref.entity_name %}
+                {% set preference = pref.preference %}
+                {% set entity_type = pref.entity_type %}
+                {% set input_name = entity_name.replace(' ', '_') + '_pref' %}
+                <form action="/entities" method="POST" class="entity-form">
+                    <div class="entity-card">
+                        <div class="card-header">
+                            <div class="entity-info">
+                                <h3 class="entity-name">{{ entity_name }}</h3>
+                                <span class="entity-type">{{ entity_type }}</span>
+                            </div>
+                            <div class="rating-badge" data-entity-id="{{ entity_name|replace(' ', '_') }}">{{ preference }}</div>
+                        </div>
+
+                        <div class="slider-section">
+                            <div class="rating-labels">
+                                <span>Not interested</span>
+                                <span>Very interested</span>
+                            </div>
+                            <input name="{{ input_name }}" value="{{ preference }}" type="range" class="pref-range-slider" min="1" max="5" step="1" data-entity-id="{{ entity_name|replace(' ', '_') }}" />
+                            <div class="slider-controls">
+                                <small style="color:#64748b">Adjust your interest level</small>
+                                <button class="btn small" type="submit" name="save" value="{{ entity_name }}">Save</button>
+                                <button class="btn small remove-btn" type="submit" name="remove" value="{{ entity_name }}" onclick="return confirm('Remove this preference?')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-search-heart"></i>
+            <h4 class="fw-semibold text-muted mb-3">No entities rated yet</h4>
+            <p class="text-muted mb-4">Search for entities above and start building your personalized preferences!</p>
+            <div style="font-size: 3rem; opacity: 0.3;">⭐</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// sync range inputs to rating badges
+function setBadgeValueByElement(badge, val){
+    if(!badge) return;
+    badge.textContent = val;
+    badge.classList.remove('rating-1','rating-2','rating-3','rating-4','rating-5');
+    badge.classList.add('rating-' + val);
+}
+
+document.addEventListener('input', function(e){
+    if(e.target && e.target.classList.contains('pref-range-slider')){
+        const id = e.target.getAttribute('data-entity-id');
+        // Find the badge in the same card
+        const card = e.target.closest('.entity-card');
+        const badge = card.querySelector('.rating-badge');
+        setBadgeValueByElement(badge, e.target.value);
+    }
+});
+
+// initialize on load
+window.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.pref-range-slider').forEach(function(s){
+        const card = s.closest('.entity-card');
+        const badge = card.querySelector('.rating-badge');
+        setBadgeValueByElement(badge, s.value || 3);
+    });
+});
+</script>
+
+{% endblock %}
