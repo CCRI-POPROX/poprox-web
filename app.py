@@ -18,13 +18,12 @@ from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
-from sqlalchemy import select
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
 from mobile_api.mobile_api import mobile_api
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
-from poprox_concepts.domain import AccountInterest, Entity
+from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
@@ -516,31 +515,16 @@ def entities():
     def get_entity_preferences(account_id):
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
-            # Get the raw results with entity_type
-            current_interest_tbl = repo.tables["account_current_interest_view"]
-            entity_tbl = repo.tables["entities"]
-            query = (
-                select(
-                    current_interest_tbl.c.entity_id,
-                    current_interest_tbl.c.preference,
-                    current_interest_tbl.c.frequency,
-                    entity_tbl.c.name,
-                    entity_tbl.c.entity_type,
-                )
-                .join(entity_tbl, current_interest_tbl.c.entity_id == entity_tbl.c.entity_id)
-                .where(current_interest_tbl.c.account_id == account_id)
-            )
-            results = conn.execute(query).all()
-            
+            preferences = repo.fetch_entity_preferences(account_id)
         preferences_list = [
             {
-                "entity_name": row.name,
-                "preference": row.preference,
-                "entity_type": row.entity_type
+                "entity_name": pref["entity_name"],
+                "preference": pref["preference"],
+                "entity_type": pref["entity_type"]
             }
-            for row in results
+            for pref in preferences
         ]
-        preferences_dict = {row.name: row.preference for row in results}
+        preferences_dict = {pref["entity_name"]: pref["preference"] for pref in preferences}
         return preferences_list, preferences_dict
 
     def get_pref(entity_name):
