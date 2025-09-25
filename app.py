@@ -576,7 +576,7 @@ def entities():
                     entity_name = remove_entity
                     entity_id = repo.fetch_entity_by_name(entity_name)
                     if entity_id:
-                        repo.remove_topic_preference(account_id, entity_id)
+                        repo.remove_entity_preference(account_id, entity_id)
                         conn.commit()
                         updated = True
 
