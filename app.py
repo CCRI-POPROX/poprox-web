@@ -512,7 +512,7 @@ def entities():
         ("Very interested", 5),
     ]
 
-    def get_entity_preferences(account_id):
+    def get_entity_preferences(account_id, sort_order="desc", page=1, per_page=10):
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_entity_preferences(account_id)
@@ -524,8 +524,36 @@ def entities():
             }
             for pref in preferences
         ]
+        
+        # Sort preferences based on sort_order
+        if sort_order == "desc":
+            preferences_list.sort(key=lambda x: x["preference"], reverse=True)
+        elif sort_order == "asc":
+            preferences_list.sort(key=lambda x: x["preference"])
+        elif sort_order == "name":
+            preferences_list.sort(key=lambda x: x["entity_name"].lower())
+        
         preferences_dict = {pref["entity_name"]: pref["preference"] for pref in preferences}
-        return preferences_list, preferences_dict
+        
+        # Pagination
+        total_items = len(preferences_list)
+        total_pages = (total_items + per_page - 1) // per_page  # Ceiling division
+        start_idx = (page - 1) * per_page
+        end_idx = start_idx + per_page
+        paginated_preferences = preferences_list[start_idx:end_idx]
+        
+        pagination_info = {
+            'current_page': page,
+            'total_pages': total_pages,
+            'total_items': total_items,
+            'per_page': per_page,
+            'has_prev': page > 1,
+            'has_next': page < total_pages,
+            'prev_page': page - 1 if page > 1 else None,
+            'next_page': page + 1 if page < total_pages else None
+        }
+        
+        return paginated_preferences, preferences_dict, pagination_info
 
     def get_pref(entity_name):
         pref_score = request.form.get(entity_name.replace(" ", "_") + "_pref", None)
@@ -537,60 +565,80 @@ def entities():
     updated = False
     searched_entities = []
     search_query = ""
+    sort_order = "desc"  # Default sorting
+    page = 1  # Default page
 
     if request.method == "POST":
-        with DB_ENGINE.connect() as conn:
-            repo = DbAccountInterestRepository(conn)
-            account_id = auth.get_account_id()
-
-            # Check if it's a search
-            search_query = request.form.get("search_query", "").strip()
-            if search_query:
+        # Check if it's a search
+        search_query = request.form.get("search_query", "").strip()
+        sort_order = request.form.get("sort_order", "desc")
+        page = int(request.form.get("page", 1))
+        
+        if search_query:
+            with DB_ENGINE.connect() as conn:
+                repo = DbAccountInterestRepository(conn)
                 searched_entities = repo.fetch_entities_by_partial_name(search_query, limit=20)
-            else:
-                # Handle ratings submission or removal
-                save_entity = request.form.get("save")
-                remove_entity = request.form.get("remove")
-                
-                if save_entity:
-                    # Save a single entity preference
-                    entity_name = save_entity
-                    pref_key = entity_name.replace(" ", "_") + "_pref"
-                    score = request.form.get(pref_key)
-                    if score:
-                        entity_id = repo.fetch_entity_by_name(entity_name)
-                        if entity_id:
-                            interest = AccountInterest(
-                                account_id=account_id,
-                                entity_id=entity_id,
-                                entity_name=entity_name,
-                                preference=int(score),
-                                frequency=None,
-                            )
-                            repo.store_topic_preferences(account_id, [interest])
-                            conn.commit()
-                            updated = True
-                
-                elif remove_entity:
-                    # Remove a single entity preference
-                    entity_name = remove_entity
-                    entity_id = repo.fetch_entity_by_name(entity_name)
-                    if entity_id:
-                        repo.remove_entity_preference(account_id, entity_id)
-                        conn.commit()
-                        updated = True
+    else:
+        # Handle GET requests - check for sort_order and page parameters
+        sort_order = request.args.get("sort_order", "desc")
+        page = int(request.args.get("page", 1))
 
-    user_entity_preferences_list, user_entity_preferences_dict = get_entity_preferences(auth.get_account_id())
+    account_id = auth.get_account_id()
+    user_entity_preferences_list, user_entity_preferences_dict, pagination_info = get_entity_preferences(
+        account_id, sort_order, page
+    )
 
     return render_template(
         "entities.html",
         updated=updated,
         searched_entities=searched_entities,
         search_query=search_query,
+        sort_order=sort_order,
         intlvls=interest_lvls,
         user_entity_preferences=user_entity_preferences_list,
         user_entity_preferences_dict=user_entity_preferences_dict,
+        pagination=pagination_info,
     )
+
+
+@app.route(f"{URL_PREFIX}/entities/update", methods=["POST"])
+@auth.requires_login
+def update_entity_preference():
+    """AJAX endpoint for real-time entity preference updates"""
+    try:
+        entity_name = request.form.get("entity_name")
+        preference_value = request.form.get("preference_value")
+        
+        if not entity_name or not preference_value:
+            return jsonify({"success": False, "error": "Missing required fields"}), 400
+            
+        preference_value = int(preference_value)
+        if preference_value < 1 or preference_value > 5:
+            return jsonify({"success": False, "error": "Invalid preference value"}), 400
+        
+        account_id = auth.get_account_id()
+        
+        with DB_ENGINE.connect() as conn:
+            repo = DbAccountInterestRepository(conn)
+            entity_id = repo.fetch_entity_by_name(entity_name)
+            
+            if entity_id:
+                interest = AccountInterest(
+                    account_id=account_id,
+                    entity_id=entity_id,
+                    entity_name=entity_name,
+                    preference=preference_value,
+                    frequency=None,
+                )
+                repo.store_topic_preferences(account_id, [interest])
+                conn.commit()
+                
+                return jsonify({"success": True, "message": "Preference updated successfully"})
+            else:
+                return jsonify({"success": False, "error": "Entity not found"}), 404
+                
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET"])

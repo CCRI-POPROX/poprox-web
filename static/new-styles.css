@@ -129,12 +129,81 @@ input[type="email"] {
 }
 
 /*
-* css for topics.html
+* css for topics.html and entities.html
 */
 .pref-updated-flash {
 	background-color: #22771133;
 	padding: 0.25em;
 	margin: -0.75em -0.75em 9px -0.75em;
+}
+
+/* Visual confirmation animation for preference updates */
+.pref-item-block {
+    position: relative;
+}
+
+.preference-updated {
+    background-color: #22771133 !important;
+    border-color: #227711 !important;
+    transition: all 0.3s ease;
+}
+
+.preference-updated::after {
+    content: "✓ Updated";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #227711;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: fadeInOut 1.5s ease-in-out;
+    z-index: 10;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    50% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Section-specific styling for entities */
+#search-results-section {
+    border-top: 3px solid #007bff;
+    padding-top: 1rem;
+}
+
+#saved-preferences-section {
+    border-top: 3px solid #28a745;
+    padding-top: 1rem;
+}
+
+#search-results-section h3 {
+    color: #007bff;
+}
+
+#saved-preferences-section h3 {
+    color: #28a745;
+}
+
+/* Pagination styling for entities */
+.pagination .page-link {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.pagination .page-link:hover {
+    color: #1e7e34;
+    background-color: #e8f5e8;
+    border-color: #1e7e34;
 }
 
 .pref-item-block {
