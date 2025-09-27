@@ -206,6 +206,32 @@ input[type="email"] {
     border-color: #1e7e34;
 }
 
+/* Sort dropdown styling for entities */
+#sort_order {
+    min-width: 180px;
+    width: auto;
+}
+
+/* Responsive adjustments for sort dropdown */
+@media (max-width: 768px) {
+    #sort_order {
+        min-width: 160px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Search button styling - smaller height */
+.search-form .pr-btn {
+    padding: 6px 16px;
+    font-size: 0.9rem;
+}
+
+/* Alternative: if we want to target all search buttons */
+form[action="/entities"] .pr-btn {
+    padding: 6px 16px;
+    font-size: 0.9rem;
+}
+
 .pref-item-block {
     display: flex;
     flex-wrap: wrap;

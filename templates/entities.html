@@ -155,9 +155,7 @@
                     <div class="col">
                         <span class="fw-bold">${entityDisplayName}</span>
                         <span class="badge bg-success ms-2">${entityType}</span>
-                        <div class="col text-end">
-                            <span class="current-value-text"></span>
-                        </div>
+                        <span class="current-value-text fst-italic ms-3"></span>
                     </div>
                 </div>
                 <div class="row m-3">
@@ -222,7 +220,7 @@
     <!-- Search Section -->
     <div class="row mb-4">
         <div class="col">
-            <form action="/entities" method="POST" class="d-flex align-items-center">
+            <form action="/entities" method="POST" class="d-flex align-items-center search-form">
                 <input type="text" name="search_query" class="form-control me-2" placeholder="Search entities..." value="{{search_query}}">
                 <button class="btn pr-btn" type="submit">
                 <i class="bi bi-search me-2"></i>Search
@@ -251,14 +249,14 @@
                                     <div class="col">
                                         <span class="fw-bold">{{entity.name}}</span>
                                         <span class="badge bg-primary ms-2">{{entity.entity_type}}</span>
-                            {% if entity.description %}
+                                        {% if entity.description %}
                                         <span class="hint--bottom-right hint--large" aria-label="{{entity.description}}">
                                             <sup style="font-size: 1rem;"><i class="bi bi-question-circle-fill"></i></sup>
+                                            <span class="current-value-text fst-italic ms-3"></span>
                                         </span>
-                            {% endif %}
-                                        <div class="col text-end">
-                                            <span class="current-value-text"></span>
-                                        </div>
+                                        {% else %}
+                                        <span class="current-value-text fst-italic ms-3"></span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row m-3">
@@ -309,7 +307,7 @@
                 <input type="hidden" name="search_query" value="{{search_query}}">
                 <input type="hidden" name="page" value="{{pagination.current_page}}">
                 <label for="sort_order" class="form-label me-2 mb-0">Sort by:</label>
-                <select name="sort_order" id="sort_order" class="form-select form-select-sm" onchange="this.form.submit()">
+                <select name="sort_order" id="sort_order" class="form-select" style="min-width: 180px; width: auto;" onchange="this.form.submit()">
                     <option value="desc" {% if sort_order == "desc" %}selected{% endif %}>Highest Preference</option>
                     <option value="asc" {% if sort_order == "asc" %}selected{% endif %}>Lowest Preference</option>
                     <option value="name" {% if sort_order == "name" %}selected{% endif %}>Alphabetical</option>
@@ -330,9 +328,7 @@
                             <div class="col">
                                 <span class="fw-bold">{{entity_name}}</span>
                                 <span class="badge bg-success ms-2">{{entity_type}}</span>
-                                <div class="col text-end">
-                                    <span class="current-value-text"></span>
-                                </div>
+                                <span class="current-value-text fst-italic ms-3"></span>
                             </div>
                         </div>
                         <div class="row m-3">
