@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 from poprox_storage.repositories.teams import DbTeamRepository
 from poprox_storage.repositories.tokens import DbTokenRepository
 from sqlalchemy import create_engine
@@ -109,7 +110,9 @@ def finish_onboarding(account_id):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         account_repo.update_status(account_id, "onboarding_done")
-        account_repo.store_subscription_for_account(account_id)
+
+        subscription_repo = DbSubscriptionRepo(conn)
+        subscription_repo.store_subscription_for_account(account_id)
         conn.commit()
 
 
