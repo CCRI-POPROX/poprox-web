@@ -18,6 +18,7 @@ from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
+from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
@@ -270,20 +271,22 @@ def pre_unsubscribe():
     sub_menu = request.form.get("sub-menu")
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
+        subscription_repo = DbSubscriptionRepository(conn)
+        # TODO: Explicitly wrap with transactions?
         if main_menu == "unsubscribe-from-poprox" and sub_menu == "unsubscribe-without-any-removal":
-            account_repo.remove_subscription_for_account(auth.get_account_id())
             account_repo.end_consent_for_account(auth.get_account_id())
+            subscription_repo.remove_subscription_for_account(auth.get_account_id())
             error_description = "You have been unsubscribed from POPROX."
         elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-email":
-            account_repo.remove_subscription_for_account(auth.get_account_id())
             account_repo.end_consent_for_account(auth.get_account_id())
             account_repo.remove_email_for_account(auth.get_account_id())
+            subscription_repo.remove_subscription_for_account(auth.get_account_id())
             error_description = "You have been unsubscribed from POPROX along with removing your email from our system."
         elif main_menu == "unsubscribe-from-poprox" and sub_menu == "remove-all-data":
-            account_repo.remove_subscription_for_account(auth.get_account_id())
             account_repo.end_consent_for_account(auth.get_account_id())
             account_repo.remove_email_for_account(auth.get_account_id())
             account_repo.set_deletion_for_account(auth.get_account_id())
+            subscription_repo.remove_subscription_for_account(auth.get_account_id())
             error_description = "Your request has been recorded."
         elif main_menu == "return-to-standard":
             error_description = "Tell us why you're changing from the current varient in a survey sent to your email.\
@@ -301,8 +304,8 @@ def pre_unsubscribe():
 def subscribe():
     account_id = auth.get_account_id()
     with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
-        account_repo.store_subscription_for_account(account_id)
+        subscription_repo = DbSubscriptionRepository(conn)
+        subscription_repo.store_subscription_for_account(account_id)
         conn.commit()
 
     return redirect(url_for("home", error_description="You have been subscribed!"))
@@ -352,11 +355,11 @@ def home():
     success = request.args.get("success")
     error = request.args.get("error_description")
     with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
+        subscription_repo = DbSubscriptionRepository(conn)
 
         is_subscribed = False
         if auth.is_logged_in():
-            subscription = account_repo.fetch_subscription_for_account(auth.get_account_id())
+            subscription = subscription_repo.fetch_subscription_for_account(auth.get_account_id())
             is_subscribed = subscription is not None
 
         return render_template(
