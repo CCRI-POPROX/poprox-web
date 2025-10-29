@@ -1,10 +1,12 @@
 # ruff: noqa: E402
 
 import logging
+import uuid
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
+from sqlalchemy import text
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -516,14 +518,7 @@ def entities():
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             preferences = repo.fetch_entity_preferences(account_id)
-        preferences_list = [
-            {
-                "entity_name": pref["entity_name"],
-                "preference": pref["preference"],
-                "entity_type": pref["entity_type"]
-            }
-            for pref in preferences
-        ]
+        preferences_list = preferences
         
         # Sort preferences based on sort_order
         if sort_order == "desc":
@@ -533,7 +528,7 @@ def entities():
         elif sort_order == "name":
             preferences_list.sort(key=lambda x: x["entity_name"].lower())
         
-        preferences_dict = {pref["entity_name"]: pref["preference"] for pref in preferences}
+        preferences_dict = {pref["entity_name"]: pref["preference"] for pref in preferences_list}
         
         # Pagination
         total_items = len(preferences_list)
@@ -564,20 +559,36 @@ def entities():
 
     updated = False
     searched_entities = []
+    search_pagination = None
     search_query = ""
     sort_order = "desc"  # Default sorting
-    page = 1  # Default page
+    page = 1  # Default page for preferences
+    search_page = 1  # Default page for search
+
+    # Handle search (can come from POST or GET)
+    search_query = request.form.get("search_query", request.args.get("search_query", "")).strip()
+    search_page = int(request.form.get("search_page", request.args.get("search_page", 1)))
+    
+    if search_query:
+        with DB_ENGINE.connect() as conn:
+            repo = DbAccountInterestRepository(conn)
+            search_result = repo.fetch_entities_by_partial_name(search_query, limit=10, page=search_page)
+            searched_entities = search_result["entities"]
+            search_pagination = {
+                'current_page': search_result["page"],
+                'total_pages': search_result["total_pages"],
+                'total_items': search_result["total_count"],
+                'per_page': search_result["per_page"],
+                'has_prev': search_result["page"] > 1,
+                'has_next': search_result["page"] < search_result["total_pages"],
+                'prev_page': search_result["page"] - 1 if search_result["page"] > 1 else None,
+                'next_page': search_result["page"] + 1 if search_result["page"] < search_result["total_pages"] else None
+            }
 
     if request.method == "POST":
-        # Check if it's a search
-        search_query = request.form.get("search_query", "").strip()
+        # Handle preferences sorting and pagination
         sort_order = request.form.get("sort_order", "desc")
         page = int(request.form.get("page", 1))
-        
-        if search_query:
-            with DB_ENGINE.connect() as conn:
-                repo = DbAccountInterestRepository(conn)
-                searched_entities = repo.fetch_entities_by_partial_name(search_query, limit=20)
     else:
         # Handle GET requests - check for sort_order and page parameters
         sort_order = request.args.get("sort_order", "desc")
@@ -593,6 +604,7 @@ def entities():
         updated=updated,
         searched_entities=searched_entities,
         search_query=search_query,
+        search_pagination=search_pagination,
         sort_order=sort_order,
         intlvls=interest_lvls,
         user_entity_preferences=user_entity_preferences_list,
@@ -633,7 +645,15 @@ def update_entity_preference():
                 repo.store_topic_preferences(account_id, [interest])
                 conn.commit()
                 
-                return jsonify({"success": True, "message": "Preference updated successfully"})
+                # Get updated total count
+                preferences = repo.fetch_entity_preferences(account_id)
+                total_count = len(preferences)
+                
+                return jsonify({
+                    "success": True,
+                    "message": "Preference updated successfully",
+                    "total_count": total_count
+                })
             else:
                 return jsonify({"success": False, "error": "Entity not found"}), 404
                 
@@ -815,6 +835,137 @@ def update_compensation_preference():
             return redirect(url_for("home", success=completion_msg))
         else:
             return redirect(url_for("compensation_preference_form", updated=True))
+
+
+@app.route(f"{URL_PREFIX}/insert_sample_entities", methods=["GET"])
+@auth.requires_login
+def insert_sample_entities():
+    """Insert sample entities for testing the search functionality"""
+    sample_entities = [
+        # People - Famous individuals from various fields
+        {"name": "Barack Obama", "entity_type": "person", "description": "Former President of the United States"},
+        {"name": "Elon Musk", "entity_type": "person", "description": "CEO of Tesla and SpaceX"},
+        {"name": "Jeff Bezos", "entity_type": "person", "description": "Founder of Amazon"},
+        {"name": "Taylor Swift", "entity_type": "person", "description": "American singer-songwriter"},
+        {"name": "Cristiano Ronaldo", "entity_type": "person", "description": "Portuguese professional footballer"},
+        {"name": "Lionel Messi", "entity_type": "person", "description": "Argentine professional footballer"},
+        {"name": "Serena Williams", "entity_type": "person", "description": "American professional tennis player"},
+        {"name": "Roger Federer", "entity_type": "person", "description": "Swiss professional tennis player"},
+        {"name": "Oprah Winfrey", "entity_type": "person", "description": "American talk show host and philanthropist"},
+        {"name": "Mark Zuckerberg", "entity_type": "person", "description": "CEO of Meta Platforms"},
+        {"name": "Bill Gates", "entity_type": "person", "description": "Co-founder of Microsoft"},
+        {"name": "Warren Buffett", "entity_type": "person",
+         "description": "American business magnate and philanthropist"},
+        {"name": "Angela Merkel", "entity_type": "person", "description": "Former Chancellor of Germany"},
+        {"name": "Vladimir Putin", "entity_type": "person", "description": "President of Russia"},
+        {"name": "Joe Biden", "entity_type": "person", "description": "President of the United States"},
+        {"name": "Kamala Harris", "entity_type": "person", "description": "Vice President of the United States"},
+        {"name": "Greta Thunberg", "entity_type": "person", "description": "Swedish environmental activist"},
+        {"name": "Malala Yousafzai", "entity_type": "person", "description": "Pakistani education activist"},
+        {"name": "Nelson Mandela", "entity_type": "person", "description": "Former President of South Africa"},
+        {"name": "Mahatma Gandhi", "entity_type": "person", "description": "Indian independence activist"},
+        {"name": "Martin Luther King Jr.", "entity_type": "person", "description": "American civil rights leader"},
+        {"name": "Albert Einstein", "entity_type": "person", "description": "German-born theoretical physicist"},
+        {"name": "Marie Curie", "entity_type": "person", "description": "Polish-born physicist and chemist"},
+        {"name": "Stephen Hawking", "entity_type": "person", "description": "English theoretical physicist"},
+        {"name": "Neil deGrasse Tyson", "entity_type": "person", "description": "American astrophysicist"},
+        
+        # Organizations - Tech companies, media, NGOs, etc.
+        {"name": "Google", "entity_type": "organization", "description": "Technology company"},
+        {"name": "Microsoft", "entity_type": "organization", "description": "Software company"},
+        {"name": "Apple Inc.", "entity_type": "organization", "description": "Consumer electronics company"},
+        {"name": "Tesla", "entity_type": "organization", "description": "Electric vehicle company"},
+        {"name": "SpaceX", "entity_type": "organization", "description": "Space transportation company"},
+        {"name": "Amazon", "entity_type": "organization", "description": "E-commerce and cloud computing company"},
+        {"name": "Netflix", "entity_type": "organization", "description": "Streaming service company"},
+        {"name": "Facebook", "entity_type": "organization", "description": "Social media company"},
+        {"name": "Twitter", "entity_type": "organization", "description": "Social media platform"},
+        {"name": "Instagram", "entity_type": "organization", "description": "Photo and video sharing platform"},
+        {"name": "YouTube", "entity_type": "organization", "description": "Video sharing platform"},
+        {"name": "LinkedIn", "entity_type": "organization", "description": "Professional networking platform"},
+        {"name": "Reddit", "entity_type": "organization", "description": "Social news and discussion website"},
+        {"name": "Spotify", "entity_type": "organization", "description": "Music streaming service"},
+        {"name": "Uber", "entity_type": "organization", "description": "Ride-sharing company"},
+        {"name": "Airbnb", "entity_type": "organization", "description": "Online marketplace for lodging"},
+        {"name": "Zoom", "entity_type": "organization", "description": "Video conferencing platform"},
+        {"name": "Slack", "entity_type": "organization", "description": "Business communication platform"},
+        {"name": "GitHub", "entity_type": "organization", "description": "Software development platform"},
+        {"name": "Wikipedia", "entity_type": "organization", "description": "Free online encyclopedia"},
+        {"name": "United Nations", "entity_type": "organization", "description": "International organization"},
+        {"name": "World Health Organization", "entity_type": "organization",
+         "description": "Specialized agency of the UN"},
+        {"name": "Red Cross", "entity_type": "organization", "description": "International humanitarian organization"},
+        {"name": "Amnesty International", "entity_type": "organization",
+         "description": "International human rights organization"},
+        {"name": "Greenpeace", "entity_type": "organization", "description": "Environmental organization"},
+        {"name": "Doctors Without Borders", "entity_type": "organization",
+         "description": "International medical humanitarian organization"},
+        {"name": "NATO", "entity_type": "organization", "description": "Intergovernmental military alliance"},
+        {"name": "European Union", "entity_type": "organization", "description": "Political and economic union"},
+        {"name": "World Bank", "entity_type": "organization", "description": "International financial institution"},
+        {"name": "International Monetary Fund", "entity_type": "organization",
+         "description": "International financial institution"},
+        
+        # Locations - Cities, countries, landmarks
+        {"name": "New York City", "entity_type": "location", "description": "Major city in the United States"},
+        {"name": "London", "entity_type": "location", "description": "Capital city of England"},
+        {"name": "Tokyo", "entity_type": "location", "description": "Capital city of Japan"},
+        {"name": "Paris", "entity_type": "location", "description": "Capital city of France"},
+        {"name": "San Francisco", "entity_type": "location", "description": "City in California, USA"},
+        {"name": "Los Angeles", "entity_type": "location", "description": "City in California, USA"},
+        {"name": "Chicago", "entity_type": "location", "description": "City in Illinois, USA"},
+        {"name": "Houston", "entity_type": "location", "description": "City in Texas, USA"},
+        {"name": "Phoenix", "entity_type": "location", "description": "City in Arizona, USA"},
+        {"name": "Philadelphia", "entity_type": "location", "description": "City in Pennsylvania, USA"},
+        {"name": "San Antonio", "entity_type": "location", "description": "City in Texas, USA"},
+        {"name": "San Diego", "entity_type": "location", "description": "City in California, USA"},
+        {"name": "Dallas", "entity_type": "location", "description": "City in Texas, USA"},
+        {"name": "San Jose", "entity_type": "location", "description": "City in California, USA"},
+        {"name": "Austin", "entity_type": "location", "description": "City in Texas, USA"},
+        
+        # Events - Sports, entertainment, conferences
+        {"name": "Olympic Games", "entity_type": "event", "description": "International multi-sport event"},
+        {"name": "Super Bowl", "entity_type": "event", "description": "American football championship game"},
+        {"name": "World Cup", "entity_type": "event", "description": "International association football competition"},
+        {"name": "CES", "entity_type": "event", "description": "Consumer Electronics Show"},
+        {"name": "Coachella", "entity_type": "event", "description": "Music and arts festival"},
+        {"name": "Glastonbury Festival", "entity_type": "event", "description": "Music festival in England"},
+        {"name": "Burning Man", "entity_type": "event", "description": "Annual event in the Nevada desert"},
+        {"name": "SXSW", "entity_type": "event", "description": "South by Southwest festival"},
+        {"name": "Comic-Con", "entity_type": "event", "description": "Comic book convention"},
+        {"name": "TED Conference", "entity_type": "event",
+         "description": "Technology, Entertainment, Design conference"},
+    ]
+    
+    inserted_count = 0
+    with DB_ENGINE.connect() as conn:
+        for entity in sample_entities:
+            try:
+                # Check if entity already exists
+                existing = conn.execute(
+                    text("SELECT entity_id FROM entities WHERE name = :name"),
+                    {"name": entity["name"]}
+                ).fetchone()
+                
+                if not existing:
+                    entity_id = str(uuid.uuid4())
+                    conn.execute(text("""
+                        INSERT INTO entities (entity_id, name, entity_type, source, raw_data)
+                        VALUES (:entity_id, :name, :entity_type, :source, :raw_data)
+                    """), {
+                        "entity_id": entity_id,
+                        "name": entity["name"],
+                        "entity_type": entity["entity_type"],
+                        "source": "manual",
+                        "raw_data": {"description": entity.get("description")} if entity.get("description") else None
+                    })
+                    inserted_count += 1
+            except Exception as e:
+                logger.error(f"Error inserting entity {entity['name']}: {e}")
+                continue
+        conn.commit()
+    
+    return f"Inserted {inserted_count} sample entities into the database."
 
 
 @app.route(f"{URL_PREFIX}/redirect/<path>", methods=["GET"])

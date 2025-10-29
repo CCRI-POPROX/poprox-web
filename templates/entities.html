@@ -69,6 +69,33 @@
                     // Move entity from search results to saved preferences
                     moveEntityToSavedPreferences(entityName, value);
                 }
+
+                // Update total count display
+                if (data.total_count !== undefined) {
+                    let headerSmall = document.getElementById('total-count-header');
+                    if (data.total_count > 0) {
+                        if (!headerSmall) {
+                            // Create it
+                            const h3 = document.querySelector('#saved-preferences-section h3');
+                            if (h3) {
+                                headerSmall = document.createElement('small');
+                                headerSmall.className = 'text-muted ms-2';
+                                headerSmall.id = 'total-count-header';
+                                headerSmall.textContent = `(${data.total_count} total)`;
+                                h3.appendChild(headerSmall);
+                            }
+                        } else {
+                            headerSmall.textContent = `(${data.total_count} total)`;
+                        }
+                    } else if (headerSmall) {
+                        headerSmall.remove();
+                    }
+                    
+                    const showingText = document.getElementById('showing-text');
+                    if (showingText) {
+                        showingText.innerHTML = showingText.innerHTML.replace(/of \d+ entities/, `of ${data.total_count} entities`);
+                    }
+                }
             }
         })
         .catch(error => {
@@ -98,7 +125,63 @@
             
             // Create new saved preference block
             const newPreferenceBlock = createSavedPreferenceBlock(entityName, entityDisplayName, entityType, value);
-            savedContainer.insertBefore(newPreferenceBlock, savedContainer.firstChild);
+            
+            // Wrap in column for grid layout
+            const columnWrapper = document.createElement('div');
+            columnWrapper.className = 'col-lg-6 col-md-6 mb-3';
+            columnWrapper.appendChild(newPreferenceBlock);
+            
+            // Find if there's an incomplete row (only one column) to fill
+            const existingRows = savedContainer.querySelectorAll('.row');
+            let targetRow = null;
+            
+            // Check if the first row has only one column (left side occupied, right side empty)
+            if (existingRows.length > 0) {
+                const firstRow = existingRows[0];
+                const columnsInFirstRow = firstRow.querySelectorAll('.col-lg-6, .col-md-6');
+                
+                if (columnsInFirstRow.length === 1) {
+                    // First row has only one column, add to it (right side)
+                    targetRow = firstRow;
+                }
+            }
+            
+            if (targetRow) {
+                // Add to the existing incomplete row
+                targetRow.appendChild(columnWrapper);
+            } else {
+                // Create a new row at the top for the new entity (left side)
+                const newRow = document.createElement('div');
+                newRow.className = 'row';
+                newRow.appendChild(columnWrapper);
+                
+                // Insert the new row at the beginning of the saved container
+                const firstRow = savedContainer.querySelector('.row');
+                if (firstRow) {
+                    savedContainer.insertBefore(newRow, firstRow);
+                } else {
+                    savedContainer.appendChild(newRow);
+                }
+            }
+            
+            // Add smooth animation for new entity
+            columnWrapper.style.opacity = '0';
+            columnWrapper.style.transform = 'translateY(-10px)';
+            columnWrapper.style.transition = 'all 0.3s ease-in-out';
+            
+            // Trigger animation
+            setTimeout(() => {
+                columnWrapper.style.opacity = '1';
+                columnWrapper.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Add highlight effect for newly added entity
+            setTimeout(() => {
+                columnWrapper.classList.add('new-entity-highlight');
+                setTimeout(() => {
+                    columnWrapper.classList.remove('new-entity-highlight');
+                }, 2000);
+            }, 300);
             
             // Initialize the new slider without triggering save
             const newSlider = newPreferenceBlock.querySelector('.pref-range-slider');
@@ -145,7 +228,7 @@
     function createSavedPreferenceBlock(entityName, entityDisplayName, entityType, value) {
         const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
         const block = document.createElement('div');
-        block.className = 'pref-item-block container shadow-sm rounded m-3 p-3';
+        block.className = 'pref-item-block shadow-sm rounded m-2 p-2';
         block.setAttribute('data-entity-name', entityName);
         block.setAttribute('data-entity-type', entityType);
         
@@ -158,7 +241,7 @@
                         <span class="current-value-text fst-italic ms-3"></span>
                     </div>
                 </div>
-                <div class="row m-3">
+                <div class="row m-1">
                     <input
                     name="${entityName.replace(/\s+/g, '_')}_pref"
                     value="${value}"
@@ -168,7 +251,7 @@
                     data-entity-type="${entityType}"
                     data-is-new="false" />
                 </div>
-                <div class="row justify-content-between mt-3">
+                <div class="row justify-content-between mt-1">
                     <div class="col-auto">
                         {{intlvls[0][0]}}
                     </div>
@@ -243,7 +326,7 @@
                     <!-- Only show entities that are not already in user preferences -->
                     {% if entity.name not in user_entity_preferences_dict %}
                         {% set input_name = entity.name|replace(' ', '_') + "_pref" %}
-                        <div class="pref-item-block container shadow-sm rounded m-3 p-3" data-entity-name="{{entity.name}}" data-entity-type="{{entity.entity_type}}">
+                        <div class="pref-item-block container shadow-sm rounded m-2 p-2" data-entity-name="{{entity.name}}" data-entity-type="{{entity.entity_type}}">
                             <div class="col">
                                 <div class="topic-top-row row mb-0">
                                     <div class="col">
@@ -259,7 +342,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="row m-3">
+                                <div class="row m-1">
                                     <input
                                     name="{{input_name}}"
                                     value="{{default_intrest_val}}"
@@ -269,7 +352,7 @@
                                     data-entity-type="{{entity.entity_type}}"
                                     data-is-new="true" />
                                 </div>
-                                <div class="row justify-content-between mt-3">
+                                <div class="row justify-content-between mt-1">
                                     <div class="col-auto">
                                         {{intlvls[0][0]}}
                                     </div>
@@ -281,6 +364,89 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+                
+                <!-- Search Pagination Controls -->
+                {% if search_pagination and search_pagination.total_pages > 1 %}
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Search results pagination">
+                        <ul class="pagination">
+                            <!-- Previous Page -->
+                            {% if search_pagination.has_prev %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search_query={{search_query}}&search_page={{search_pagination.prev_page}}&sort_order={{sort_order}}&page={{pagination.current_page}}">
+                                        <i class="bi bi-chevron-left"></i> Previous
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">
+                                        <i class="bi bi-chevron-left"></i> Previous
+                                    </span>
+                                </li>
+                            {% endif %}
+
+                            <!-- Page Numbers -->
+                            {% set start_page = search_pagination.current_page - 2 if search_pagination.current_page > 2 else 1 %}
+                            {% set end_page = search_pagination.current_page + 2 if search_pagination.current_page + 2 < search_pagination.total_pages else search_pagination.total_pages %}
+                            
+                            {% if start_page > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search_query={{search_query}}&search_page=1&sort_order={{sort_order}}&page={{pagination.current_page}}">1</a>
+                                </li>
+                                {% if start_page > 2 %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+
+                            {% for page_num in range(start_page, end_page + 1) %}
+                                {% if page_num == search_pagination.current_page %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{page_num}}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?search_query={{search_query}}&search_page={{page_num}}&sort_order={{sort_order}}&page={{pagination.current_page}}">{{page_num}}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if end_page < search_pagination.total_pages %}
+                                {% if end_page < search_pagination.total_pages - 1 %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search_query={{search_query}}&search_page={{search_pagination.total_pages}}&sort_order={{sort_order}}&page={{pagination.current_page}}">{{search_pagination.total_pages}}</a>
+                                </li>
+                            {% endif %}
+
+                            <!-- Next Page -->
+                            {% if search_pagination.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search_query={{search_query}}&search_page={{search_pagination.next_page}}&sort_order={{sort_order}}&page={{pagination.current_page}}">
+                                        Next <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">
+                                        Next <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Items per page info -->
+                <div class="text-center text-muted mt-2">
+                    Showing {{((search_pagination.current_page - 1) * search_pagination.per_page + 1)}} to {{(search_pagination.current_page * search_pagination.per_page if search_pagination.current_page * search_pagination.per_page < search_pagination.total_items else search_pagination.total_items)}} of {{search_pagination.total_items}} search results
+                </div>
+                {% endif %}
+                
                         </div>
                     </div>
     {% elif search_query %}
@@ -300,7 +466,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Your Previously Saved Entity Preferences 
                 {% if pagination.total_items > 0 %}
-                    <small class="text-muted">({{pagination.total_items}} total)</small>
+                    <small class="text-muted" id="total-count-header">({{pagination.total_items}} total)</small>
                 {% endif %}
             </h3>
             <form action="/entities" method="POST" class="d-flex align-items-center">
@@ -317,41 +483,48 @@
 
         <div id="saved-preferences-container">
         {% if user_entity_preferences and user_entity_preferences|length > 0 %}
+            <div class="row">
                 {% for pref in user_entity_preferences %}
                 {% set entity_name = pref.entity_name %}
                 {% set preference = pref.preference %}
                 {% set entity_type = pref.entity_type %}
                 {% set input_name = entity_name.replace(' ', '_') + '_pref' %}
-                <div class="pref-item-block container shadow-sm rounded m-3 p-3" data-entity-name="{{entity_name}}" data-entity-type="{{entity_type}}">
-                    <div class="col">
-                        <div class="topic-top-row row mb-0">
-                            <div class="col">
-                                <span class="fw-bold">{{entity_name}}</span>
-                                <span class="badge bg-success ms-2">{{entity_type}}</span>
-                                <span class="current-value-text fst-italic ms-3"></span>
+                <div class="col-lg-6 col-md-6 mb-3">
+                    <div class="pref-item-block shadow-sm rounded m-2 p-2" data-entity-name="{{entity_name}}" data-entity-type="{{entity_type}}">
+                        <div class="col">
+                            <div class="topic-top-row row mb-0">
+                                <div class="col">
+                                    <span class="fw-bold">{{entity_name}}</span>
+                                    <span class="badge bg-success ms-2">{{entity_type}}</span>
+                                    <span class="current-value-text fst-italic ms-3"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row m-3">
-                            <input
-                            name="{{input_name}}"
-                            value="{{preference}}"
-                            type="range" class="form-range pref-range-slider" 
-                            min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1"
-                            data-entity-name="{{entity_name}}" 
-                            data-entity-type="{{entity_type}}"
-                            data-is-new="false" />
-                        </div>
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-auto">
-                                {{intlvls[0][0]}}
+                            <div class="row m-1">
+                                <input
+                                name="{{input_name}}"
+                                value="{{preference}}"
+                                type="range" class="form-range pref-range-slider" 
+                                min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1"
+                                data-entity-name="{{entity_name}}" 
+                                data-entity-type="{{entity_type}}"
+                                data-is-new="false" />
                             </div>
-                            <div class="col-auto">
-                                {{intlvls[-1][0]}}
+                            <div class="row justify-content-between mt-1">
+                                <div class="col-auto">
+                                    {{intlvls[0][0]}}
+                                </div>
+                                <div class="col-auto">
+                                    {{intlvls[-1][0]}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% if loop.index % 2 == 0 %}
+            </div><div class="row">
+                {% endif %}
                 {% endfor %}
+            </div>
                 
                 <!-- Pagination Controls -->
                 {% if pagination.total_pages > 1 %}
@@ -430,7 +603,7 @@
                 </div>
 
                 <!-- Items per page info -->
-                <div class="text-center text-muted mt-2">
+                <div class="text-center text-muted mt-2" id="showing-text">
                     Showing {{((pagination.current_page - 1) * pagination.per_page + 1)}} to {{(pagination.current_page * pagination.per_page if pagination.current_page * pagination.per_page < pagination.total_items else pagination.total_items)}} of {{pagination.total_items}} entities
             </div>
                 {% endif %}

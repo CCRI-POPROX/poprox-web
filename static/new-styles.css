@@ -578,3 +578,24 @@ form[action="/entities"] .pr-btn {
 }
 
 /* end consent1.html */
+
+/* Entity Preferences Styles */
+.new-entity-highlight {
+    animation: newEntityGlow 2s ease-in-out;
+    box-shadow: 0 0 20px rgba(46, 128, 119, 0.6) !important;
+}
+
+@keyframes newEntityGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(46, 128, 119, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(46, 128, 119, 0.8);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: scale(1);
+    }
+}
