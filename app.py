@@ -271,7 +271,7 @@ def pre_unsubscribe():
     sub_menu = request.form.get("sub-menu")
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
-        subscription_repo = DbAccountRepository(conn)
+        subscription_repo = DbSubscriptionRepository(conn)
         # TODO: Explicitly wrap with transactions?
         if main_menu == "unsubscribe-from-poprox" and sub_menu == "unsubscribe-without-any-removal":
             account_repo.end_consent_for_account(auth.get_account_id())
