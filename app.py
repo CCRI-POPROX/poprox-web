@@ -515,9 +515,9 @@ def entities():
     def get_entity_preferences(account_id, sort_order="desc", page=1, per_page=10):
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
-            preferences = repo.fetch_entity_preferences(account_id)
+            preferences = repo.fetch_entity_preferences(account_id, exclude_types=["topic"])
         preferences_list = preferences
-        
+
         # Sort preferences based on sort_order
         if sort_order == "desc":
             preferences_list.sort(key=lambda x: x["preference"], reverse=True)
@@ -525,27 +525,27 @@ def entities():
             preferences_list.sort(key=lambda x: x["preference"])
         elif sort_order == "name":
             preferences_list.sort(key=lambda x: x["entity_name"].lower())
-        
+
         preferences_dict = {pref["entity_name"]: pref["preference"] for pref in preferences_list}
-        
+
         # Pagination
         total_items = len(preferences_list)
         total_pages = (total_items + per_page - 1) // per_page  # Ceiling division
         start_idx = (page - 1) * per_page
         end_idx = start_idx + per_page
         paginated_preferences = preferences_list[start_idx:end_idx]
-        
+
         pagination_info = {
-            'current_page': page,
-            'total_pages': total_pages,
-            'total_items': total_items,
-            'per_page': per_page,
-            'has_prev': page > 1,
-            'has_next': page < total_pages,
-            'prev_page': page - 1 if page > 1 else None,
-            'next_page': page + 1 if page < total_pages else None
+            "current_page": page,
+            "total_pages": total_pages,
+            "total_items": total_items,
+            "per_page": per_page,
+            "has_prev": page > 1,
+            "has_next": page < total_pages,
+            "prev_page": page - 1 if page > 1 else None,
+            "next_page": page + 1 if page < total_pages else None,
         }
-        
+
         return paginated_preferences, preferences_dict, pagination_info
 
     def get_pref(entity_name):
@@ -566,21 +566,25 @@ def entities():
     # Handle search (can come from POST or GET)
     search_query = request.form.get("search_query", request.args.get("search_query", "")).strip()
     search_page = int(request.form.get("search_page", request.args.get("search_page", 1)))
-    
+
     if search_query:
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
-            search_result = repo.fetch_entities_by_partial_name(search_query, limit=10, page=search_page)
+            search_result = repo.fetch_entities_by_partial_name(
+                search_query, limit=10, page=search_page, exclude_types=["topic"]
+            )
             searched_entities = search_result["entities"]
             search_pagination = {
-                'current_page': search_result["page"],
-                'total_pages': search_result["total_pages"],
-                'total_items': search_result["total_count"],
-                'per_page': search_result["per_page"],
-                'has_prev': search_result["page"] > 1,
-                'has_next': search_result["page"] < search_result["total_pages"],
-                'prev_page': search_result["page"] - 1 if search_result["page"] > 1 else None,
-                'next_page': search_result["page"] + 1 if search_result["page"] < search_result["total_pages"] else None
+                "current_page": search_result["page"],
+                "total_pages": search_result["total_pages"],
+                "total_items": search_result["total_count"],
+                "per_page": search_result["per_page"],
+                "has_prev": search_result["page"] > 1,
+                "has_next": search_result["page"] < search_result["total_pages"],
+                "prev_page": search_result["page"] - 1 if search_result["page"] > 1 else None,
+                "next_page": search_result["page"] + 1
+                if search_result["page"] < search_result["total_pages"]
+                else None,
             }
 
     if request.method == "POST":
@@ -618,20 +622,20 @@ def update_entity_preference():
     try:
         entity_name = request.form.get("entity_name")
         preference_value = request.form.get("preference_value")
-        
+
         if not entity_name or not preference_value:
             return jsonify({"success": False, "error": "Missing required fields"}), 400
-            
+
         preference_value = int(preference_value)
         if preference_value < 1 or preference_value > 5:
             return jsonify({"success": False, "error": "Invalid preference value"}), 400
-        
+
         account_id = auth.get_account_id()
-        
+
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
             entity_id = repo.fetch_entity_by_name(entity_name)
-            
+
             if entity_id:
                 interest = AccountInterest(
                     account_id=account_id,
@@ -642,19 +646,17 @@ def update_entity_preference():
                 )
                 repo.store_topic_preferences(account_id, [interest])
                 conn.commit()
-                
+
                 # Get updated total count
-                preferences = repo.fetch_entity_preferences(account_id)
+                preferences = repo.fetch_entity_preferences(account_id, exclude_types=["topic"])
                 total_count = len(preferences)
-                
-                return jsonify({
-                    "success": True,
-                    "message": "Preference updated successfully",
-                    "total_count": total_count
-                })
+
+                return jsonify(
+                    {"success": True, "message": "Preference updated successfully", "total_count": total_count}
+                )
             else:
                 return jsonify({"success": False, "error": "Entity not found"}), 404
-                
+
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -833,8 +835,6 @@ def update_compensation_preference():
             return redirect(url_for("home", success=completion_msg))
         else:
             return redirect(url_for("compensation_preference_form", updated=True))
-
-
 
 
 @app.route(f"{URL_PREFIX}/redirect/<path>", methods=["GET"])
