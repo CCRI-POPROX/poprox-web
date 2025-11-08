@@ -18,6 +18,7 @@ from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
+from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
@@ -352,11 +353,11 @@ def home():
     success = request.args.get("success")
     error = request.args.get("error_description")
     with DB_ENGINE.connect() as conn:
-        account_repo = DbAccountRepository(conn)
+        subscription_repo = DbSubscriptionRepository(conn)
 
         is_subscribed = False
         if auth.is_logged_in():
-            subscription = account_repo.fetch_subscription_for_account(auth.get_account_id())
+            subscription = subscription_repo.fetch_subscription_for_account(auth.get_account_id())
             is_subscribed = subscription is not None
 
         return render_template(

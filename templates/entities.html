@@ -295,7 +295,7 @@
         <h2>Entity Preferences</h2>
         <div class="block content">
             <p class="fw-bold">
-                Search for entities (people, organizations, locations, events) and rate your interest level.
+                Search for entities and rate your interest level.
             </p>
         </div>
     </div>
@@ -332,14 +332,7 @@
                                     <div class="col">
                                         <span class="fw-bold">{{entity.name}}</span>
                                         <span class="badge bg-primary ms-2">{{entity.entity_type}}</span>
-                                        {% if entity.description %}
-                                        <span class="hint--bottom-right hint--large" aria-label="{{entity.description}}">
-                                            <sup style="font-size: 1rem;"><i class="bi bi-question-circle-fill"></i></sup>
-                                            <span class="current-value-text fst-italic ms-3"></span>
-                                        </span>
-                                        {% else %}
                                         <span class="current-value-text fst-italic ms-3"></span>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row m-1">
@@ -492,11 +485,11 @@
                 <div class="col-lg-6 col-md-6 mb-3">
                     <div class="pref-item-block shadow-sm rounded m-2 p-2" data-entity-name="{{entity_name}}" data-entity-type="{{entity_type}}">
                         <div class="col">
-                            <div class="topic-top-row row mb-0">
+                            <div class="topic-top-row row mb-3 pb-2" style="min-height: 3.5rem;">
                                 <div class="col">
                                     <span class="fw-bold">{{entity_name}}</span>
                                     <span class="badge bg-success ms-2">{{entity_type}}</span>
-                                    <span class="current-value-text fst-italic ms-3"></span>
+                                    <span class="current-value-text fst-italic ms-2 text-muted" style="font-size: 0.8rem;"></span>
                                 </div>
                             </div>
                             <div class="row m-1">
