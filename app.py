@@ -10,6 +10,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from mobile_api.mobile_api import mobile_api
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
@@ -22,7 +23,6 @@ from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
-from mobile_api.mobile_api import mobile_api
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -254,7 +254,11 @@ def opt_out_of_experiments():
         conn.commit()
 
     return redirect(
-        url_for("home", error_description="You have been opted out of any experiments you were participating in.")
+        url_for(
+            "home",
+            error_description="You have been opted out of any experiments you were participating in. You will be \
+                receiving the standard POPROX newsletter until you are assigned to the next experiment.",
+        )
     )
 
 
@@ -289,8 +293,8 @@ def pre_unsubscribe():
             subscription_repo.remove_subscription_for_account(auth.get_account_id())
             error_description = "Your request has been recorded."
         elif main_menu == "return-to-standard":
-            error_description = "Tell us why you're changing from the current varient in a survey sent to your email.\
-                You will be switched to the standard varient of newletters."
+            error_description = "Tell us why you're changing from the current variant in a survey sent to your email.\
+                You will be switched to the standard variant of newsletters."
             # send survey -- todo
             return redirect(url_for("opt_out_of_experiments"))
         else:
