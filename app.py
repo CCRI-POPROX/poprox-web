@@ -10,7 +10,6 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from mobile_api.mobile_api import mobile_api
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
@@ -119,7 +118,6 @@ def validate(val, options):
 
 
 # Register Blueprints at the top
-app.register_blueprint(mobile_api)
 app.register_blueprint(admin)
 app.register_blueprint(exp)
 app.register_blueprint(static_web)
