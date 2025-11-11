@@ -111,7 +111,7 @@ def finish_onboarding(account_id):
         account_repo = DbAccountRepository(conn)
         account_repo.update_status(account_id, "onboarding_done")
 
-        subscription_repo = DbSubscriptionRepo(conn)
+        subscription_repo = DbSubscriptionRepository(conn)
         subscription_repo.store_subscription_for_account(account_id)
         conn.commit()
 
