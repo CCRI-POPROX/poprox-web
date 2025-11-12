@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+
+jobs:
+  deploy-lambdas:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    environment: poprox-aws
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+    
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main # Or a specific version
+        with:
+          role-to-assume: ${{vars.DEPLOY_ROLE_ARN}}
+          aws-region: us-east-1
+
+      - name: Build Docker image
+        run: |
+          docker build -t poprox_web .
+          docker tag poprox_web:latest 422240912951.dkr.ecr.us-east-1.amazonaws.com/poprox_web:latest
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        
+      - name: Push Docker image
+        run: |
+          docker push 422240912951.dkr.ecr.us-east-1.amazonaws.com/poprox_web:latest
