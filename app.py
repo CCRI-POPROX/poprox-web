@@ -22,7 +22,6 @@ from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
-from mobile_api.mobile_api import mobile_api
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -119,7 +118,6 @@ def validate(val, options):
 
 
 # Register Blueprints at the top
-app.register_blueprint(mobile_api)
 app.register_blueprint(admin)
 app.register_blueprint(exp)
 app.register_blueprint(static_web)
@@ -461,7 +459,8 @@ def topics():
             account_id = auth.get_account_id()
             topic_prefs = []
             for topic in GENERAL_TOPICS:
-                entity_id = repo.fetch_entity_by_name(topic)
+                # TODO: Update this to remove the exclusion once `subject`/`topic` entities have been de-duplicated
+                entity_id = repo.fetch_entity_by_name(topic, exclude_types=["topic"])
                 if entity_id is None:
                     continue
                 score = get_pref(topic)
@@ -635,7 +634,8 @@ def update_entity_preference():
 
         with DB_ENGINE.connect() as conn:
             repo = DbAccountInterestRepository(conn)
-            entity_id = repo.fetch_entity_by_name(entity_name)
+            # TODO: Update this to remove the exclusion once `subject`/`topic` entities have been de-duplicated
+            entity_id = repo.fetch_entity_by_name(entity_name, exclude_types=["topic"])
 
             if entity_id:
                 interest = AccountInterest(
