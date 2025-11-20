@@ -6,11 +6,8 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y openssh-client git
 
-# download public key for github.com
-RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-
 COPY requirements.txt requirements.txt
-RUN --mount=type=ssh pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
