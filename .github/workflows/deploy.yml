@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
     
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@main # Or a specific version
+        uses: aws-actions/configure-aws-credentials@v5.1.0 # Or a specific version
         with:
           role-to-assume: ${{vars.DEPLOY_ROLE_ARN}}
           aws-region: us-east-1
