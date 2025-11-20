@@ -29,6 +29,7 @@ jobs:
         with:
           role-to-assume: ${{vars.DEPLOY_ROLE_ARN}}
           aws-region: us-east-1
+          retry-max-attempts: 2
 
       - name: Build Docker image
         run: |
