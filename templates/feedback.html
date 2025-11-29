@@ -43,8 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 				if (clickedButton.value === "positive") {
 					clickedButton.classList.add("highlight_green");
+					console.log(clickedButton.value)
+					console.log("button classes:", clickedButton.className);
 				} else {
 					clickedButton.classList.add("highlight_red");
+					console.log(clickedButton.value)
+					console.log("button classes:", clickedButton.className);
 				}
 			}
         });
@@ -85,17 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
 						<button type="submit"
 						name="articlefeedbackType"
 						value="positive"
-						class="emoji-button {% if impression.feedback == true %}highlight_green{% endif %}"
+						class="emoji-button {% if impression.feedback is true %} highlight_green {% endif %}"
 						title="Show more articles like this"
 						>
 							👍
-
 						</button>
 
 						<button type="submit"
 						name="articlefeedbackType"
 						value="negative"
-						class="emoji-button {% if impression.feedback == false %}highlight_red{% endif %}"
+						class="emoji-button {% if impression.feedback is false %} highlight_red {% endif %}"
 						title="Don't show articles like this"
 						>
 							👎
@@ -105,9 +108,5 @@ document.addEventListener("DOMContentLoaded", () => {
 		</div>
 		{% endfor %}
 </div>
-
-
-
-
 
 {% endblock %}
