@@ -483,3 +483,37 @@ input[type="email"] {
 }
 
 /* end consent1.html */
+
+.feedback-class {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.emoji-button {
+	background: none;
+	border: none;
+	font-size: 1.5em;
+	cursor: pointer;
+
+	width: 1.7em;
+	height: 1.7em;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.emoji-button:last-child {
+  margin-right: 1rem;
+}
+
+.highlight_green{
+	background-color:rgb(204, 248, 204)  !important;
+	font-size: 1.7em;
+}
+
+.highlight_red{
+	background-color:rgb(250, 200, 183)  !important;
+	font-size: 1.7em;
+}

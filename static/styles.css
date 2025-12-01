@@ -198,11 +198,11 @@ h5 {
 }
 
 .highlight_green{
-	background-color:rgb(204, 248, 204);
+	background-color:rgb(204, 248, 204)  !important;
 	font-size: 1.7em;
 }
 
 .highlight_red{
-	background-color:rgb(250, 200, 183);
+	background-color:rgb(250, 200, 183)  !important;
 	font-size: 1.7em;
 }
