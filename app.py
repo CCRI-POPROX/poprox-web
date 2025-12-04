@@ -684,19 +684,30 @@ def update_compensation_preference():
 @app.route(f"{URL_PREFIX}/redirect/<path>", methods=["GET"])
 def track_email_click(path):
     try:
-        headers = {k: v for k, v in request.headers.items()}  # convert to conventional dict
         params: TrackingLinkData = from_hashed_base64(path, HMAC_KEY, TrackingLinkData)
         logger.info(f"Processing message: {params.model_dump_json()}")
+    except ValueError as e:
+        # Don't retry if it doesn't have path parameters
+        logger.error(f"Error processing message: {e}")
+        return "Bad Request. Does not have required parameters", 400
+
+    headers = {k: v for k, v in request.headers.items()}  # convert to conventional dict
+
+    try:
         with DB_ENGINE.connect() as conn:
             click_repo = DbClicksRepository(conn)
             click_repo.store_click(
                 params.newsletter_id, params.account_id, params.article_id, headers, impression_id=params.impression_id
             )
-            return redirect(params.url)
-    except ValueError as e:
-        # Don't retry if it doesn't have path parameters
-        logger.error(f"Error processing message: {e}")
-        return "Bad Request. Does not have required parameters", 400
+
+    except Exception:
+        logger.error(
+            "CLICK TRACKING FAILURE: Couldn't store click "
+            f"from newsletter {params.newsletter_id} on "
+            f"article {params.article_id}, redirecting anyway."
+        )
+
+    return redirect(params.url)
 
 
 if __name__ == "__main__":
