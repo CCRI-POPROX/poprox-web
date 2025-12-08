@@ -465,8 +465,7 @@ def topics():
             account_id = auth.get_account_id()
             topic_prefs = []
             for topic in GENERAL_TOPICS:
-                # TODO: Update this to remove the exclusion once `subject`/`topic` entities have been de-duplicated
-                entity_id = repo.fetch_entity_by_name(topic, exclude_types=["topic"])
+                entity_id = repo.fetch_entity_by_name(topic)
                 if entity_id is None:
                     continue
                 score = get_pref(topic)
