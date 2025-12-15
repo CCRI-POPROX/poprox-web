@@ -475,6 +475,7 @@ def topics():
                             account_id=account_id,
                             entity_id=entity_id,
                             entity_name=topic,
+                            entity_type="topic",
                             preference=score,
                             frequency=None,
                         )
