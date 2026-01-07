@@ -176,7 +176,7 @@ def team_experience_test_now(team_id, experience_id):
             on=(requests.HTTPError, requests.RequestException),
             attempts=2,
             wait_initial=30,
-            timeout=115,  # overall timeout of 115 -- 5 seconds less than the server worker time.
+            timeout=115,  # overall timeout of 115 -- 5 seconds less than the server worker timeout.
         ):
             with attempt:
                 response = requests.post(
