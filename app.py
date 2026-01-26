@@ -433,6 +433,7 @@ def feedback():
 @auth.requires_login
 def topics():
     onboarding = auth.get_account_status() == "pending_initial_preferences"
+    from poprox_concepts.domain.topics import ACTIVE_TOPICS, DEPRECATED_TOPICS
 
     # NOTE -- code in topics.html implicitly assumes this is sorted smallest to largest
     #         and that the numeric values are consecutive integers.
@@ -494,11 +495,18 @@ def topics():
     else:  # topic get method
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
 
+    # Build list of topics to display:
+    # 1. Always show ACTIVE_TOPICS
+    # 2. Show DEPRECATED_TOPICS only if the user already has a preference stored for them
+    display_topics = ACTIVE_TOPICS + [
+        t for t in DEPRECATED_TOPICS if t in user_topic_preferences
+    ]
+
     return render_template(
         "topics.html",
         updated=updated,
         onboarding=onboarding,
-        topics=GENERAL_TOPICS,
+        topics=display_topics,
         topic_hints=TOPIC_HINTS,
         intlvls=interest_lvls,
         user_topic_preferences=user_topic_preferences,
