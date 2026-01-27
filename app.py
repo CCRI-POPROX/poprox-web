@@ -32,7 +32,7 @@ from poprox_concepts.domain.demographics import (
     RACE_OPTIONS,
     Demographics,
 )
-from poprox_concepts.domain.topics import GENERAL_TOPICS
+from poprox_concepts.domain.topics import ACTIVE_TOPICS, DEPRECATED_TOPICS, GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
 from util.auth import auth
@@ -433,7 +433,6 @@ def feedback():
 @auth.requires_login
 def topics():
     onboarding = auth.get_account_status() == "pending_initial_preferences"
-    from poprox_concepts.domain.topics import ACTIVE_TOPICS, DEPRECATED_TOPICS
 
     # NOTE -- code in topics.html implicitly assumes this is sorted smallest to largest
     #         and that the numeric values are consecutive integers.
