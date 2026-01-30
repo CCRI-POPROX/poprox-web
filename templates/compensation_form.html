@@ -12,39 +12,52 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var compensationSelect = document.getElementById("compensationSelect");
-        compensationSelect.addEventListener("change", function(evt) {
-            console.log("Changed: ", evt.target.value);
-            const selectedVal = evt.target.value;
-            var giftCards = document.getElementById("giftcardOptions");
-            var charities = document.getElementById("charityOptions");
+        var giftCards = document.getElementById("giftcardOptions");
+        var charities = document.getElementById("charityOptions");
+        var submitBtn = document.getElementById("submitBtn");
 
+        function updateFormState() {
+            var selectedVal = compensationSelect.value;
+            var isValid = false;
 
-            // We will hide everything and only unhide the relevant select
-            if (!charities.classList.contains("d-none")) {
-                charities.classList.add("d-none");
-            }
-            if (!giftCards.classList.contains("d-none")) {
-                giftCards.classList.add("d-none");
-            }
+            // Reset required states initially
             giftCards.required = false;
             charities.required = false;
+            
+            // Hide both secondary options by default
+            if (!giftCards.classList.contains("d-none")) giftCards.classList.add("d-none");
+            if (!charities.classList.contains("d-none")) charities.classList.add("d-none");
 
-            switch (selectedVal) {
-                case "giftcard":
-                    giftCards.classList.remove("d-none");
-                    giftCards.required = true;
-                    break;
-                case "donatecharity":
-                    charities.classList.remove("d-none");
-                    charities.required = true;
-                    break;
-                case "declinepayment":
-                        break;
-                default:
-                    // Do nothing
-                    break;
+            if (selectedVal === "giftcard") {
+                giftCards.classList.remove("d-none");
+                giftCards.required = true;
+                isValid = giftCards.value !== "";
+            } else if (selectedVal === "donatecharity") {
+                charities.classList.remove("d-none");
+                charities.required = true;
+                isValid = charities.value !== "";
+            } else if (selectedVal === "Decline payment") {
+                 isValid = true;
+            } else {
+                // No valid option selected (e.g. default placeholder)
+                isValid = false;
             }
-        });
+
+            submitBtn.disabled = !isValid;
+             if (isValid) {
+                submitBtn.classList.remove("disabled");
+            } else {
+                submitBtn.classList.add("disabled");
+            }
+        }
+
+        // Attach listeners
+        compensationSelect.addEventListener("change", updateFormState);
+        giftCards.addEventListener("change", updateFormState);
+        charities.addEventListener("change", updateFormState);
+
+        // Run once on load to set initial state
+        updateFormState();
     });
 </script>
 {% endblock %}
@@ -95,7 +108,7 @@
                 <option value="{{comp}}" {% if user_compensation['option']==comp %} selected {% endif %}>{{comp}}</option>
             {%endfor%}
         </select>
-        <input class="btn pr-btn mt-5" type="submit" value="Submit">
+        <input class="btn pr-btn mt-5 disabled" type="submit" value="Submit" id="submitBtn" disabled>
     </form>
 </div>
 {% endblock %}
