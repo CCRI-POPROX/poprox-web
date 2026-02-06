@@ -1,59 +1,59 @@
 {% extends "layout.html" %}
 
 {% block sidebar %}
-	{% if onboarding %}
-        <div class="column is-1"></div>
-    {% else %}
-        {{ super() }}
-    {% endif %}
+{% if onboarding %}
+<div class="column is-1"></div>
+{% else %}
+{{ super() }}
+{% endif %}
 {% endblock %}
 
 {% block header %}
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".feedback-form").forEach(form => {
-        let clickedButton = null;
+	document.addEventListener("DOMContentLoaded", () => {
+		document.querySelectorAll(".feedback-form").forEach(form => {
+			let clickedButton = null;
 
-        form.querySelectorAll("button[name='articlefeedbackType']").forEach(button => {
-            button.addEventListener("click", () => {
-                clickedButton = button;
-            });
-        });
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const payload = {
-                newsletter_id: formData.get("newsletter_id"),
-                impression_id: formData.get("impression_id"),
-                articlefeedbackType: clickedButton?.value || null
-            };
-			const response = await fetch(form.action, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(payload)
+			form.querySelectorAll("button[name='articlefeedbackType']").forEach(button => {
+				button.addEventListener("click", () => {
+					clickedButton = button;
+				});
 			});
 
-			if (response.ok && clickedButton) {
-				form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
-					btn.classList.remove("highlight_green", "highlight_red");
+			form.addEventListener("submit", async (e) => {
+				e.preventDefault();
+
+				const formData = new FormData(form);
+				const payload = {
+					newsletter_id: formData.get("newsletter_id"),
+					impression_id: formData.get("impression_id"),
+					articlefeedbackType: clickedButton?.value || null
+				};
+				const response = await fetch(form.action, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(payload)
 				});
-				if (clickedButton.value === "positive") {
-					clickedButton.classList.add("highlight_green");
-					console.log(clickedButton.value)
-					console.log("button classes:", clickedButton.className);
-				} else {
-					clickedButton.classList.add("highlight_red");
-					console.log(clickedButton.value)
-					console.log("button classes:", clickedButton.className);
+
+				if (response.ok && clickedButton) {
+					form.querySelectorAll("button[name='articlefeedbackType']").forEach(btn => {
+						btn.classList.remove("highlight_green", "highlight_red");
+					});
+					if (clickedButton.value === "positive") {
+						clickedButton.classList.add("highlight_green");
+						console.log(clickedButton.value)
+						console.log("button classes:", clickedButton.className);
+					} else {
+						clickedButton.classList.add("highlight_red");
+						console.log(clickedButton.value)
+						console.log("button classes:", clickedButton.className);
+					}
 				}
-			}
-        });
-    });
-});
+			});
+		});
+	});
 </script>
 {% endblock %}
 
@@ -68,45 +68,48 @@ document.addEventListener("DOMContentLoaded", () => {
 	{% endif %}
 
 
-		<h2>Help us understand which recommendations were relevant for you</h2>
-		{% for impression in impressions %}
-		<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
-				<div class="column is-4">
-					{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
-						{% set image = images[impression.article.preview_image_id] %}
-						<img src="{{image.url}}">
-					{% endif %}
-				</div>
-				<div class="column is-6">
-					<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
-					<p>{{ impression.subhead }}</p>
-				</div>
-				<div class="column is-2">
-					<form class="feedback-form feedback-class" action="{{ url_for('feedback') }}" method="POST">
-						<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
-						<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
 
-						<button type="submit"
-						name="articlefeedbackType"
-						value="positive"
-						class="emoji-button {% if impression.feedback is true %} highlight_green {% endif %}"
-						title="Show more articles like this"
-						>
-							👍
-						</button>
+	<h2>Help us understand which recommendations were relevant for you</h2>
 
-						<button type="submit"
-						name="articlefeedbackType"
-						value="negative"
-						class="emoji-button {% if impression.feedback is false %} highlight_red {% endif %}"
-						title="Don't show articles like this"
-						>
-							👎
-						</button>
-					</form>
-				</div>
+	{% for section in sections %}
+	{% if section.title %}
+	<h3 class="feedback-section-title">{{ section.title }}</h3>
+	{% endif %}
+
+	{% for impression in section.impressions %}
+	<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
+		<div class="column is-4">
+			{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
+			{% set image = images[impression.article.preview_image_id] %}
+			<img src="{{image.url}}">
+			{% endif %}
 		</div>
-		{% endfor %}
+		<div class="column is-6">
+			<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
+			<p>{{ impression.subhead }}</p>
+		</div>
+		<div class="column is-2">
+			<form class="feedback-form feedback-class" action="{{ url_for('feedback') }}" method="POST">
+				<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
+				<input type="hidden" id="impression_id" name="impression_id" value="{{ impression.impression_id }}">
+
+				<button type="submit" name="articlefeedbackType" value="positive"
+					class="emoji-button {% if impression.feedback is true %} highlight_green {% endif %}"
+					title="Show more articles like this">
+					👍
+				</button>
+
+				<button type="submit" name="articlefeedbackType" value="negative"
+					class="emoji-button {% if impression.feedback is false %} highlight_red {% endif %}"
+					title="Don't show articles like this">
+					👎
+				</button>
+			</form>
+		</div>
+	</div>
+	{% endfor %}
+	{% endfor %}
+
 </div>
 
 {% endblock %}
