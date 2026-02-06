@@ -377,11 +377,11 @@ def home():
 def feedback():
     account_id = auth.get_account_id()
 
-    def fetch_images(image_repo, recommended_articles):
+    def fetch_images(image_repo, impressions):
         images = {}
-        for article in recommended_articles:
-            if article.preview_image_id:
-                images[article.preview_image_id] = image_repo.fetch_image_by_id(article.preview_image_id)
+        for impression in impressions:
+            if impression.preview_image_id:
+                images[impression.preview_image_id] = image_repo.fetch_image_by_id(impression.preview_image_id)
         return images
 
     with DB_ENGINE.connect() as conn:
@@ -397,34 +397,48 @@ def feedback():
             newsletter_id = data.get("newsletter_id")
             impression_id = data.get("impression_id")
 
-            # newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
-
             if article_feedback_type == "positive":
                 is_article_positive = True
             else:
                 is_article_positive = False
 
             newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
-            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
             conn.commit()
 
             if request.is_json:
                 return jsonify({"status": "ok", "feedback": is_article_positive})
 
-        else:
-            newsletter_id = request.args.get("newsletter_id")
-            feedbackType = request.args.get("feedbackType")
+        # GET request - fetch newsletter with sections
+        newsletter_id = request.args.get("newsletter_id")
+        feedbackType = request.args.get("feedbackType")
 
+        if feedbackType:
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
-            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
             conn.commit()
 
-        recommended_articles = [impression.article for impression in impressions]
-        images = fetch_images(image_repo, recommended_articles)
+        # Fetch the full newsletter (includes sections!)
+        newsletters = newsletter_repo._fetch_newsletters(
+            newsletter_repo.tables["newsletters"],
+            newsletter_repo.tables["section_types"],
+            newsletter_repo.tables["impressed_sections"],
+            newsletter_repo.tables["impressions"],
+            newsletter_repo.tables["articles"],
+            newsletter_repo.tables["newsletters"].c.newsletter_id == newsletter_id,
+            excluded_columns=["content", "html"],
+        )
+
+        if not newsletters:
+            return render_template("feedback.html", sections=[], images={})
+
+        newsletter = newsletters[0]
+
+        # Fetch images for all impressions
+        all_impressions = newsletter.impressions
+        images = fetch_images(image_repo, all_impressions)
 
     return render_template(
         "feedback.html",
-        impressions=impressions,
+        sections=newsletter.sections,  # Pass the actual newsletter sections!
         images=images,
     )
 
