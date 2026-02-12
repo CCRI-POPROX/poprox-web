@@ -69,7 +69,7 @@
 
 
 
-	<h2>Help us understand which recommendations were relevant for you</h2>
+	<h2 class="page-header">Help us understand which recommendations were relevant for you</h2>
 
 	{% for section in sections %}
 	{% if section.title %}
@@ -79,8 +79,8 @@
 	{% for impression in section.impressions %}
 	<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 		<div class="column is-4">
-			{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
-			{% set image = images[impression.article.preview_image_id] %}
+			{% if impression.preview_image_id and impression.preview_image_id in images %}
+			{% set image = images[impression.preview_image_id] %}
 			<img src="{{image.url}}">
 			{% endif %}
 		</div>

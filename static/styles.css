@@ -206,17 +206,3 @@ h5 {
 	background-color:rgb(250, 200, 183)  !important;
 	font-size: 1.7em;
 }
-
-/* Feedback section headers */
-.feedback-section-title {
-	margin-top: 2em;
-	margin-bottom: 1em;
-	color: #003c5e;
-	font-size: 1.3em;
-	border-bottom: 2px solid #008f83;
-	padding-bottom: 0.5em;
-}
-
-.feedback-section-title:first-of-type {
-	margin-top: 1em;
-}
