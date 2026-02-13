@@ -416,15 +416,20 @@ def feedback():
             feedbackType = request.args.get("feedbackType")
 
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
-            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
+            newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
             conn.commit()
 
-        recommended_articles = [impression.article for impression in impressions]
+        recommended_articles = []
+        if newsletter:
+            for section in newsletter.sections:
+                for impression in section.impressions:
+                    recommended_articles.append(impression.article)
+
         images = fetch_images(image_repo, recommended_articles)
 
     return render_template(
         "feedback.html",
-        impressions=impressions,
+        newsletter=newsletter,
         images=images,
     )
 
