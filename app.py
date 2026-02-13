@@ -39,7 +39,9 @@ from util.auth import auth
 from util.postgres_db import (
     DB_ENGINE,
     fetch_compensation_preferences,
+    fetch_compensation_period,
     fetch_demographic_information,
+    fetch_user_click_and_survey_activity,
     finish_consent,
     finish_demographic_survey,
     finish_onboarding,
@@ -641,6 +643,9 @@ def compensation_preference_form():
     user_compensation = fetch_compensation_preferences(auth.get_account_id())
     user_compensation = convert_to_category(user_compensation)
 
+    compensation_period = fetch_compensation_period()
+    click_and_survey_activity = fetch_user_click_and_survey_activity(auth.get_account_id())
+
     return render_template(
         "compensation_form.html",
         updated=updated,
@@ -649,6 +654,8 @@ def compensation_preference_form():
         donationopts=COMPENSATION_CHARITY_OPTIONS,
         auth=auth,
         user_compensation=user_compensation,
+        compensation_period=compensation_period,
+        click_and_survey_activity=click_and_survey_activity,
     )
 
 

@@ -2,9 +2,13 @@ import logging
 import os
 from datetime import datetime, timedelta, timezone
 
+from poprox_platform.click_filtering import filter_click_histories
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.clicks import DbClicksRepository
+from poprox_storage.repositories.compensation import DbCompensationRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.qualtrics_survey import DbQualtricsSurveyRepository
 from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 from poprox_storage.repositories.teams import DbTeamRepository
 from poprox_storage.repositories.tokens import DbTokenRepository
@@ -179,3 +183,38 @@ def fetch_compensation_preferences(account_id):
         compensation = account_repo.fetch_compensation(account_id)
 
     return compensation
+
+
+def fetch_compensation_period():
+    now = datetime.now(timezone.utc).astimezone()
+    with DB_ENGINE.connect() as conn:
+        compensation_repo = DbCompensationRepository(conn)
+        compensation_period = compensation_repo.fetch_compensation_period_between(now, now)
+    return compensation_period
+
+def fetch_user_click_and_survey_activity(account_id, start_date, end_date):
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        click_repo = DbClicksRepository(conn)
+        survey_repo = DbQualtricsSurveyRepository(conn)
+        account = account_repo.fetch_accounts([account_id])
+        user_click_activity = click_repo.fetch_clicks_between(start_date, end_date, account)
+        click_count = 0
+        survey_count = 0
+        
+        if account_id in user_click_activity:
+            clicks = user_click_activity[account_id]
+            filtered_clicks = filter_click_histories(clicks)
+            clicked_newsletters = set()
+            for click in filtered_clicks[account_id]:
+                clicked_newsletters.add(click.newsletter_id)
+            click_count = len(clicked_newsletters)
+        
+        user_survey_activity = survey_repo.fetch_clean_responses_between(start_date, end_date, account)
+        survey_count = len(user_survey_activity)
+        return {
+            "click_count": click_count,
+            "survey_count": survey_count,
+        }
+
+
