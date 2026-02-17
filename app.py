@@ -377,11 +377,11 @@ def home():
 def feedback():
     account_id = auth.get_account_id()
 
-    def fetch_images(image_repo, recommended_articles):
+    def fetch_images(image_repo, impressions):
         images = {}
-        for article in recommended_articles:
-            if article.preview_image_id:
-                images[article.preview_image_id] = image_repo.fetch_image_by_id(article.preview_image_id)
+        for impression in impressions:
+            if impression.preview_image_id:
+                images[impression.preview_image_id] = image_repo.fetch_image_by_id(impression.preview_image_id)
         return images
 
     with DB_ENGINE.connect() as conn:
@@ -397,24 +397,22 @@ def feedback():
             newsletter_id = data.get("newsletter_id")
             impression_id = data.get("impression_id")
 
-            # newsletter_id, impression_id, article_feedback_type = combined_value.split("||")
-
             if article_feedback_type == "positive":
                 is_article_positive = True
             else:
                 is_article_positive = False
 
             newsletter_repo.store_impression_feedback(impression_id, is_article_positive)
-            impressions = newsletter_repo.fetch_impressions_by_newsletter_ids([newsletter_id])
             conn.commit()
 
             if request.is_json:
                 return jsonify({"status": "ok", "feedback": is_article_positive})
 
-        else:
-            newsletter_id = request.args.get("newsletter_id")
-            feedbackType = request.args.get("feedbackType")
+        # GET request - fetch newsletter with sections
+        newsletter_id = request.args.get("newsletter_id")
+        feedbackType = request.args.get("feedbackType")
 
+        if feedbackType:
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
             newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
             conn.commit()

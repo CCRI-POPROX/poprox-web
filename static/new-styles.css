@@ -491,6 +491,29 @@ input[type="email"] {
   align-items: center;
 }
 
+
+
+/* Feedback section headers */
+.feedback-section-title {
+	margin-top: 2em;
+	margin-bottom: 1em;
+	color: #003c5e;
+	font-size: 1.3em;
+	border-bottom: 2px solid #008f83;
+	padding-bottom: 0.5em;
+}
+
+.feedback-section-title:first-of-type {
+	margin-top: 1em;
+}
+
+.page-header {
+        background-color: #212A37 !important;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+}
+
 .emoji-button {
 	background: none;
 	border: none;
