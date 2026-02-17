@@ -1,6 +1,7 @@
 # ruff: noqa: E402
 
 import logging
+from datetime import datetime, timezone
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
@@ -14,6 +15,7 @@ from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.clicks import DbClicksRepository
+from poprox_storage.repositories.compensation import DbCompensationRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
@@ -39,7 +41,6 @@ from util.auth import auth
 from util.postgres_db import (
     DB_ENGINE,
     fetch_compensation_preferences,
-    fetch_compensation_period,
     fetch_demographic_information,
     fetch_user_click_and_survey_activity,
     finish_consent,
@@ -499,9 +500,7 @@ def topics():
     # Build list of topics to display:
     # 1. Always show ACTIVE_TOPICS
     # 2. Show DEPRECATED_TOPICS only if the user already has a preference stored for them
-    display_topics = ACTIVE_TOPICS + [
-        t for t in DEPRECATED_TOPICS if t in user_topic_preferences
-    ]
+    display_topics = ACTIVE_TOPICS + [t for t in DEPRECATED_TOPICS if t in user_topic_preferences]
 
     return render_template(
         "topics.html",
@@ -643,7 +642,10 @@ def compensation_preference_form():
     user_compensation = fetch_compensation_preferences(auth.get_account_id())
     user_compensation = convert_to_category(user_compensation)
 
-    compensation_period = fetch_compensation_period()
+    now = datetime.now(timezone.utc).astimezone()
+    with DB_ENGINE.connect() as conn:
+        compensation_repo = DbCompensationRepository(conn)
+        compensation_period = compensation_repo.fetch_compensation_period_between(now, now)
     click_and_survey_activity = fetch_user_click_and_survey_activity(auth.get_account_id())
 
     return render_template(
