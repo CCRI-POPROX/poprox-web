@@ -10,18 +10,6 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-from poprox_storage.aws.queues import enqueue_newsletter_request
-from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
-from poprox_storage.repositories.accounts import DbAccountRepository
-from poprox_storage.repositories.clicks import DbClicksRepository
-from poprox_storage.repositories.demographics import DbDemographicsRepository
-from poprox_storage.repositories.experiments import DbExperimentRepository
-from poprox_storage.repositories.images import DbImageRepository
-from poprox_storage.repositories.newsletters import DbNewsletterRepository
-from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
-
-from admin.admin_blueprint import admin
-from experimenter.experimenter_blueprint import exp
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -34,6 +22,18 @@ from poprox_concepts.domain.demographics import (
 )
 from poprox_concepts.domain.topics import ACTIVE_TOPICS, DEPRECATED_TOPICS, GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
+from poprox_storage.aws.queues import enqueue_newsletter_request
+from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
+from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.clicks import DbClicksRepository
+from poprox_storage.repositories.demographics import DbDemographicsRepository
+from poprox_storage.repositories.experiments import DbExperimentRepository
+from poprox_storage.repositories.images import DbImageRepository
+from poprox_storage.repositories.newsletters import DbNewsletterRepository
+from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
+
+from admin.admin_blueprint import admin
+from experimenter.experimenter_blueprint import exp
 from static_web.blueprint import static_web
 from util.auth import auth
 from util.postgres_db import (
@@ -511,9 +511,7 @@ def topics():
     # Build list of topics to display:
     # 1. Always show ACTIVE_TOPICS
     # 2. Show DEPRECATED_TOPICS only if the user already has a preference stored for them
-    display_topics = ACTIVE_TOPICS + [
-        t for t in DEPRECATED_TOPICS if t in user_topic_preferences
-    ]
+    display_topics = ACTIVE_TOPICS + [t for t in DEPRECATED_TOPICS if t in user_topic_preferences]
 
     return render_template(
         "topics.html",
@@ -729,6 +727,12 @@ def track_email_click(path):
         )
 
     return redirect(params.url)
+
+
+@app.route(f"{URL_PREFIX}/learn_more")
+@auth.requires_login
+def learn_more():
+    return render_template("learn_more.html")
 
 
 if __name__ == "__main__":
