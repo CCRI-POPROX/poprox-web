@@ -47,23 +47,18 @@
 		</div>
 	{% endif %}
 	<div class="row">
-		<h2 class="page-header">Topic Selection survey</h2>
-		{% if onboarding %}
-			<p>
-				This survey is required to complete the enrollment process, but you are free to skip any question you prefer not to answer. Your responses will help the algorithms find articles that match your interests.
-			</p>
-			<div class="block content">
-				<p class="fw-bold">
-					Please mark your initial preference by selecting the your level of interest in the following topics.
-				</p>
-			</div>
-		{% else %}
-			<div class="block content">
-				<p class="fw-bold">
-					Here is your latest preference of interest in the following topics. You can edit your preference by clicking new preference level for any following topics.
-				</p>
-			</div>
-		{% endif %}
+		<h2 class="page-header">Customize Your Newsletter</h2>
+        <div class="block content">
+            <p class="fw-bold">
+                POPROX presents a new sectioned newsletter with top news and specific topic sections based on your preferences:
+                <ul>
+                    <li>Your Top Stories features articles from a list of top stories selected by the Associated Press.</li>
+                    <li>Three topical sections, each focused on a specific topic (e.g., U.S. News, Politics, Entertainment, or Sports) selected based on your topic preferences.</li>
+                    <li>In Other News highlights three articles from other topics.</li>
+                </ul>
+                Each section includes three articles selected based on your topic preferences, article feedback, and click history.  The selection of articles will improve over time as POPROX learns more from your article clicks and the feedback you provide.
+            </p>
+        </div>
 	</div>
 	<div class="row">
 		<form action="/topics" method="POST">
