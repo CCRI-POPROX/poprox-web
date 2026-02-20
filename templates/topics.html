@@ -68,6 +68,11 @@
 	<div class="row">
 		<form action="/topics" method="POST">
 
+            {% if onboarding %}
+            {% else %}
+                <input class="btn pr-btn" type="submit" value="Save">
+            {% endif %}
+
             {% set middle_intlvl_index = ( intlvls|length ) //2 %}
             {% set default_intrest_val =  intlvls[middle_intlvl_index][1] %}
 
@@ -105,7 +110,11 @@
 					</div>
 				</div>
 			{% endfor %}
-			<input class="btn pr-btn" type="submit" value="Submit">
+            {% if onboarding %}
+                <input class="btn pr-btn" type="submit" value="Submit">
+            {% else %}
+                <input class="btn pr-btn" type="submit" value="Save">
+            {% endif %}
 		</form>
 	</div>
 </div>
