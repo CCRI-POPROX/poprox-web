@@ -2,7 +2,6 @@ import logging
 import os
 from datetime import datetime, timedelta, timezone
 
-from poprox_platform.click_filtering import filter_click_histories
 from poprox_storage.repositories.accounts import DbAccountRepository
 from poprox_storage.repositories.clicks import DbClicksRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
@@ -13,6 +12,7 @@ from poprox_storage.repositories.teams import DbTeamRepository
 from poprox_storage.repositories.tokens import DbTokenRepository
 from sqlalchemy import create_engine
 
+from poprox_concepts.api.click_filtering import filter_click_histories
 from poprox_concepts.api.tracking import Token
 from poprox_concepts.domain.demographics import (
     EMAIL_CLIENT_OPTIONS,
