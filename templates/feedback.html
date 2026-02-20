@@ -72,13 +72,13 @@
 	{% if newsletter %}
 	{% for section in newsletter.sections %}
 	{% if section.title %}
-	<h3 class="title is-4" style="margin-top: 2em; margin-bottom: 0.5em;">{{ section.title }}</h3>
+	<h3 class="feedback-section-title">{{ section.title }}</h3>
 	{% endif %}
 	{% for impression in section.impressions %}
 	<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 		<div class="column is-4">
-			{% if impression.article.preview_image_id and impression.article.preview_image_id in images %}
-			{% set image = images[impression.article.preview_image_id] %}
+			{% if impression.preview_image_id and impression.preview_image_id in images %}
+			{% set image = images[impression.preview_image_id] %}
 			<img src="{{image.url}}">
 			{% endif %}
 		</div>
@@ -108,7 +108,8 @@
 	{% endfor %}
 	{% endfor %}
 	{% else %}
-	<p>No newsletter found. Please ensure you act via a valid link.</p>
+	<p>We were not able to pull up your newsletter for feedback. Please return to your newsletter and try again. If this
+		happens repeatedly please reach out to poprox@umn.edu for technical support.</p>
 	{% endif %}
 </div>
 

@@ -417,13 +417,9 @@ def feedback():
             newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
             conn.commit()
 
-        recommended_articles = []
-        if newsletter:
-            for section in newsletter.sections:
-                for impression in section.impressions:
-                    recommended_articles.append(impression.article)
-
-        images = fetch_images(image_repo, recommended_articles)
+        # Fetch images for all impressions
+        all_impressions = newsletter.impressions if newsletter else []
+        images = fetch_images(image_repo, all_impressions)
 
     return render_template(
         "feedback.html",
