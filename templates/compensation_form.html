@@ -73,8 +73,70 @@
     <h1>Compensation Settings</h1>
 
     <p>
-        You may get paid to participate in some of our studies. Please let us know how you’d like to be paid. You can always come back and change this later.
+        You may get paid to participate in some of our studies or through participation incentives. Please let us know how you’d like to be paid. You can always come back and change this later.
     </p>
+
+    <div class="card mb-4 bg-light border-0">
+        <div class="card-body">
+            {% if not compensation_period %}
+                <p class="text-muted mb-0">
+                    <i class="fa fa-info-circle"></i> There’s no active compensation going on.
+                </p>
+            {% else %}
+                <h5 class="card-title text-primary fw-bold">Current Compensation Incentives</h5>
+                <p class="card-subtitle mb-3 text-muted">
+                    <strong>Event Duration:</strong> 
+                    {{ compensation_period.start_date.strftime('%b %d') }} to {{ compensation_period.end_date.strftime('%b %d, %Y') }}
+                </p>
+
+                <div class="row">
+                    <div class="col-md-7 border-end">
+                        <h6><strong>Reward Rules</strong></h6>
+                        <ul class="small mb-0 list-unstyled">
+                            <li><i class="fa fa-book text-secondary me-2"></i><strong>Reading Activity:</strong></li>
+                            <li class="ms-4">Read on 10+ different days: <span class="text-success fw-bold">$5</span></li>
+                            <li class="ms-4">Read on 15+ different days: <span class="text-success fw-bold">$10</span></li>
+                            <li class="ms-4">Read on 20+ different days: <span class="text-success fw-bold">$20</span></li>
+                            
+                            <li class="mt-2"><i class="fa fa-check-square-o text-secondary me-2"></i><strong>Survey Activity:</strong></li>
+                            <li class="ms-4">Complete 2+ weekly surveys: <span class="text-success fw-bold">$5</span></li>
+                            <li class="ms-4">Complete 3+ weekly surveys: <span class="text-success fw-bold">$10</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-5">
+                        <h6><strong>Your Current Status</strong></h6>
+                        {% set clicks = click_and_survey_activity['click_count'] %}
+                        {% set surveys = click_and_survey_activity['survey_count'] %}
+                        
+                        <div class="mb-2">
+                            <span class="d-block text-muted small">Active Reading Days: <strong>{{ clicks }}</strong></span>
+                            {% if clicks >= 20 %}
+                                <span class="badge bg-success">Tier 3 ($20) Unlocked!</span>
+                            {% elif clicks >= 15 %}
+                                <span class="badge bg-success">Tier 2 ($10) Unlocked!</span>
+                            {% elif clicks >= 10 %}
+                                <span class="badge bg-info text-dark">Tier 1 ($5) Unlocked</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ 10 - clicks }} reading days to next reward</span>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <span class="d-block text-muted small">Surveys Completed: <strong>{{ surveys }}</strong></span>
+                            {% if surveys >= 3 %}
+                                <span class="badge bg-success">Tier 2 ($10) Unlocked!</span>
+                            {% elif surveys >= 2 %}
+                                <span class="badge bg-info text-dark">Tier 1 ($5) Unlocked</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ 2 - surveys }} surveys to next reward</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
     <form action="{{url_for('update_compensation_preference')}}" method="POST">
         <label class="form-label mt-4 fw-bold" for="compensationSelect">Choose your preferred method of compensation:</label>
