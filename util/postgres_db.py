@@ -35,9 +35,15 @@ def get_or_make_account(email, source, subsource):
     with DB_ENGINE.connect() as conn:
         account_repo = DbAccountRepository(conn)
         result = account_repo.fetch_account_by_email(email)
+
         if result is None:
             result = account_repo.store_new_account(email, source, subsource)
-            conn.commit()
+            account_repo.set_placebo_id(result.account_id)
+        elif result.placebo_id is None:
+            account_repo.set_placebo_id(result.account_id)
+
+        conn.commit()
+
         return {
             "account_id": result.account_id,
             "email": result.email,
