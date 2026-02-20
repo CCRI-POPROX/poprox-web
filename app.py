@@ -642,11 +642,19 @@ def compensation_preference_form():
     user_compensation = fetch_compensation_preferences(auth.get_account_id())
     user_compensation = convert_to_category(user_compensation)
 
+    click_and_survey_activity = {}
+
     now = datetime.now(timezone.utc).astimezone()
     with DB_ENGINE.connect() as conn:
         compensation_repo = DbCompensationRepository(conn)
         compensation_period = compensation_repo.fetch_compensation_period_between(now, now)
-    click_and_survey_activity = fetch_user_click_and_survey_activity(auth.get_account_id())
+
+        if compensation_period:
+            click_and_survey_activity = fetch_user_click_and_survey_activity(
+                auth.get_account_id(),
+                compensation_period.start_date,
+                compensation_period.end_date,
+            )
 
     return render_template(
         "compensation_form.html",
