@@ -9,10 +9,16 @@
 {% endblock %}
 
 {% block header %}
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
         const topicBlocks = document.querySelectorAll('.pref-item-block');
+
+        // {% if not onboarding %}
+        // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // {% endif %}
 
         topicBlocks.forEach(topicBlock => {
             const currentValueDisplay = topicBlock.querySelector('.current-value-text');
@@ -28,6 +34,53 @@
                     currentValueDisplay.textContent = actualValue;
                 }
             });
+
+            {% if not onboarding %}
+            rangeInput.addEventListener('change', async () => {
+                const newValue = rangeInput.value;
+                const topicName = rangeInput.getAttribute('data-topic');
+
+                rangeInput.disabled = true;
+                const originalText = currentValueDisplay.textContent;
+                currentValueDisplay.textContent = `Saving...`;
+                currentValueDisplay.classList.add("text-muted");
+
+                try {
+                    const response = await fetch('/update-topic-preference', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'X-CSRFToken': csrfToken
+                        },
+                        body: JSON.stringify({
+                            topic: topicName,
+                            value: newValue
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("There was a network error.");
+                    }
+
+                    currentValueDisplay.textContent = `Saved`;
+                    currentValueDisplay.style.color = "green";
+
+                    // Remove status after 1.5 seconds
+                    setTimeout(() => {
+                        currentValueDisplay.textContent = originalText;
+                        currentValueDisplay.style.color = "";
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('Error saving preference:', error);
+                    currentValueDisplay.textContent = "Failed to save";
+                    currentValueDisplay.style.color = "red";
+                } finally {
+                    rangeInput.disabled = false;
+                    currentValueDisplay.classList.remove("text-muted");
+                }
+            });
+            {% endif %}
         });
 
         // Initialize fill by dispatching input
@@ -94,6 +147,7 @@
                         <div class="row m-3">
                             <input
                             name={{input_name}}
+                            data-topic="{{topic}}"
                             value="{{user_topic_preferences.get(topic, default_intrest_val)}}"
                             type="range" class="form-range pref-range-slider" min="{{intlvls[0][1]}}" max="{{intlvls[-1][1]}}" step="1" />
                         </div>
