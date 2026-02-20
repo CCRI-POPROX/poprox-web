@@ -34,7 +34,7 @@ from poprox_concepts.domain.demographics import (
     RACE_OPTIONS,
     Demographics,
 )
-from poprox_concepts.domain.topics import ACTIVE_TOPICS, DEPRECATED_TOPICS, GENERAL_TOPICS
+from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
 from util.auth import auth
@@ -496,16 +496,11 @@ def topics():
     else:  # topic get method
         user_topic_preferences = get_topic_preferences(auth.get_account_id())
 
-    # Build list of topics to display:
-    # 1. Always show ACTIVE_TOPICS
-    # 2. Show DEPRECATED_TOPICS only if the user already has a preference stored for them
-    display_topics = ACTIVE_TOPICS + [t for t in DEPRECATED_TOPICS if t in user_topic_preferences]
-
     return render_template(
         "topics.html",
         updated=updated,
         onboarding=onboarding,
-        topics=display_topics,
+        topics=GENERAL_TOPICS,
         topic_hints=TOPIC_HINTS,
         intlvls=interest_lvls,
         user_topic_preferences=user_topic_preferences,
