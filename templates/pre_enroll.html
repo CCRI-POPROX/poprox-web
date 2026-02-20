@@ -28,19 +28,19 @@
 </div>
 {% endif %}
 <div class="card-body">
-	<h2 class="card-title text-center">Stay Informed, Your Way</h2>
-	<h5 class="card-title text-center">The stories that matter to you delivered to your inbox daily—no ads, just news.</h5>
+	<h2 class="card-title text-center">Tired of reading the same old news?</h2>
+	<h5 class="card-title text-center">There's so much more happening in the world. We can help you discover it!</h5>
 </div>
 
 <div class="row">
-	<div class="col-lg-2"></div>
-
 	<div class="card-body col-md-6 col-lg-5">
 		<img class="image-fluid mx-auto d-block" src="static/example-newsletter.jpg" width="80%" style="max-width:400px;max-height:600px;">
 	</div>
 	<div class="card-body col-md-6 col-lg-5 pt-lg-5">
-		<h5 class="card-title">How Do I Sign Up?</h5>
-		<p class="card-text">Please provide your email address and confirm that you qualify to participate in research studies:</p>
+		<h5 class="card-title">What's POPROX News?</h5>
+		<p class="card-text">POPROX is an ad-free daily news briefing curated just for you based on the topics you like and the articles you read. We’re an independent, non-commercial research project and your subscription helps us improve news recommendation technology.</p>
+		<h5 class="card-title">Ready to get started?</h5>
+		<p class="card-text">Once we confirm your eligibility and email address, we’ll get your permission to participate in POPROX research, ask some quick questions about you and your news interests, then send your first newsletter right away.</p>
 
 		<form action="{{url_for('pre_enroll_post')}}" method="post">
 			<input type="hidden" id="source" name="source" value="{{source}}" >
@@ -66,20 +66,12 @@
 	</div>
 	<div class="col-lg-2"></div>
 </div>
-<div class="card-body">
-	<h5 class="card-title">How Does It Work?</h5>
-	<p class="card-text">Each day we send you a newsletter with AP News articles curated just for you based on your interests, reading history, and feedback.
-		Occasionally, we'll ask you to fill out surveys about your experience with the newsletter and the articles we recommend.
+<div class="row">
+	<h5 class="card-title">Want to know more?</h5>
+	<p class="card-text">POPROX is a news recommendation research platform that helps researchers learn about the role of personalization in news and journalism. It's funded by the National Science Foundation and developed at the University of Minnesota in partnership with several other universities. The news is provided by the Associated Press, and the platform sends regular surveys to assess reader satisfaction.  The information we collect (clicks, feedback, surveys) improves your newsletter and will help shape the future of news recommendation.
 	</p>
 
-	<h5 class="card-title">What's POPROX?</h5>
-	<p>POPROX is a news recommendation research platform that helps researchers learn about the role of personalization in news and journalism.
-		It's funded by the National Science Foundation and developed at the University of Minnesota with support from several other universities.
-		The information we collect helps us carry out research studies to shape the future of news recommendation.
-	</p>
-
-	<h5 class="card-title">What Else Should I Know?</h5>
-	<p class="card-text">As a research platform, the POPROX <a href="/static/Subscriber_Agreement_v2.pdf#page=1">Terms and Conditions</a> and <a href="/static/Subscriber_Agreement_v2.pdf#page=3">Privacy Policy</a> are described
+	<p class="card-text">POPROX News has been approved as a research platform by the five participating universities and Advarra, an independent ethics review board. The POPROX <a href="/static/Subscriber_Agreement_v2.pdf#page=1">Terms and Conditions</a> and <a href="/static/Subscriber_Agreement_v2.pdf#page=3">Privacy Policy</a> are described
 		in our <a href="/static/Subscriber_Agreement_v2.pdf">Informed Consent to Participate
 		in Research Agreement</a>.
 	</p>
