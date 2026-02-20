@@ -195,8 +195,7 @@ def fetch_user_click_and_survey_activity(account_id, start_date, end_date):
         survey_count = 0
 
         if account_id in user_click_activity:
-            clicks = user_click_activity[account_id]
-            filtered_clicks = filter_click_histories(clicks)
+            filtered_clicks = filter_click_histories(user_click_activity)
             clicked_newsletters = set()
             for click in filtered_clicks[account_id]:
                 clicked_newsletters.add(click.newsletter_id)
