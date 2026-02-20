@@ -431,6 +431,45 @@ def feedback():
     )
 
 
+@app.route(f"{URL_PREFIX}/update-topic-preference", methods=["POST"])
+@auth.requires_login
+def update_preference_api():
+    data = request.get_json()
+
+    if not data or "topic" not in data or "value" not in data:
+        return jsonify({"error": "Missing data"}), 400
+
+    topic_name = data["topic"]
+    if topic_name not in GENERAL_TOPICS:
+        return jsonify({"error": "Unknown topic"}), 404
+
+    new_value = data["value"]
+    if not new_value:
+        return jsonify({"error": "Missing data"}), 400
+
+    with DB_ENGINE.connect() as conn:
+        repo = DbAccountInterestRepository(conn)
+        account_id = auth.get_account_id()
+        entity_id = repo.fetch_entity_by_name(topic_name)
+
+        if entity_id is None:
+            return jsonify({"error": "Topic not found"}), 404
+
+        acct_interest = AccountInterest(
+            account_id=account_id,
+            entity_id=entity_id,
+            entity_name=topic_name,
+            entity_type="topic",
+            preference=new_value,
+            frequency=None,
+        )
+
+        repo.store_topic_preferences(account_id, [acct_interest])
+        conn.commit()
+
+    return jsonify({"status": "success"}), 200
+
+
 @app.route(f"{URL_PREFIX}/topics", methods=["GET", "POST"])
 @auth.requires_login
 def topics():
