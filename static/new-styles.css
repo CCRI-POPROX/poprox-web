@@ -8,7 +8,7 @@ body {
     min-height: 100vh;
     min-width: 100vw;
     position: relative;
-    display:flex;
+    display: flex;
     flex-direction: column;
     /* background-image: url("/img/background.jpg"); */
 }
@@ -22,7 +22,7 @@ body {
 .navbar {
     background-color: #f8f8ff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex-grow:0;
+    flex-grow: 0;
     max-height: 80px;
 }
 
@@ -43,23 +43,24 @@ body {
 }
 
 .nav-link:hover {
-    color:  rgb(46, 128, 119) !important;
+    color: rgb(46, 128, 119) !important;
     text-decoration: none;
 }
 
 .nav-tabs .nav-link {
-    color:  rgb(46, 128, 119) !important;
+    color: rgb(46, 128, 119) !important;
     font-weight: 500;
 }
 
 .nav-tabs .nav-link:hover {
-    color:  #212A37 !important;
+    color: #212A37 !important;
     text-decoration: none;
 }
 
 body>div {
     flex-grow: 1;
 }
+
 /* Footer */
 
 footer {
@@ -70,7 +71,7 @@ footer {
     font-size: 1rem;
     letter-spacing: 1px;
     width: 100%;
-    flex-grow:0;
+    flex-grow: 0;
 }
 
 
@@ -108,15 +109,15 @@ footer {
 }
 
 .pr-btn:disabled {
-	background-color: #a3abbd;
+    background-color: #a3abbd;
 }
 
 .form-control-30 {
-	width: 30%;
+    width: 30%;
 }
 
 .form-select {
-	width: 30%;
+    width: 30%;
 }
 
 /* .form-control {
@@ -132,9 +133,9 @@ input[type="email"] {
 * css for topics.html
 */
 .pref-updated-flash {
-	background-color: #22771133;
-	padding: 0.25em;
-	margin: -0.75em -0.75em 9px -0.75em;
+    background-color: #22771133;
+    padding: 0.25em;
+    margin: -0.75em -0.75em 9px -0.75em;
 }
 
 .pref-item-block {
@@ -160,12 +161,13 @@ input[type="email"] {
     cursor: pointer;
 }
 
-.topic-radio-container .form-check { /* Target the Bootstrap form-check within the radio container */
+.topic-radio-container .form-check {
+    /* Target the Bootstrap form-check within the radio container */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-	height: 63px;
+    height: 63px;
 }
 
 .topic-radio-container .form-check-input {
@@ -181,7 +183,7 @@ input[type="email"] {
 }
 
 .topic-radio-container label {
-	width: 116px;
+    width: 116px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -204,7 +206,7 @@ input[type="email"] {
 
 }
 
-@media (min-wdith: 375px){
+@media (min-wdith: 375px) {
     .topic-radio-container .form-check {
         height: 63px;
     }
@@ -220,7 +222,8 @@ input[type="email"] {
 
 .pseudo-range-slider {
     width: 100%;
-    position: relative; /* TODO: use bootstrap class in the html*/
+    position: relative;
+    /* TODO: use bootstrap class in the html*/
     z-index: 2;
     background: transparent;
 }
@@ -229,13 +232,16 @@ input[type="email"] {
     background: transparent;
     height: 36px;
 }
+
 .pseudo-range-slider::-moz-range-track {
     background: transparent;
     height: 36px;
 }
+
 .pseudo-range-slider::-ms-track {
     background: transparent;
-    color: transparent; /* IE hack */
+    color: transparent;
+    /* IE hack */
     height: 36px;
 }
 
@@ -271,21 +277,26 @@ input[type="email"] {
 
 .progress-bar-wrapper {
     position: absolute;
-    top: 50%; /* TODO: use bootstrap class in the html*/
-    left: 0; /* TODO: use bootstrap class in the html*/
-    right: 0; /* TODO: use bootstrap class in the html*/
+    top: 50%;
+    /* TODO: use bootstrap class in the html*/
+    left: 0;
+    /* TODO: use bootstrap class in the html*/
+    right: 0;
+    /* TODO: use bootstrap class in the html*/
     height: 45px;
     background-color: #e9ecef;
     transform: translateY(-50%);
     display: flex;
     overflow: hidden;
-    border-radius: 0.5em; /* TODO: use bootstrap class in the html*/
+    border-radius: 0.5em;
+    /* TODO: use bootstrap class in the html*/
     z-index: 1;
 }
 
 .progress-bar-fill {
     height: 100%;
-    background-color: #008e82aa; /* Progress color */
+    background-color: #008e82aa;
+    /* Progress color */
     position: absolute;
     top: 0;
 }
@@ -308,9 +319,12 @@ input[type="email"] {
 
 .value-markers {
     position: absolute;
-    top: 50%; /* TODO: use bootstrap class in the html*/
-    left: 0; /* TODO: use bootstrap class in the html*/
-    right: 0; /* TODO: use bootstrap class in the html*/
+    top: 50%;
+    /* TODO: use bootstrap class in the html*/
+    left: 0;
+    /* TODO: use bootstrap class in the html*/
+    right: 0;
+    /* TODO: use bootstrap class in the html*/
     transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
@@ -385,35 +399,35 @@ input[type="email"] {
 * css for consent1.html
 */
 
- h1 {
+h1 {
     text-align: center;
- }
+}
 
 .consent {
     margin: 2rem;
 }
 
 .consent:has(b.action) {
-	padding: 1ex;
-	border: solid 3px #227711;
-	border-radius: 9px;
+    padding: 1ex;
+    border: solid 3px #227711;
+    border-radius: 9px;
 }
 
 .accordion-header {
     background-color: #ececec;
 }
 
-.accordion-header .accordion-button{
+.accordion-header .accordion-button {
     background-color: #ececec;
 }
 
-.accordion-header .accordion-button:not(.collapsed){
+.accordion-header .accordion-button:not(.collapsed) {
     background-color: #ececec;
     cursor: pointer;
 }
 
 .accordion-header.checked {
-	background-color: #22771133;
+    background-color: #22771133;
 }
 
 .accordion-header.checked .accordion-button {
@@ -425,47 +439,47 @@ input[type="email"] {
 }
 
 .accordion-header.error {
-	background-color: #ef333363;
+    background-color: #ef333363;
 }
 
-.accordion-header.error .accordion-button{
-	background-color: #ef333363;
+.accordion-header.error .accordion-button {
+    background-color: #ef333363;
 }
 
-.accordion-header.error .accordion-button:not(.collapsed){
-	background-color: #ef333363;
+.accordion-header.error .accordion-button:not(.collapsed) {
+    background-color: #ef333363;
 }
 
 .minmax-icon {
-	font-size: 1.5rem;
-	margin-left: auto;
-	font-family: monospace;
+    font-size: 1.5rem;
+    margin-left: auto;
+    font-family: monospace;
 }
 
 .minmax-icon::after {
-	content: "[" attr(state-lbl) "]";
+    content: "[" attr(state-lbl) "]";
 }
 
 .consent-section {
-	overflow: hidden;
-	transition: height 1s;
+    overflow: hidden;
+    transition: height 1s;
     margin: 0.5em;
 }
 
 #consent-final {
-	overflow: hidden;
-	height: 0;
+    overflow: hidden;
+    height: 0;
 }
 
 #consent-final p {
-	margin: 2rem;
+    margin: 2rem;
 }
 
 .error-flash {
-	background-color: #ececec;
-	color: #ef3333;
-	padding: 0.25em;
-	margin-top: 2rem;
+    background-color: #ececec;
+    color: #ef3333;
+    padding: 0.25em;
+    margin-top: 2rem;
 }
 
 @media (min-width:375) {
@@ -477,66 +491,68 @@ input[type="email"] {
 }
 
 @media print {
-	.consent-section {
-		height: auto !important;
-	}
+    .consent-section {
+        height: auto !important;
+    }
 }
 
 /* end consent1.html */
 
 .feedback-class {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 
 
 /* Feedback section headers */
 .feedback-section-title {
-	margin-top: 2em;
-	margin-bottom: 1em;
-	color: #003c5e;
-	font-size: 1.3em;
-	border-bottom: 2px solid #008f83;
-	padding-bottom: 0.5em;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    color: #003c5e;
+    font-size: 1.3em;
+    border-bottom: 2px solid #008f83;
+    padding-bottom: 0.5em;
+
 }
 
 .feedback-section-title:first-of-type {
-	margin-top: 1em;
+    margin-top: 1em;
 }
 
 .page-header {
-        background-color: #212A37 !important;
-        color: white;
-        text-align: center;
-        padding: 1rem;
+    background-color: #212A37 !important;
+    color: white;
+    text-align: center;
+    padding: 1rem;
 }
 
 .emoji-button {
-	background: none;
-	border: none;
-	font-size: 1.5em;
-	cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
 
-	width: 1.7em;
-	height: 1.7em;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 1.7em;
+    height: 1.7em;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .emoji-button:last-child {
-  margin-right: 1rem;
+    margin-right: 1rem;
 }
 
-.highlight_green{
-	background-color:rgb(204, 248, 204)  !important;
-	font-size: 1.7em;
+.highlight_green {
+    background-color: rgb(204, 248, 204) !important;
+    font-size: 1.7em;
 }
 
-.highlight_red{
-	background-color:rgb(250, 200, 183)  !important;
-	font-size: 1.7em;
+.highlight_red {
+    background-color: rgb(250, 200, 183) !important;
+    font-size: 1.7em;
 }

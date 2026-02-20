@@ -68,14 +68,12 @@
 	{% endif %}
 
 
-
-	<h2 class="page-header">Help us understand which recommendations were relevant for you</h2>
-
-	{% for section in sections %}
+	<h2>Help us understand which recommendations were relevant for you</h2>
+	{% if newsletter %}
+	{% for section in newsletter.sections %}
 	{% if section.title %}
 	<h3 class="feedback-section-title">{{ section.title }}</h3>
 	{% endif %}
-
 	{% for impression in section.impressions %}
 	<div class="columns" style="margin-top: 1em; margin-bottom: 1em;">
 		<div class="column is-4">
@@ -109,7 +107,10 @@
 	</div>
 	{% endfor %}
 	{% endfor %}
-
+	{% else %}
+	<p>We were not able to pull up your newsletter for feedback. Please return to your newsletter and try again. If this
+		happens repeatedly please reach out to poprox@umn.edu for technical support.</p>
+	{% endif %}
 </div>
 
 {% endblock %}

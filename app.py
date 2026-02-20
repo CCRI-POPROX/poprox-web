@@ -414,31 +414,16 @@ def feedback():
 
         if feedbackType:
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
+            newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
             conn.commit()
 
-        # Fetch the full newsletter (includes sections!)
-        newsletters = newsletter_repo._fetch_newsletters(
-            newsletter_repo.tables["newsletters"],
-            newsletter_repo.tables["section_types"],
-            newsletter_repo.tables["impressed_sections"],
-            newsletter_repo.tables["impressions"],
-            newsletter_repo.tables["articles"],
-            newsletter_repo.tables["newsletters"].c.newsletter_id == newsletter_id,
-            excluded_columns=["content", "html"],
-        )
-
-        if not newsletters:
-            return render_template("feedback.html", sections=[], images={})
-
-        newsletter = newsletters[0]
-
         # Fetch images for all impressions
-        all_impressions = newsletter.impressions
+        all_impressions = newsletter.impressions if newsletter else []
         images = fetch_images(image_repo, all_impressions)
 
     return render_template(
         "feedback.html",
-        sections=newsletter.sections,  # Pass the actual newsletter sections!
+        newsletter=newsletter,
         images=images,
     )
 
