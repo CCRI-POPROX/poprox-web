@@ -4,6 +4,67 @@
 
 {% block content %}
 
+<h2>Clicks by day</h2>
+
+<div style="width: 800px;"><canvas id="click_by_day"></canvas></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<script type="module">
+  async function load_data() {
+    const result = await fetch("api/clicks/by_day")
+    const data = await result.json()
+    const retval = []
+    for (const date in data) {
+      retval.push({date, count:data[date]})
+    }
+    console.log(data)
+    return retval
+  }
+
+  const data = await load_data()
+  new Chart(
+    document.getElementById('click_by_day'),
+    {
+      type: 'line',
+      data: {
+        datasets: [
+          {
+            label: 'clicks by date',
+            data: data
+          }
+        ]
+      },
+      options: {
+        plugins: {
+          title: {
+            text: 'Clicks by day',
+            display: true
+          }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day'
+            },
+          },
+        },
+        parsing: {
+          xAxisKey: 'date',
+          yAxisKey: 'count'
+        },
+        adapters: {
+            date: {
+                locale: 'en'
+            }
+        }
+      },
+    },
+  );
+</script>
+
 <h2>Running Experiments</h2>
 
 {% if experiments|length > 0 %}
