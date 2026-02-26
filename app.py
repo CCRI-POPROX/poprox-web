@@ -128,8 +128,6 @@ app.register_blueprint(static_web)
 
 from poprox_concepts.internals import to_hashed_base64
 
-BASE_TRACKING_URL = env.get("BASE_TRACKING_URL")
-
 
 def tracking_url_for(account_id, newsletter_id, impression):
     article = impression.article
@@ -140,7 +138,7 @@ def tracking_url_for(account_id, newsletter_id, impression):
         article_id=str(article.article_id),
         url=article.url,
     )
-    return f"{BASE_TRACKING_URL}/{to_hashed_base64(data, HMAC_KEY)}"
+    return f"{url_for('track_email_click')}/{to_hashed_base64(data, HMAC_KEY)}"
 
 
 @app.context_processor
