@@ -126,10 +126,27 @@ app.register_blueprint(exp)
 app.register_blueprint(static_web)
 
 
+from poprox_concepts.internals import to_hashed_base64
+
+BASE_TRACKING_URL = env.get("BASE_TRACKING_URL")
+
+
+def tracking_url_for(account_id, newsletter_id, impression):
+    article = impression.article
+    data = TrackingLinkData(
+        account_id=str(account_id),
+        newsletter_id=str(newsletter_id),
+        impression_id=str(impression.impression_id),
+        article_id=str(article.article_id),
+        url=article.url,
+    )
+    return f"{BASE_TRACKING_URL}/{to_hashed_base64(data, HMAC_KEY)}"
+
+
 @app.context_processor
 def dfault_jinja_variables():
     """returned properties here will be added to all jinja renders"""
-    return dict(auth=auth)
+    return dict(auth=auth, tracking_url_for=tracking_url_for)
 
 
 @app.route(f"{URL_PREFIX}/email_redirect/<path>")
