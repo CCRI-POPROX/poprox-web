@@ -83,7 +83,7 @@
 			{% endif %}
 		</div>
 		<div class="column is-6">
-			<a href="{{ impression.article.url }}">{{ impression.headline }}</a>
+			<a href="{{ tracking_url_for(auth.get_account_id(), newsletter.newsletter_id, impression) }}">{{ impression.headline }}</a>
 			<p>{{ impression.subhead }}</p>
 		</div>
 		<div class="column is-2">
