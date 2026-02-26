@@ -10,15 +10,16 @@
 
 {% block header %}
 
-
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const discreteLabels = [{{intlvls | map("first")| map("tojson") | join(', ')}}];
         const topicBlocks = document.querySelectorAll('.pref-item-block');
 
-        // {% if not onboarding %}
-        // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        // {% endif %}
+        {% if not onboarding %}
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        {% endif %}
 
         topicBlocks.forEach(topicBlock => {
             const currentValueDisplay = topicBlock.querySelector('.current-value-text');
@@ -50,7 +51,7 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            // 'X-CSRFToken': csrfToken
+                            'X-CSRFToken': csrfToken
                         },
                         body: JSON.stringify({
                             topic: topicName,
@@ -118,7 +119,7 @@
 	</div>
 	<div class="row">
 		<form action="/topics" method="POST">
-
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             {% if onboarding %}
             {% else %}
                 <input class="btn pr-btn" type="submit" value="Save">

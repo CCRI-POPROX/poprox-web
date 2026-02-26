@@ -23,7 +23,7 @@
             // Reset required states initially
             giftCards.required = false;
             charities.required = false;
-            
+
             // Hide both secondary options by default
             if (!giftCards.classList.contains("d-none")) giftCards.classList.add("d-none");
             if (!charities.classList.contains("d-none")) charities.classList.add("d-none");
@@ -85,7 +85,7 @@
             {% else %}
                 <h5 class="card-title text-primary fw-bold">Current Compensation Incentives</h5>
                 <p class="card-subtitle mb-3 text-muted">
-                    <strong>Event Duration:</strong> 
+                    <strong>Event Duration:</strong>
                     {{ compensation_period.start_date.strftime('%b %d') }} to {{ compensation_period.end_date.strftime('%b %d, %Y') }}
                 </p>
 
@@ -97,7 +97,7 @@
                             <li class="ms-4">Read on 10+ different days: <span class="text-success fw-bold">$5</span></li>
                             <li class="ms-4">Read on 15+ different days: <span class="text-success fw-bold">$10</span></li>
                             <li class="ms-4">Read on 20+ different days: <span class="text-success fw-bold">$20</span></li>
-                            
+
                             <li class="mt-2"><i class="fa fa-check-square-o text-secondary me-2"></i><strong>Survey Activity:</strong></li>
                             <li class="ms-4">Complete 2+ weekly surveys: <span class="text-success fw-bold">$5</span></li>
                             <li class="ms-4">Complete 3+ weekly surveys: <span class="text-success fw-bold">$10</span></li>
@@ -108,7 +108,7 @@
                         <h6><strong>Your Current Status</strong></h6>
                         {% set clicks = click_and_survey_activity['click_count'] %}
                         {% set surveys = click_and_survey_activity['survey_count'] %}
-                        
+
                         <div class="mb-2">
                             <span class="d-block text-muted small">Active Reading Days: <strong>{{ clicks }}</strong></span>
                             {% if clicks >= 20 %}
@@ -139,6 +139,7 @@
     </div>
 
     <form action="{{url_for('update_compensation_preference')}}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label class="form-label mt-4 fw-bold" for="compensationSelect">Choose your preferred method of compensation:</label>
         <select class="form-select"
             id="compensationSelect"

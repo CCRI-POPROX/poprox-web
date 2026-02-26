@@ -6,6 +6,7 @@ from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask_wtf.csrf import CSRFProtect
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -60,6 +61,7 @@ URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
+csrf = CSRFProtect(app)
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 TOPIC_HINTS = {
