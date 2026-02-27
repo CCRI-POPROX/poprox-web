@@ -79,7 +79,7 @@
 		<div class="col-4">
 			{% if impression.preview_image_id and impression.preview_image_id in images %}
 			{% set image = images[impression.preview_image_id] %}
-			<img src="{{image.url}}">
+			<img src="{{image.url}}" style="width: 100%">
 			{% endif %}
 		</div>
 		<div class="col-6">
