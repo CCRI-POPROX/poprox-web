@@ -1,0 +1,3578 @@
+{
+  "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+  "account_id": "597d7177-10b1-4fc4-a5d4-c4180b50d5f7",
+  "treatment_id": null,
+  "experience_id": null,
+  "sections": [
+    {
+      "section_id": "7de814fe-d463-485e-bd86-99169e997ae7",
+      "title": "Your Top Stories",
+      "flavor": null,
+      "personalized": true,
+      "seed_entity_id": null,
+      "impressions": [
+        {
+          "impression_id": "d7f4d73e-e924-4f8a-9f29-201088367598",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 1,
+          "article": {
+            "article_id": "740c2663-329b-4ab4-9faa-9942d52953de",
+            "headline": "Ancient coupling may have happened more between human females and Neanderthal males",
+            "subhead": "Ancient linkups may have happened more frequently between female humans and male Neanderthals, according to an new genetic analysis",
+            "body": null,
+            "url": "https://apnews.com/article/human-neanderthal-mating-dna-chromosome-5bedad6998e5b397f28d5a0eaceb2a8b",
+            "preview_image_id": "15f7aa12-b550-4ff9-92a7-6c7921cd0515",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "5bedad6998e5b397f28d5a0eaceb2a8b",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "15f7aa12-b550-4ff9-92a7-6c7921cd0515",
+                "url": "https://mapi.associatedpress.com/v2/items/16684ad8ff3248c6a221f27cf9485917.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~16684ad8ff3248c6a221f27cf9485917!rsn~1!cid~ff3ac878280348c08aa01442d6cf0a54!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - This Friday, March 20, 2009 file photo shows reconstructions of a Neanderthal man, left, and woman at the Neanderthal museum in Mettmann, Germany. (AP Photo/Martin Meissner, File)",
+                "source": "AP",
+                "external_id": "16684ad8ff3248c6a221f27cf9485917",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/16684ad8ff3248c6a221f27cf9485917?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=5bedad6998e5b397f28d5a0eaceb2a8b",
+                  "type": "picture",
+                  "title": "Our Neanderthal DNA",
+                  "altids": {
+                    "etag": "16684ad8ff3248c6a221f27cf9485917_1a1aza3c0",
+                    "itemid": "16684ad8ff3248c6a221f27cf9485917",
+                    "friendlykey": "26056777944283",
+                    "referenceid": "26056777944283"
+                  },
+                  "ednote": "FILE PHOTO FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "16cb0ba3e6d24d97ace39f5a1924669a",
+                      "name": "Entertainment",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 36
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "Our Neanderthal DNA",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Our Neanderthal DNA",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/16684ad8ff3248c6a221f27cf9485917.1/download?role=main&qt=b2ODsYNIMPeF&cid=3dc763201c1943beb9c4b099b857bb84&ai=5bedad6998e5b397f28d5a0eaceb2a8b",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 3992,
+                      "digest": "609e826f99c4cd0eb789ae59d116e709",
+                      "format": "JPEG Baseline",
+                      "height": 2728,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "3dc763201c1943beb9c4b099b857bb84",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 1342569,
+                      "fileextension": "jpg",
+                      "originalfilename": "Our_Neanderthal_DNA_44283.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/16684ad8ff3248c6a221f27cf9485917.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~16684ad8ff3248c6a221f27cf9485917!rsn~1!cid~ff3ac878280348c08aa01442d6cf0a54!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "58c1cb50a43bf81198d54b05afc0f71b",
+                      "format": "JPEG Baseline",
+                      "height": 350,
+                      "mimetype": "image/jpeg",
+                      "contentid": "ff3ac878280348c08aa01442d6cf0a54",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 127797,
+                      "fileextension": "jpg",
+                      "originalfilename": "Our_Neanderthal_DNA_44283.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/16684ad8ff3248c6a221f27cf9485917.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~16684ad8ff3248c6a221f27cf9485917!rsn~1!cid~268f9c3ad9d74a789c3b7327bdc46ed7!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "b1a2017b92539455f252c5126b503d3b",
+                      "format": "JPEG Baseline",
+                      "height": 85,
+                      "mimetype": "image/jpeg",
+                      "contentid": "268f9c3ad9d74a789c3b7327bdc46ed7",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 16330,
+                      "fileextension": "jpg",
+                      "originalfilename": "Our_Neanderthal_DNA_44283.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/16684ad8ff3248c6a221f27cf9485917.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=5bedad6998e5b397f28d5a0eaceb2a8b",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 29,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "a176c143c32341afb0097af5c5d21024",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "a40563a1c3b04575a4dc84b83ee23de2"
+                    }
+                  ],
+                  "firstcreated": "2009-03-20T11:59:39Z",
+                  "photographer": {
+                    "code": "str",
+                    "name": "Martin Meissner",
+                    "title": "STRINGER"
+                  },
+                  "versioncreated": "2026-02-26T07:02:16Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Mettmann",
+                    "countrycode": "DEU",
+                    "countryname": "GERMANY",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        7.04348,
+                        51.33537
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - This Friday, March 20, 2009 file photo shows reconstructions of a Neanderthal man, left, and woman at the Neanderthal museum in Mettmann, Germany. (AP Photo/Martin Meissner, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T19:01:08",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Animals",
+          "headline": "Ancient coupling may have happened more between human females and Neanderthal males",
+          "subhead": "Ancient linkups may have happened more frequently between female humans and male Neanderthals, according to an new genetic analysis",
+          "preview_image_id": "15f7aa12-b550-4ff9-92a7-6c7921cd0515",
+          "feedback": null,
+          "position_in_section": 1
+        },
+        {
+          "impression_id": "475bf65c-ac7f-4941-8eb4-e62a7333fb68",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 2,
+          "article": {
+            "article_id": "bb34793c-c108-4e4d-8dd9-daf49c37812d",
+            "headline": "Viral phenomenon in Argentina has young people identifying themselves as animals",
+            "subhead": "Argentine teens are gathering in Buenos Aires parks to dress and act like non-human animals",
+            "body": null,
+            "url": "https://apnews.com/article/argentina-teenagers-identifying-as-animals-therians-tiktok-54d158c4842f6515e31d83a260cdf31f",
+            "preview_image_id": "f2b25847-f052-45f6-b864-d5c17cde5ece",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "54d158c4842f6515e31d83a260cdf31f",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "f2b25847-f052-45f6-b864-d5c17cde5ece",
+                "url": "https://mapi.associatedpress.com/v2/items/4c30a334befd45deaea6524ade1bcacf.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~4c30a334befd45deaea6524ade1bcacf!rsn~1!cid~644c7d4a0bfb4748b8445726fd8f2095!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "A youth jumps over other therians, people who say they identify as non-human animals, during a gathering in a square in Buenos Aires, Argentina, Sunday, Feb. 22, 2026. (AP Photo/Rodrigo Abd)",
+                "source": "AP",
+                "external_id": "4c30a334befd45deaea6524ade1bcacf",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/4c30a334befd45deaea6524ade1bcacf?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=54d158c4842f6515e31d83a260cdf31f",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "83f4b9a07f4f10048f83df092526b43e",
+                      "name": "Buenos Aires",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661ec1507d5b1004829bc076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "Argentina"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -58.37723,
+                          -34.61315
+                        ]
+                      }
+                    },
+                    {
+                      "code": "661ec1507d5b1004829bc076b8e3055c",
+                      "name": "Argentina",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661908787d5b10048204c076b8e3055c"
+                      ],
+                      "relevance": 64,
+                      "parentnames": [
+                        "South America"
+                      ],
+                      "locationtype": {
+                        "code": "01f56e0e654841eca2e69bf2cbcc0526",
+                        "name": "Nation"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -64,
+                          -34
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "APTOPIX Argentina Therians",
+                  "altids": {
+                    "etag": "4c30a334befd45deaea6524ade1bcacf_1a1aza3c0",
+                    "itemid": "4c30a334befd45deaea6524ade1bcacf",
+                    "friendlykey": "26053817611828",
+                    "referenceid": "26053817611828"
+                  },
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "APTOPIX Argentina Therians",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "APTOPIX Argentina Therians",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/4c30a334befd45deaea6524ade1bcacf.1/download?role=main&qt=b2ODsYNIMPeF&cid=c34c8f493ddc47f8847d502b192791b7&ai=54d158c4842f6515e31d83a260cdf31f",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 7217,
+                      "digest": "a62d7dce271e581dab3426f3e55e78d4",
+                      "format": "JPEG Baseline",
+                      "height": 4707,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "c34c8f493ddc47f8847d502b192791b7",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 9723516,
+                      "fileextension": "jpg",
+                      "originalfilename": "APTOPIX_Argentina_Therians_11828.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/4c30a334befd45deaea6524ade1bcacf.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~4c30a334befd45deaea6524ade1bcacf!rsn~1!cid~644c7d4a0bfb4748b8445726fd8f2095!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "dc7e346e1306c1a0d5447c10fa423635",
+                      "format": "JPEG Baseline",
+                      "height": 334,
+                      "mimetype": "image/jpeg",
+                      "contentid": "644c7d4a0bfb4748b8445726fd8f2095",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 116614,
+                      "fileextension": "jpg",
+                      "originalfilename": "APTOPIX_Argentina_Therians_11828.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/4c30a334befd45deaea6524ade1bcacf.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~4c30a334befd45deaea6524ade1bcacf!rsn~1!cid~7a592baa8f0e4b1bad32f3786614e977!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "eeafcefc4c07259eacab04ebfbc0603d",
+                      "format": "JPEG Baseline",
+                      "height": 82,
+                      "mimetype": "image/jpeg",
+                      "contentid": "7a592baa8f0e4b1bad32f3786614e977",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 15835,
+                      "fileextension": "jpg",
+                      "originalfilename": "APTOPIX_Argentina_Therians_11828.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/4c30a334befd45deaea6524ade1bcacf.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=54d158c4842f6515e31d83a260cdf31f",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 31,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "9da0a991b3ac4889b76b2fe991b3a5d7",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "firstcreated": "2026-02-22T20:47:01Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Rodrigo Abd",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-22T23:11:43Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Buenos Aires",
+                    "countrycode": "ARG",
+                    "countryname": "ARGENTINA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -58.37723,
+                        -34.61315
+                      ]
+                    }
+                  },
+                  "description_caption": "A youth jumps over other therians, people who say they identify as non-human animals, during a gathering in a square in Buenos Aires, Argentina, Sunday, Feb. 22, 2026. (AP Photo/Rodrigo Abd)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-27T05:00:45",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Teens",
+          "headline": "Viral phenomenon in Argentina has young people identifying themselves as animals",
+          "subhead": "Argentine teens are gathering in Buenos Aires parks to dress and act like non-human animals",
+          "preview_image_id": "f2b25847-f052-45f6-b864-d5c17cde5ece",
+          "feedback": null,
+          "position_in_section": 2
+        },
+        {
+          "impression_id": "cfac4952-c0db-4fcd-8c96-ad12a06e4e71",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 3,
+          "article": {
+            "article_id": "1bb1bce4-30c2-44b0-a200-bdfa828263e7",
+            "headline": "Growing more complex by the day: How should journalists govern use of AI in their products?",
+            "subhead": "Journalists at the investigative outlet ProPublica have pledged to strike if negotiations for a contract don't take a turn — in what is believed would be the first such job action in the news industry where a dispute over how to deal with artificial intelligence is the chief sticking point",
+            "body": null,
+            "url": "https://apnews.com/article/ai-media-newspapers-propublica-f4ebcf2902b82469783f912df2f99c2e",
+            "preview_image_id": "5ddb0977-05f2-4b3f-bf98-60bb92fec580",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "f4ebcf2902b82469783f912df2f99c2e",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "5ddb0977-05f2-4b3f-bf98-60bb92fec580",
+                "url": "https://mapi.associatedpress.com/v2/items/23f5b97d8ced4a53a7d770917be3afc8.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~23f5b97d8ced4a53a7d770917be3afc8!rsn~0!cid~2eee0343dc0f4f5287114a1daf748e92!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - The OpenAI logo is displayed on a cellphone with an image on a computer monitor generated by ChatGPT's Dall-E text-to-image model, Dec. 8, 2023, in Boston. (AP Photo/Michael Dwyer, File)",
+                "source": "AP",
+                "external_id": "23f5b97d8ced4a53a7d770917be3afc8",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/23f5b97d8ced4a53a7d770917be3afc8?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=f4ebcf2902b82469783f912df2f99c2e",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "66a6548082c410048691df092526b43e",
+                      "name": "Boston",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "bed6942882b310048501df092526b43e"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "Massachusetts"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -71.05977,
+                          42.35843
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Media AI Journalism",
+                  "altids": {
+                    "etag": "23f5b97d8ced4a53a7d770917be3afc8_0a1aza3c0",
+                    "itemid": "23f5b97d8ced4a53a7d770917be3afc8",
+                    "friendlykey": "26055723640362",
+                    "referenceid": "26055723640362"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "6fd7e1aa975ef14a80f93a1da7d78c3a",
+                      "name": "Information technology",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43
+                    },
+                    {
+                      "code": "c94763b88b6b10048dc5a385cd5ce603",
+                      "name": "Artificial intelligence",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 77
+                    },
+                    {
+                      "code": "455ef2b87df7100483d8df092526b43e",
+                      "name": "Technology",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 68
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Media AI Journalism",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Media AI Journalism",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/23f5b97d8ced4a53a7d770917be3afc8.0/download?role=main&qt=b2ODsYNIMPeF&cid=8bd899f8609b4dcebc8504fcb7f87073&ai=f4ebcf2902b82469783f912df2f99c2e",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 5000,
+                      "digest": "65013cac12a53a6715479bb417ac0083",
+                      "format": "JPEG Baseline",
+                      "height": 3333,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "8bd899f8609b4dcebc8504fcb7f87073",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 7795240,
+                      "fileextension": "jpg",
+                      "originalfilename": "Media_AI_Journalism_40362.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/23f5b97d8ced4a53a7d770917be3afc8.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~23f5b97d8ced4a53a7d770917be3afc8!rsn~0!cid~2eee0343dc0f4f5287114a1daf748e92!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "62e25328d53e3868a2d78bf86d0bc86f",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "2eee0343dc0f4f5287114a1daf748e92",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 79332,
+                      "fileextension": "jpg",
+                      "originalfilename": "Media_AI_Journalism_40362.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/23f5b97d8ced4a53a7d770917be3afc8.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~23f5b97d8ced4a53a7d770917be3afc8!rsn~0!cid~0f4eb319be7240009f33282ad2786b50!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "1e7e86828587cf7a88ac92c268dde07d",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "0f4eb319be7240009f33282ad2786b50",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 16426,
+                      "fileextension": "jpg",
+                      "originalfilename": "Media_AI_Journalism_40362.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/23f5b97d8ced4a53a7d770917be3afc8.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=f4ebcf2902b82469783f912df2f99c2e",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 32,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "23f5b97d8ced4a53a7d770917be3afc8",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "af79d9cd052a4e6e8e043cc266b15c59"
+                    }
+                  ],
+                  "firstcreated": "2023-12-08T13:49:11Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Michael Dwyer",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-24T20:06:57Z",
+                  "copyrightnotice": "Copyright 2023 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Boston",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "MA",
+                    "countryareaname": "MASSACHUSETTS",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -71.05977,
+                        42.35843
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - The OpenAI logo is displayed on a cellphone with an image on a computer monitor generated by ChatGPT's Dall-E text-to-image model, Dec. 8, 2023, in Boston. (AP Photo/Michael Dwyer, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-27T05:00:47",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Artificial intelligence",
+          "headline": "Growing more complex by the day: How should journalists govern use of AI in their products?",
+          "subhead": "Journalists at the investigative outlet ProPublica have pledged to strike if negotiations for a contract don't take a turn — in what is believed would be the first such job action in the news industry where a dispute over how to deal with artificial intelligence is the chief sticking point",
+          "preview_image_id": "5ddb0977-05f2-4b3f-bf98-60bb92fec580",
+          "feedback": null,
+          "position_in_section": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "section_id": "9215efe2-c9a0-42c5-8dcd-ea29945e0793",
+      "title": "Technology For You",
+      "flavor": null,
+      "personalized": true,
+      "seed_entity_id": "606afcb8-3fc1-47a7-9da7-3d95115373a3",
+      "impressions": [
+        {
+          "impression_id": "263c9639-eb91-48e2-aab0-519a0f5eddc5",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 4,
+          "article": {
+            "article_id": "cef6cb79-4b57-4176-a49d-851d058efc07",
+            "headline": "Young woman says she was on social media 'all day long' as a child in landmark addiction trial",
+            "subhead": "A 20-year-old woman is seeking to hold social media companies responsible for harms to children who use their platforms",
+            "body": null,
+            "url": "https://apnews.com/article/meta-instagram-facebook-trial-social-media-addiction-2afb4809d2dbbb0d1e69739c7f2b20b3",
+            "preview_image_id": "aec5208f-622d-4b7f-bf74-20f504ddb1e9",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "2afb4809d2dbbb0d1e69739c7f2b20b3",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "aec5208f-622d-4b7f-bf74-20f504ddb1e9",
+                "url": "https://mapi.associatedpress.com/v2/items/6ccb3c7493c34209afe921060a87bb34.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~6ccb3c7493c34209afe921060a87bb34!rsn~0!cid~2ac9b7982d434c00b553b5675af72e03!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "Meta CEO Mark Zuckerberg arrives for a landmark trial over whether social media platforms deliberately addict and harm children, Wednesday, Feb. 18, 2026, in Los Angeles. (AP Photo/Ryan Sun)",
+                "source": "AP",
+                "external_id": "6ccb3c7493c34209afe921060a87bb34",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/6ccb3c7493c34209afe921060a87bb34?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=2afb4809d2dbbb0d1e69739c7f2b20b3",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "8345b5f082af10048280df092526b43e",
+                      "name": "Los Angeles",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "789fdd8882af10048263df092526b43e"
+                      ],
+                      "relevance": 64,
+                      "parentnames": [
+                        "California"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -118.24368,
+                          34.05223
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Social Media Kids Trial",
+                  "altids": {
+                    "etag": "6ccb3c7493c34209afe921060a87bb34_0a1aza3c0",
+                    "itemid": "6ccb3c7493c34209afe921060a87bb34",
+                    "friendlykey": "26049604904370",
+                    "referenceid": "26049604904370"
+                  },
+                  "person": [
+                    {
+                      "name": "Mark Zuckerberg",
+                      "rels": [
+                        "personfeatured"
+                      ],
+                      "creator": "Editorial",
+                      "person_featured": "Mark Zuckerberg"
+                    },
+                    {
+                      "code": "920b6c9fad844becbed8f37ee9e3ca26",
+                      "name": "Mark Zuckerberg",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "BUSINESS_LEADER",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "4f95136e072e41c6a81e8fa820e26e9c",
+                      "name": "Children",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 61
+                    },
+                    {
+                      "code": "ee483cc088711004894aeb2e0e616f0b",
+                      "name": "Social media",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 82
+                    },
+                    {
+                      "code": "455ef2b87df7100483d8df092526b43e",
+                      "name": "Technology",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 49
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Social Media Kids Trial",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Social Media Kids Trial",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "FR172110 AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/6ccb3c7493c34209afe921060a87bb34.0/download?role=main&qt=b2ODsYNIMPeF&cid=4f584df2cbb542f4ab8d11bc9b979b15&ai=2afb4809d2dbbb0d1e69739c7f2b20b3",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 3782,
+                      "digest": "61ce116c330eb36ac30c111ac762392d",
+                      "format": "JPEG Baseline",
+                      "height": 2521,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "4f584df2cbb542f4ab8d11bc9b979b15",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 6611019,
+                      "fileextension": "jpg",
+                      "originalfilename": "Social_Media_Kids_Trial_04370.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/6ccb3c7493c34209afe921060a87bb34.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~6ccb3c7493c34209afe921060a87bb34!rsn~0!cid~2ac9b7982d434c00b553b5675af72e03!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "b1a104ee9c9dfc5faca9b16d40b88b42",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "2ac9b7982d434c00b553b5675af72e03",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 79975,
+                      "fileextension": "jpg",
+                      "originalfilename": "Social_Media_Kids_Trial_04370.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/6ccb3c7493c34209afe921060a87bb34.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~6ccb3c7493c34209afe921060a87bb34!rsn~0!cid~b12e4b4d75504f4a949acafedd1faf02!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "9d330e296fceda0b19618e9cf8cc07ed",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "b12e4b4d75504f4a949acafedd1faf02",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 15877,
+                      "fileextension": "jpg",
+                      "originalfilename": "Social_Media_Kids_Trial_04370.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/6ccb3c7493c34209afe921060a87bb34.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=2afb4809d2dbbb0d1e69739c7f2b20b3",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 29,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "6ccb3c7493c34209afe921060a87bb34",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "firstcreated": "2026-02-18T16:29:00Z",
+                  "organisation": [
+                    {
+                      "code": "c0f561fc273149f9b2dad83e74961987",
+                      "name": "Meta Platforms, Inc.",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "symbols": [
+                        {
+                          "ticker": "META",
+                          "exchange": "NAS",
+                          "instrument": "NAS:META"
+                        }
+                      ],
+                      "relevance": 47,
+                      "industries": [
+                        {
+                          "code": "6fd7e1aa975ef14a80f93a1da7d78c3a",
+                          "name": "Information technology"
+                        }
+                      ]
+                    }
+                  ],
+                  "photographer": {
+                    "code": "fre",
+                    "name": "Ryan Sun",
+                    "title": "Freelancer"
+                  },
+                  "versioncreated": "2026-02-18T16:48:16Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Los Angeles",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "CA",
+                    "countryareaname": "CALIFORNIA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -118.24368,
+                        34.05223
+                      ]
+                    }
+                  },
+                  "description_caption": "Meta CEO Mark Zuckerberg arrives for a landmark trial over whether social media platforms deliberately addict and harm children, Wednesday, Feb. 18, 2026, in Los Angeles. (AP Photo/Ryan Sun)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T21:38:54",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Addiction and treatment",
+          "headline": "Young woman says she was on social media 'all day long' as a child in landmark addiction trial",
+          "subhead": "A 20-year-old woman is seeking to hold social media companies responsible for harms to children who use their platforms",
+          "preview_image_id": "aec5208f-622d-4b7f-bf74-20f504ddb1e9",
+          "feedback": null,
+          "position_in_section": 1
+        },
+        {
+          "impression_id": "a85ca4ee-b275-4d51-bb0b-cdf71b42389b",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 5,
+          "article": {
+            "article_id": "ae60174e-ee03-4ae9-9ad1-9657e6498a02",
+            "headline": "Nvidia delivers another quarter of stellar growth amid growing concern over AI economy",
+            "subhead": "Artificial intelligence chipmaker Nvidia on Wednesday announced another quarter of astounding quarterly growth as investors try to decipher whether technology’s latest craze is overblown hyperbole or a springboard into a new era of prosperity and productivity",
+            "body": null,
+            "url": "https://apnews.com/article/nvidia-artificial-intelligence-fourth-quarter-report-855e9baff355da11f3a0420cca915ac7",
+            "preview_image_id": "830b1f87-5a1a-49f7-a7e1-73a7a1713df9",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "855e9baff355da11f3a0420cca915ac7",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "830b1f87-5a1a-49f7-a7e1-73a7a1713df9",
+                "url": "https://mapi.associatedpress.com/v2/items/b59b0c4759ad4e54b48f296734417022.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~b59b0c4759ad4e54b48f296734417022!rsn~0!cid~c5a241cf790e4285a8c104b5bac02984!orgId~124748!qt~3QKFrdWu12eF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - A sign to a Nvidia office building is shown in Santa Clara, Calif., Wednesday, May 31, 2023. (AP Photo/Jeff Chiu, File)",
+                "source": "AP",
+                "external_id": "b59b0c4759ad4e54b48f296734417022",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/b59b0c4759ad4e54b48f296734417022?qt=3QKFrdWu12eF&et=0a1aza3c0&ai=855e9baff355da11f3a0420cca915ac7",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "789fdd8882af10048263df092526b43e",
+                      "name": "California",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661e48387d5b10048291c076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "United States"
+                      ],
+                      "locationtype": {
+                        "code": "0ae5eb8e00e04295a4fc209c94bfe6ef",
+                        "name": "State"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -119.75126,
+                          37.25022
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Nvidia Results",
+                  "altids": {
+                    "etag": "b59b0c4759ad4e54b48f296734417022_0a1aza3c0",
+                    "itemid": "b59b0c4759ad4e54b48f296734417022",
+                    "friendlykey": "26056038470703",
+                    "referenceid": "26056038470703"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "f",
+                      "name": "Finance & Business",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "a",
+                      "name": "Domestic",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Nvidia Results",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Nvidia Results",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/b59b0c4759ad4e54b48f296734417022.0/download?role=main&qt=3QKFrdWu12eF&cid=43d765d42c174b5c84feabdbfc751f6e&ai=855e9baff355da11f3a0420cca915ac7",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 3000,
+                      "digest": "1b200ef33c8fd55b4254fc4667ac6962",
+                      "format": "JPEG Baseline",
+                      "height": 2000,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "43d765d42c174b5c84feabdbfc751f6e",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 3151574,
+                      "fileextension": "jpg",
+                      "originalfilename": "Nvidia_Results_70703.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/b59b0c4759ad4e54b48f296734417022.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~b59b0c4759ad4e54b48f296734417022!rsn~0!cid~c5a241cf790e4285a8c104b5bac02984!orgId~124748!qt~3QKFrdWu12eF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "12d1b37f3dbfea396799d9fa160bfd5e",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "c5a241cf790e4285a8c104b5bac02984",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 90393,
+                      "fileextension": "jpg",
+                      "originalfilename": "Nvidia_Results_70703.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/b59b0c4759ad4e54b48f296734417022.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~b59b0c4759ad4e54b48f296734417022!rsn~0!cid~54c7b81c5cac49719c7888569436e58b!orgId~124748!qt~3QKFrdWu12eF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "86ea35d628ff05820a107a21ee186bfc",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "54c7b81c5cac49719c7888569436e58b",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 15623,
+                      "fileextension": "jpg",
+                      "originalfilename": "Nvidia_Results_70703.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/b59b0c4759ad4e54b48f296734417022.0/download?qt=3QKFrdWu12eF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=855e9baff355da11f3a0420cca915ac7",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 23,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "b59b0c4759ad4e54b48f296734417022",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "4c00f5d4c093433980a16656a0d6b755"
+                    }
+                  ],
+                  "firstcreated": "2023-05-31T20:59:55Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Jeff Chiu",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-25T01:06:19Z",
+                  "copyrightnotice": "Copyright 2023 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Santa Clara",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "CA",
+                    "countryareaname": "CALIFORNIA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -121.95524,
+                        37.35411
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - A sign to a Nvidia office building is shown in Santa Clara, Calif., Wednesday, May 31, 2023. (AP Photo/Jeff Chiu, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-25T01:18:55",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Semiconductor manufacturing",
+          "headline": "Nvidia delivers another quarter of stellar growth amid growing concern over AI economy",
+          "subhead": "Artificial intelligence chipmaker Nvidia on Wednesday announced another quarter of astounding quarterly growth as investors try to decipher whether technology’s latest craze is overblown hyperbole or a springboard into a new era of prosperity and productivity",
+          "preview_image_id": "830b1f87-5a1a-49f7-a7e1-73a7a1713df9",
+          "feedback": null,
+          "position_in_section": 2
+        },
+        {
+          "impression_id": "4d697f02-2d7e-4eed-b46b-d736e41c138c",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 6,
+          "article": {
+            "article_id": "f016eae9-9752-4ade-b7d8-cf6aecdc65dd",
+            "headline": "Anthropic refuses to bend to Pentagon on AI safeguards as dispute nears deadline",
+            "subhead": "A public showdown between the Trump administration and Anthropic is hitting an impasse as military officials demand the artificial intelligence company bend its ethical policies by Friday or risk damaging its business",
+            "body": null,
+            "url": "https://apnews.com/article/anthropic-pentagon-ai-hegseth-dario-amodei-b72d1894bc842d9acf026df3867bee8a",
+            "preview_image_id": "12d335bc-bc05-4747-b8ac-84c9dd29d9d9",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "b72d1894bc842d9acf026df3867bee8a",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "12d335bc-bc05-4747-b8ac-84c9dd29d9d9",
+                "url": "https://mapi.associatedpress.com/v2/items/1e82b5de757e411abcdb85a499d8170a.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~1e82b5de757e411abcdb85a499d8170a!rsn~1!cid~747e46e08f454eb680bd14e83af006b6!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - Dario Amodei, CEO and co-founder of Anthropic, attends the annual meeting of the World Economic Forum in Davos, Switzerland, Jan. 23, 2025. (AP Photo/Markus Schreiber, File)",
+                "source": "AP",
+                "external_id": "1e82b5de757e411abcdb85a499d8170a",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/1e82b5de757e411abcdb85a499d8170a?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=b72d1894bc842d9acf026df3867bee8a",
+                  "type": "picture",
+                  "title": "OpenAI-Anthropic-Rivalry",
+                  "altids": {
+                    "etag": "1e82b5de757e411abcdb85a499d8170a_1a1aza3c0",
+                    "itemid": "1e82b5de757e411abcdb85a499d8170a",
+                    "friendlykey": "26035615816169",
+                    "referenceid": "26035615816169"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "person": [
+                    {
+                      "name": "Dario Amodei",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 36
+                    },
+                    {
+                      "code": "c94763b88b6b10048dc5a385cd5ce603",
+                      "name": "Artificial intelligence",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 49
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "OpenAI-Anthropic-Rivalry",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "OpenAI-Anthropic-Rivalry",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/1e82b5de757e411abcdb85a499d8170a.1/download?role=main&qt=b2ODsYNIMPeF&cid=92a2005b956844e38803e2b27d823638&ai=b72d1894bc842d9acf026df3867bee8a",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 7140,
+                      "digest": "41a891da8889b164521f24646694674a",
+                      "format": "JPEG Baseline",
+                      "height": 4760,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "92a2005b956844e38803e2b27d823638",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 9300995,
+                      "fileextension": "jpg",
+                      "originalfilename": "OpenAI-Anthropic-Rivalry_16169.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/1e82b5de757e411abcdb85a499d8170a.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~1e82b5de757e411abcdb85a499d8170a!rsn~1!cid~747e46e08f454eb680bd14e83af006b6!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "a4b449256e8c2868ee4dd971a6c96bf6",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "747e46e08f454eb680bd14e83af006b6",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 78452,
+                      "fileextension": "jpg",
+                      "originalfilename": "OpenAI-Anthropic-Rivalry_16169.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/1e82b5de757e411abcdb85a499d8170a.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~1e82b5de757e411abcdb85a499d8170a!rsn~1!cid~e45811558572494d918435818cc91b39!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "a92833c817cff1d30c4a1d2ee73595b8",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "e45811558572494d918435818cc91b39",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 16466,
+                      "fileextension": "jpg",
+                      "originalfilename": "OpenAI-Anthropic-Rivalry_16169.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/1e82b5de757e411abcdb85a499d8170a.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=b72d1894bc842d9acf026df3867bee8a",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 28,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "f25032266de94e818dfc5a56579d8dfb",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "06ebc31734a9484cb88b512396e13e49"
+                    }
+                  ],
+                  "firstcreated": "2025-01-23T10:59:12Z",
+                  "organisation": [
+                    {
+                      "code": "c85424998ceb45dcb9fee92db4ec2727",
+                      "name": "World Economic Forum",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 46
+                    },
+                    {
+                      "code": "d51133e677de46b3bc99f874ac575fa6",
+                      "name": "Anthropic PBC",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 47
+                    }
+                  ],
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Markus Schreiber",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-05T13:02:35Z",
+                  "copyrightnotice": "Copyright 2019 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Davos",
+                    "countrycode": "CHE",
+                    "countryname": "SWITZERLAND",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        9.83723,
+                        46.80429
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - Dario Amodei, CEO and co-founder of Anthropic, attends the annual meeting of the World Economic Forum in Davos, Switzerland, Jan. 23, 2025. (AP Photo/Markus Schreiber, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-27T09:28:59",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Artificial intelligence",
+          "headline": "Anthropic refuses to bend to Pentagon on AI safeguards as dispute nears deadline",
+          "subhead": "A public showdown between the Trump administration and Anthropic is hitting an impasse as military officials demand the artificial intelligence company bend its ethical policies by Friday or risk damaging its business",
+          "preview_image_id": "12d335bc-bc05-4747-b8ac-84c9dd29d9d9",
+          "feedback": null,
+          "position_in_section": 3
+        }
+      ],
+      "position": 2
+    },
+    {
+      "section_id": "1015a2a4-737c-4dc7-98dd-4974d38aae8a",
+      "title": "Entertainment For You",
+      "flavor": null,
+      "personalized": true,
+      "seed_entity_id": "4554dcf2-6472-43a3-bfd6-e904a2936315",
+      "impressions": [
+        {
+          "impression_id": "5169e0be-4e8d-4b67-b574-178cda05b64d",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 7,
+          "article": {
+            "article_id": "c3c15044-f868-4abd-87e9-97908186d1c7",
+            "headline": "30 years after Pokémon's release, fans are still trying to catch 'em all",
+            "subhead": "In the years Pokémon Red and Pokémon Green were released in 1996 for Nintendo Game Boy in Japan, marking the debut of Pokémon, the franchise has taken over the globe with its animated shows, mobile games and highly coveted trading cards",
+            "body": null,
+            "url": "https://apnews.com/article/pokemon-anniversary-nintendo-fff7de1f0236956154cc97ecff105681",
+            "preview_image_id": "b7f429fa-c02a-4bd4-9800-d3b4a1a98808",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "fff7de1f0236956154cc97ecff105681",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "b7f429fa-c02a-4bd4-9800-d3b4a1a98808",
+                "url": "https://mapi.associatedpress.com/v2/items/95f67797f39e44a5b4d584e81998b5d3.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~95f67797f39e44a5b4d584e81998b5d3!rsn~1!cid~eafce1f2128d4cc391c5384c7013b185!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - A mobile screen is reflected on a fan's sunglasses as she plays \"Pokemon Go\" in Hong Kong, on July 25, 2016. (AP Photo/Kin Cheung, File)",
+                "source": "AP",
+                "external_id": "95f67797f39e44a5b4d584e81998b5d3",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/95f67797f39e44a5b4d584e81998b5d3?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=fff7de1f0236956154cc97ecff105681",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "662291e07d5b100482f9c076b8e3055c",
+                      "name": "Hong Kong",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "662218c87d5b100482f0c076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "China"
+                      ],
+                      "locationtype": {
+                        "code": "338c908297b44f1fb670bd656b68e18e",
+                        "name": "Administrative region"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          114.15769,
+                          22.28552
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "World Pokemon Anniversary",
+                  "altids": {
+                    "etag": "95f67797f39e44a5b4d584e81998b5d3_1a1aza3c0",
+                    "itemid": "95f67797f39e44a5b4d584e81998b5d3",
+                    "friendlykey": "26058033235150",
+                    "referenceid": "26058033235150"
+                  },
+                  "ednote": "FILE PHOTO.",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "ent",
+                      "name": "Entertainment",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "World Pokemon Anniversary",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "World Pokemon Anniversary",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/95f67797f39e44a5b4d584e81998b5d3.1/download?role=main&qt=b2ODsYNIMPeF&cid=ca992f88c8d644ef81262f0bd81712c1&ai=fff7de1f0236956154cc97ecff105681",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 4272,
+                      "digest": "9f3237e5f665c8e655daeb27bca8a53e",
+                      "format": "JPEG Baseline",
+                      "height": 2883,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "ca992f88c8d644ef81262f0bd81712c1",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 2289568,
+                      "fileextension": "jpg",
+                      "originalfilename": "World_Pokemon_Anniversary_35150.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/95f67797f39e44a5b4d584e81998b5d3.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~95f67797f39e44a5b4d584e81998b5d3!rsn~1!cid~eafce1f2128d4cc391c5384c7013b185!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "0f13617e8c4d9b40258e7659be53fac0",
+                      "format": "JPEG Baseline",
+                      "height": 346,
+                      "mimetype": "image/jpeg",
+                      "contentid": "eafce1f2128d4cc391c5384c7013b185",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 56013,
+                      "fileextension": "jpg",
+                      "originalfilename": "World_Pokemon_Anniversary_35150.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/95f67797f39e44a5b4d584e81998b5d3.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~95f67797f39e44a5b4d584e81998b5d3!rsn~1!cid~8b1705c4bad048f08cf7b61f33a6da92!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "2d62a5816507a4d2fbeb1d064d881bae",
+                      "format": "JPEG Baseline",
+                      "height": 84,
+                      "mimetype": "image/jpeg",
+                      "contentid": "8b1705c4bad048f08cf7b61f33a6da92",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14323,
+                      "fileextension": "jpg",
+                      "originalfilename": "World_Pokemon_Anniversary_35150.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/95f67797f39e44a5b4d584e81998b5d3.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=fff7de1f0236956154cc97ecff105681",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 27,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "5723e6374b1e4df8abdf3de648382173",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "465af1e434e14a3cae4b1210a7a0f9fd"
+                    }
+                  ],
+                  "firstcreated": "2016-07-25T20:34:58Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Kin Cheung",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-27T05:02:55Z",
+                  "copyrightnotice": "Copyright 2016 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Hong Kong",
+                    "countrycode": "HKG",
+                    "countryname": "HONG KONG",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        114.17469,
+                        22.27832
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - A mobile screen is reflected on a fan's sunglasses as she plays \"Pokemon Go\" in Hong Kong, on July 25, 2016. (AP Photo/Kin Cheung, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-27T05:02:45",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Consumer products and services",
+          "headline": "30 years after Pokémon's release, fans are still trying to catch 'em all",
+          "subhead": "In the years Pokémon Red and Pokémon Green were released in 1996 for Nintendo Game Boy in Japan, marking the debut of Pokémon, the franchise has taken over the globe with its animated shows, mobile games and highly coveted trading cards",
+          "preview_image_id": "b7f429fa-c02a-4bd4-9800-d3b4a1a98808",
+          "feedback": null,
+          "position_in_section": 1
+        },
+        {
+          "impression_id": "f8d8a664-3180-4f0f-aa43-ee90fe0518cf",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 8,
+          "article": {
+            "article_id": "ece716b3-a86e-48ba-b8b8-755df60c1fc0",
+            "headline": "The crisis? The point? For 'Bridgerton,' the word 'orgasm' wouldn't quite do",
+            "subhead": "The “Bridgerton” team would not quit until they were satisfied when it came to finding a word to use for “orgasm” in Season 4",
+            "body": null,
+            "url": "https://apnews.com/article/bridgerton-season-4-sex-pinnacle-941a0bee6980cdc9c778e59715074dc9",
+            "preview_image_id": "12c05375-cf39-4d08-9373-4733739d39c8",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "941a0bee6980cdc9c778e59715074dc9",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "12c05375-cf39-4d08-9373-4733739d39c8",
+                "url": "https://mapi.associatedpress.com/v2/items/933d55d989564552827e6113a870772a.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~933d55d989564552827e6113a870772a!rsn~0!cid~bff2f55d101a4101b24b54a01c3ac7ea!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - Hannah Dodd arrives for the World premiere of \"Bridgerton\" season 4 on Wednesday, Jan. 14, 2026 in Paris. (AP Photo/Christophe Ena, File)",
+                "source": "AP",
+                "external_id": "933d55d989564552827e6113a870772a",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/933d55d989564552827e6113a870772a?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=941a0bee6980cdc9c778e59715074dc9",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "fbe46d4b7aec445fb205591e38c314b9",
+                      "name": "Paris",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "62532b5882c7100488cedf092526b43e"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "Tennessee"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -88.32671,
+                          36.302
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "TV Bridgerton",
+                  "altids": {
+                    "etag": "933d55d989564552827e6113a870772a_0a1aza3c0",
+                    "itemid": "933d55d989564552827e6113a870772a",
+                    "friendlykey": "26057371808204",
+                    "referenceid": "26057371808204"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "person": [
+                    {
+                      "name": "Victor Alli",
+                      "rels": [
+                        "personfeatured"
+                      ],
+                      "creator": "Editorial",
+                      "person_featured": "Victor Alli"
+                    },
+                    {
+                      "name": "Victor Alli",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 43
+                    },
+                    {
+                      "name": "Hannah Dodd",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "i",
+                      "name": "International News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "16cb0ba3e6d24d97ace39f5a1924669a",
+                      "name": "Entertainment",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 54
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "TV Bridgerton",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "TV Bridgerton",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/933d55d989564552827e6113a870772a.0/download?role=main&qt=b2ODsYNIMPeF&cid=2c1cd854a5c142c085d354aab35172a4&ai=941a0bee6980cdc9c778e59715074dc9",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 7444,
+                      "digest": "3c7bd86c56383312e18c9b02a6e6514e",
+                      "format": "JPEG Baseline",
+                      "height": 4963,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "2c1cd854a5c142c085d354aab35172a4",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 8803951,
+                      "fileextension": "jpg",
+                      "originalfilename": "TV_Bridgerton_08204.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/933d55d989564552827e6113a870772a.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~933d55d989564552827e6113a870772a!rsn~0!cid~bff2f55d101a4101b24b54a01c3ac7ea!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "0f8ae5747c47f456248e46f3fdacd805",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "bff2f55d101a4101b24b54a01c3ac7ea",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 43166,
+                      "fileextension": "jpg",
+                      "originalfilename": "TV_Bridgerton_08204.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/933d55d989564552827e6113a870772a.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~933d55d989564552827e6113a870772a!rsn~0!cid~97802f7d8ddd471181894428ed1b7111!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "76ff79f0217f151b56bfc013d57d3c2d",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "97802f7d8ddd471181894428ed1b7111",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 11855,
+                      "fileextension": "jpg",
+                      "originalfilename": "TV_Bridgerton_08204.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/933d55d989564552827e6113a870772a.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=941a0bee6980cdc9c778e59715074dc9",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 24,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "933d55d989564552827e6113a870772a",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "738e0c00eaf443b39be26d354b8c583f"
+                    }
+                  ],
+                  "firstcreated": "2026-01-15T00:04:51Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Christophe Ena",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-26T10:21:33Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Paris",
+                    "countrycode": "FRA",
+                    "countryname": "FRANCE",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        2.3488,
+                        48.85341
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - Hannah Dodd arrives for the World premiere of \"Bridgerton\" season 4 on Wednesday, Jan. 14, 2026 in Paris. (AP Photo/Christophe Ena, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T15:52:37",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Sex and sexuality",
+          "headline": "The crisis? The point? For 'Bridgerton,' the word 'orgasm' wouldn't quite do",
+          "subhead": "The “Bridgerton” team would not quit until they were satisfied when it came to finding a word to use for “orgasm” in Season 4",
+          "preview_image_id": "12c05375-cf39-4d08-9373-4733739d39c8",
+          "feedback": null,
+          "position_in_section": 2
+        },
+        {
+          "impression_id": "45bfd3ed-24c2-4234-a783-7b0cd6101fad",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 9,
+          "article": {
+            "article_id": "d770e0b4-be87-48f3-9772-7d59440764bd",
+            "headline": "Penguin Press founder Ann Godoff, a powerhouse editor of bestsellers and prize winners, dies at 76",
+            "subhead": "Publisher Ann Godoff, who helped shape modern American book culture and launched many bestsellers, has died at age 76",
+            "body": null,
+            "url": "https://apnews.com/article/ann-godoff-dies-publisher-penguin-random-house-5107624b9be58ab5479988b3e5eab4d2",
+            "preview_image_id": "d444ed76-4795-4dcb-9493-102fefc6d928",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "5107624b9be58ab5479988b3e5eab4d2",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "d444ed76-4795-4dcb-9493-102fefc6d928",
+                "url": "https://mapi.associatedpress.com/v2/items/85232e5905bc4db6a847a7c853710f40.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~85232e5905bc4db6a847a7c853710f40!rsn~0!cid~532c5816a01347728c06e75d81d2e508!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "This combination of images show Penguin Press books published by Ann Godoff, from left, \"A Hymn to Life: Shame Has to Change Sides\" by Gisèle Pelicot, \"Alexander Hamilton\" by Ron Chernow, \"A World Appears: A Journey into Consciousness\" by Michael Pollan, and \"Young Man in a Hurry: A Memoir of Discovery\" by Gavin Newsom. (Penguin Press via AP)",
+                "source": "AP",
+                "external_id": "85232e5905bc4db6a847a7c853710f40",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/85232e5905bc4db6a847a7c853710f40?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=5107624b9be58ab5479988b3e5eab4d2",
+                  "type": "picture",
+                  "title": "Obit - Ann Godoff",
+                  "altids": {
+                    "etag": "85232e5905bc4db6a847a7c853710f40_0a1aza3c0",
+                    "itemid": "85232e5905bc4db6a847a7c853710f40",
+                    "friendlykey": "26057692711966",
+                    "referenceid": "26057692711966"
+                  },
+                  "ednote": "AP PROVIDES ACCESS TO THIS THIRD PARTY PHOTO SOLELY TO ILLUSTRATE NEWS REPORTING OR COMMENTARY ON FACTS DEPICTED IN IMAGE; MUST BE USED WITHIN 14 DAYS FROM TRANSMISSION; NO ARCHIVING; NO LICENSING; MANDATORY CREDIT",
+                  "person": [
+                    {
+                      "name": "Gisèle Pelicot",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 43
+                    },
+                    {
+                      "name": "Ann Godoff",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 99
+                    },
+                    {
+                      "code": "2fe690579a4042f5bbee491a75dfdc62",
+                      "name": "Gavin Newsom",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "POLITICIAN",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43,
+                      "associatedstates": [
+                        {
+                          "code": "789fdd8882af10048263df092526b43e",
+                          "name": "California"
+                        }
+                      ]
+                    },
+                    {
+                      "code": "6698f7dcc4364be6a9c3bed56fa54423",
+                      "name": "Michael Pollan",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "AUTHOR",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43
+                    },
+                    {
+                      "code": "9872a44ef5604c93aa3d202ad8de5470",
+                      "name": "Ron Chernow",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "AUTHOR",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "expires": "2026-03-12T19:29:13Z",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "ent",
+                      "name": "Entertainment",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "c189604088be10048dceb097165a0203",
+                      "name": "Books and literature",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 61
+                    },
+                    {
+                      "code": "69f9247889ef10048d3cd37e1a6ef903",
+                      "name": "Nonfiction",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 68
+                    },
+                    {
+                      "code": "16cb0ba3e6d24d97ace39f5a1924669a",
+                      "name": "Entertainment",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 36
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Obit - Ann Godoff",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Obit - Ann Godoff",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "Penguin Press",
+                      "type": "ThirdParty"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/85232e5905bc4db6a847a7c853710f40.0/download?role=main&qt=b2ODsYNIMPeF&cid=43fa95a2a3284db4823c30b1e6bdbcb9&ai=5107624b9be58ab5479988b3e5eab4d2",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 2399,
+                      "digest": "d35b2a56a2d9faf318da396c5e381fa2",
+                      "format": "JPEG Baseline",
+                      "height": 1600,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "43fa95a2a3284db4823c30b1e6bdbcb9",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 2065468,
+                      "fileextension": "jpg",
+                      "originalfilename": "Obit_-_Ann_Godoff_11966.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/85232e5905bc4db6a847a7c853710f40.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~85232e5905bc4db6a847a7c853710f40!rsn~0!cid~532c5816a01347728c06e75d81d2e508!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "0a0cef9d18bb8b0a09f89ed205b817b2",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "532c5816a01347728c06e75d81d2e508",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 74086,
+                      "fileextension": "jpg",
+                      "originalfilename": "Obit_-_Ann_Godoff_11966.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/85232e5905bc4db6a847a7c853710f40.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~85232e5905bc4db6a847a7c853710f40!rsn~0!cid~d8cacf99dbd34ab3b22dbad08747eba8!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "58cfdda058db9ba1c33422631da18df4",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "d8cacf99dbd34ab3b22dbad08747eba8",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14524,
+                      "fileextension": "jpg",
+                      "originalfilename": "Obit_-_Ann_Godoff_11966.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/85232e5905bc4db6a847a7c853710f40.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=5107624b9be58ab5479988b3e5eab4d2",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 58,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "85232e5905bc4db6a847a7c853710f40",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required.",
+                    "Handout - One Time Use",
+                    "Handout One Time Use",
+                    "Not for Commercial-Use "
+                  ],
+                  "firstcreated": "2026-02-26T19:14:30Z",
+                  "photographer": {
+                    "code": "hons",
+                    "name": "Uncredited",
+                    "title": "Handout One Time Use"
+                  },
+                  "versioncreated": "2026-02-26T19:29:13Z",
+                  "description_caption": "This combination of images show Penguin Press books published by Ann Godoff, from left, \"A Hymn to Life: Shame Has to Change Sides\" by Gisèle Pelicot, \"Alexander Hamilton\" by Ron Chernow, \"A World Appears: A Journey into Consciousness\" by Michael Pollan, and \"Young Man in a Hurry: A Memoir of Discovery\" by Gavin Newsom. (Penguin Press via AP)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T19:45:25",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Books and literature",
+          "headline": "Penguin Press founder Ann Godoff, a powerhouse editor of bestsellers and prize winners, dies at 76",
+          "subhead": "Publisher Ann Godoff, who helped shape modern American book culture and launched many bestsellers, has died at age 76",
+          "preview_image_id": "d444ed76-4795-4dcb-9493-102fefc6d928",
+          "feedback": null,
+          "position_in_section": 3
+        }
+      ],
+      "position": 3
+    },
+    {
+      "section_id": "a08e9104-8527-41b3-bcfe-a5faf375bc17",
+      "title": "Health For You",
+      "flavor": null,
+      "personalized": true,
+      "seed_entity_id": "b967a4f4-ac9d-4c09-81d3-af228f846d06",
+      "impressions": [
+        {
+          "impression_id": "a61dc449-9fc1-435a-b322-e2b5eaf28dbd",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 10,
+          "article": {
+            "article_id": "7a652dc9-c07a-4560-b251-af0e4eb7b2af",
+            "headline": "More organs are being donated after the heart stops, not brain death. Policies are changing too",
+            "subhead": "The vast majority of organ donations once came from people who were brain-dead",
+            "body": null,
+            "url": "https://apnews.com/article/organ-donor-transplant-dcd-afe806d47e1c10e29d9464cc93e30ee7",
+            "preview_image_id": "2848c41d-7ad1-473d-b662-6d944f142748",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "afe806d47e1c10e29d9464cc93e30ee7",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "2848c41d-7ad1-473d-b662-6d944f142748",
+                "url": "https://mapi.associatedpress.com/v2/items/9e5217ed7097434e80c64bb7ba4a41de.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~9e5217ed7097434e80c64bb7ba4a41de!rsn~0!cid~ce893366bc3045899721df814f483432!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - An organ recovery team works to remove the liver and kidneys from a donor June 15, 2023, in Jackson, Tenn. (AP Photo/Mark Humphrey, File)",
+                "source": "AP",
+                "external_id": "9e5217ed7097434e80c64bb7ba4a41de",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/9e5217ed7097434e80c64bb7ba4a41de?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=afe806d47e1c10e29d9464cc93e30ee7",
+                  "type": "picture",
+                  "title": "Organ Donations",
+                  "altids": {
+                    "etag": "9e5217ed7097434e80c64bb7ba4a41de_0a1aza3c0",
+                    "itemid": "9e5217ed7097434e80c64bb7ba4a41de",
+                    "friendlykey": "26057632804300",
+                    "referenceid": "26057632804300"
+                  },
+                  "ednote": "FILE",
+                  "person": [
+                    {
+                      "code": "f93127acf91d438fa7e0a9c19d1ecef7",
+                      "name": "Mark Humphrey",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "MOVIE_ACTOR",
+                        "ENTERTAINMENT_FIGURE",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "97b84b58814a1004819ddf092526b43e",
+                      "name": "Organ donation",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 83
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Organ Donations",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Organ Donations",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "FR171961 AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/9e5217ed7097434e80c64bb7ba4a41de.0/download?role=main&qt=b2ODsYNIMPeF&cid=08e6fd668a8e431f9da5096fea6b5251&ai=afe806d47e1c10e29d9464cc93e30ee7",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 8112,
+                      "digest": "fbf14e7976c2487b14482a35206308d2",
+                      "format": "JPEG Baseline",
+                      "height": 5408,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "08e6fd668a8e431f9da5096fea6b5251",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 8663656,
+                      "fileextension": "jpg",
+                      "originalfilename": "Organ_Donations_04300.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/9e5217ed7097434e80c64bb7ba4a41de.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~9e5217ed7097434e80c64bb7ba4a41de!rsn~0!cid~ce893366bc3045899721df814f483432!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "7360ce91cb9d2c78629d3fdd368f4749",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "ce893366bc3045899721df814f483432",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 104033,
+                      "fileextension": "jpg",
+                      "originalfilename": "Organ_Donations_04300.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/9e5217ed7097434e80c64bb7ba4a41de.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~9e5217ed7097434e80c64bb7ba4a41de!rsn~0!cid~986f72fe0a4745658cc0815bdf2fbad7!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "e65532f5f374c64c6a777f9e38c325fd",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "986f72fe0a4745658cc0815bdf2fbad7",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 16943,
+                      "fileextension": "jpg",
+                      "originalfilename": "Organ_Donations_04300.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/9e5217ed7097434e80c64bb7ba4a41de.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=afe806d47e1c10e29d9464cc93e30ee7",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 26,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "9e5217ed7097434e80c64bb7ba4a41de",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "4785c0b845d848fbb504fe7a6923e743"
+                    }
+                  ],
+                  "firstcreated": "2023-06-15T06:30:40Z",
+                  "photographer": {
+                    "code": "fre",
+                    "name": "Mark Humphrey",
+                    "title": "Freelancer"
+                  },
+                  "versioncreated": "2026-02-26T17:36:12Z",
+                  "copyrightnotice": "Copyright 2023 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Jackson",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "TN",
+                    "countryareaname": "TENNESSEE",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -88.81395,
+                        35.61452
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - An organ recovery team works to remove the liver and kidneys from a donor June 15, 2023, in Jackson, Tenn. (AP Photo/Mark Humphrey, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T19:32:10",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Organ donation",
+          "headline": "More organs are being donated after the heart stops, not brain death. Policies are changing too",
+          "subhead": "The vast majority of organ donations once came from people who were brain-dead",
+          "preview_image_id": "2848c41d-7ad1-473d-b662-6d944f142748",
+          "feedback": null,
+          "position_in_section": 1
+        },
+        {
+          "impression_id": "07ee8cba-8710-4e3f-a4f9-9a5563d702be",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 11,
+          "article": {
+            "article_id": "9a0ba475-ffc2-41e6-bc75-92c40e097cf2",
+            "headline": "A children's hospital is renamed for Dolly Parton and hopes to transform pediatric care in Tennessee",
+            "subhead": "The East Tennessee Children's Hospital is now known as Dolly Parton Children's Hospital",
+            "body": null,
+            "url": "https://apnews.com/article/dolly-parton-childrens-hospital-philanthropy-4bceb89b8e6fd4f22bdf96f1861d504d",
+            "preview_image_id": "2c383ad9-ce5b-4d50-9ae9-ec781c5d7500",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "4bceb89b8e6fd4f22bdf96f1861d504d",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "2c383ad9-ce5b-4d50-9ae9-ec781c5d7500",
+                "url": "https://mapi.associatedpress.com/v2/items/e18ac04f6b374d0b8b225a582e0792c7.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~e18ac04f6b374d0b8b225a582e0792c7!rsn~0!cid~6f746a4215484476845f96341a22b279!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - Dolly Parton speaks to a audience gathered o celebrate the expansion of the Imagination Library of Kentucky at the Lyric Theatre in Lexington, Ky., Aug. 27, 2024. (AP Photo/Timothy D. Easley, File)",
+                "source": "AP",
+                "external_id": "e18ac04f6b374d0b8b225a582e0792c7",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/e18ac04f6b374d0b8b225a582e0792c7?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=4bceb89b8e6fd4f22bdf96f1861d504d",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "60dd8079607d44c58819d7e6ac85f3d9",
+                      "name": "Lexington",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "2f6e294082b310048474df092526b43e"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "Kentucky"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -84.47772,
+                          37.98869
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Dolly Parton",
+                  "altids": {
+                    "etag": "e18ac04f6b374d0b8b225a582e0792c7_0a1aza3c0",
+                    "itemid": "e18ac04f6b374d0b8b225a582e0792c7",
+                    "friendlykey": "26057582081185",
+                    "referenceid": "26057582081185"
+                  },
+                  "ednote": "FILE",
+                  "person": [
+                    {
+                      "name": "Dolly Parton",
+                      "rels": [
+                        "personfeatured"
+                      ],
+                      "creator": "Editorial",
+                      "person_featured": "Dolly Parton"
+                    },
+                    {
+                      "code": "85fb6c26141641c6bc366e75415c59a4",
+                      "name": "Dolly Parton",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "MUSICIAN",
+                        "ENTERTAINMENT_FIGURE",
+                        "PERSON"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 90
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "ent",
+                      "name": "Entertainment",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Dolly Parton",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Dolly Parton",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "FR43398 AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/e18ac04f6b374d0b8b225a582e0792c7.0/download?role=main&qt=b2ODsYNIMPeF&cid=2ee0dd0b70ef47a3b15954c1f23e6ae9&ai=4bceb89b8e6fd4f22bdf96f1861d504d",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 4426,
+                      "digest": "a00cbd42133fd7048dbbae0a09118096",
+                      "format": "JPEG Baseline",
+                      "height": 2950,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "2ee0dd0b70ef47a3b15954c1f23e6ae9",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 8961880,
+                      "fileextension": "jpg",
+                      "originalfilename": "Dolly_Parton_81185.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/e18ac04f6b374d0b8b225a582e0792c7.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~e18ac04f6b374d0b8b225a582e0792c7!rsn~0!cid~6f746a4215484476845f96341a22b279!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "a17b1f65fee182c679a48553edb3af58",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "6f746a4215484476845f96341a22b279",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 71185,
+                      "fileextension": "jpg",
+                      "originalfilename": "Dolly_Parton_81185.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/e18ac04f6b374d0b8b225a582e0792c7.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~e18ac04f6b374d0b8b225a582e0792c7!rsn~0!cid~18270263501c4e7d84e2967b46b6e2d8!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "38ac84615d37de9ee8a75aa2be96c57f",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "18270263501c4e7d84e2967b46b6e2d8",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14721,
+                      "fileextension": "jpg",
+                      "originalfilename": "Dolly_Parton_81185.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/e18ac04f6b374d0b8b225a582e0792c7.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=4bceb89b8e6fd4f22bdf96f1861d504d",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 34,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "e18ac04f6b374d0b8b225a582e0792c7",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "71124e35952c49be86d5884a7ab97fd9"
+                    }
+                  ],
+                  "firstcreated": "2024-08-27T17:13:32Z",
+                  "photographer": {
+                    "code": "fre",
+                    "name": "Timothy D. Easley",
+                    "title": "Freelancer"
+                  },
+                  "versioncreated": "2026-02-26T16:13:01Z",
+                  "copyrightnotice": "Copyright 2024 The Associated Press. All Rights Reserved.",
+                  "datelinelocation": {
+                    "city": "Lexington",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "KY",
+                    "countryareaname": "KENTUCKY",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -84.47772,
+                        37.98869
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - Dolly Parton speaks to a audience gathered o celebrate the expansion of the Imagination Library of Kentucky at the Lyric Theatre in Lexington, Ky., Aug. 27, 2024. (AP Photo/Timothy D. Easley, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T16:16:59",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Philanthropy",
+          "headline": "A children's hospital is renamed for Dolly Parton and hopes to transform pediatric care in Tennessee",
+          "subhead": "The East Tennessee Children's Hospital is now known as Dolly Parton Children's Hospital",
+          "preview_image_id": "2c383ad9-ce5b-4d50-9ae9-ec781c5d7500",
+          "feedback": null,
+          "position_in_section": 2
+        },
+        {
+          "impression_id": "533d5cc3-c72d-40e7-93d4-0581e2c4fa57",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 12,
+          "article": {
+            "article_id": "bd25205b-ad88-46e1-9b10-74c4c8802d4f",
+            "headline": "ByHeart infant botulism outbreak ends with 48 babies sickened",
+            "subhead": "Federal health officials say an infant botulism outbreak linked to recalled ByHeart baby formula is over",
+            "body": null,
+            "url": "https://apnews.com/article/infant-botulism-byheart-formula-outbreak-bb11e16134e6fe001b16429221488fbc",
+            "preview_image_id": "9ade1ff8-9ee5-4297-a9c3-a07222f808d6",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "bb11e16134e6fe001b16429221488fbc",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "9ade1ff8-9ee5-4297-a9c3-a07222f808d6",
+                "url": "https://mapi.associatedpress.com/v2/items/57d9155c648d417fb1be265ea7b6eb7a.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~57d9155c648d417fb1be265ea7b6eb7a!rsn~0!cid~589d8900b884432bb6dbbce59503e400!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - A container of ByHeart baby formula, in Flagstaff, Ariz., on Wednesday, Nov. 12, 2025. (AP Photo/Cheyanne Mumphrey, File)",
+                "source": "AP",
+                "external_id": "57d9155c648d417fb1be265ea7b6eb7a",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/57d9155c648d417fb1be265ea7b6eb7a?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=bb11e16134e6fe001b16429221488fbc",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "e427079081d610048a4edf092526b43e",
+                      "name": "Arizona",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661e48387d5b10048291c076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "United States"
+                      ],
+                      "locationtype": {
+                        "code": "0ae5eb8e00e04295a4fc209c94bfe6ef",
+                        "name": "State"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.50098,
+                          34.5003
+                        ]
+                      }
+                    },
+                    {
+                      "code": "cb9eccae4d4443be82089fcfe948e251",
+                      "name": "Flagstaff",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "e427079081d610048a4edf092526b43e"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "Arizona"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.65127,
+                          35.19807
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Infant Botulism Formula Recall",
+                  "altids": {
+                    "etag": "57d9155c648d417fb1be265ea7b6eb7a_0a1aza3c0",
+                    "itemid": "57d9155c648d417fb1be265ea7b6eb7a",
+                    "friendlykey": "26057602002121",
+                    "referenceid": "26057602002121"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "9be3fbc88c9910048acdf7ae5e3ffd3e",
+                      "name": "Food and beverage manufacturing",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 36
+                    },
+                    {
+                      "code": "75fc9ec07f00100482a7f571351eed07",
+                      "name": "Poisoning",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 49
+                    },
+                    {
+                      "code": "2ad5f8487e8710048bf98087fc32d30c",
+                      "name": "Food safety",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Infant Botulism Formula Recall",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Infant Botulism Formula Recall",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/57d9155c648d417fb1be265ea7b6eb7a.0/download?role=main&qt=b2ODsYNIMPeF&cid=49d75278ccea4af8af721aa0e35798b7&ai=bb11e16134e6fe001b16429221488fbc",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 1540,
+                      "digest": "71b96f0523bb575db19110fcd6a9589a",
+                      "format": "JPEG Baseline",
+                      "height": 1027,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "49d75278ccea4af8af721aa0e35798b7",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 1323976,
+                      "fileextension": "jpg",
+                      "originalfilename": "Infant_Botulism_Formula_Recall_02121.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/57d9155c648d417fb1be265ea7b6eb7a.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~57d9155c648d417fb1be265ea7b6eb7a!rsn~0!cid~589d8900b884432bb6dbbce59503e400!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "2a2b10988ffc32db5fd16a4146c3de7f",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "589d8900b884432bb6dbbce59503e400",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 83857,
+                      "fileextension": "jpg",
+                      "originalfilename": "Infant_Botulism_Formula_Recall_02121.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/57d9155c648d417fb1be265ea7b6eb7a.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~57d9155c648d417fb1be265ea7b6eb7a!rsn~0!cid~4a68711c4aee4523af708eedbbb5057a!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "8ac074e269b107e1606759b0df0b5d73",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "4a68711c4aee4523af708eedbbb5057a",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14958,
+                      "fileextension": "jpg",
+                      "originalfilename": "Infant_Botulism_Formula_Recall_02121.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/57d9155c648d417fb1be265ea7b6eb7a.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=bb11e16134e6fe001b16429221488fbc",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 20,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "57d9155c648d417fb1be265ea7b6eb7a",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "e083e996dcfd4ec6849697976b2dfbe0"
+                    }
+                  ],
+                  "firstcreated": "2025-11-13T15:54:52Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Cheyanne Mumphrey",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-26T16:44:40Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Flagstaff",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "AZ",
+                    "countryareaname": "ARIZONA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -111.65127,
+                        35.19807
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - A container of ByHeart baby formula, in Flagstaff, Ariz., on Wednesday, Nov. 12, 2025. (AP Photo/Cheyanne Mumphrey, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T16:50:55",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Poisoning",
+          "headline": "ByHeart infant botulism outbreak ends with 48 babies sickened",
+          "subhead": "Federal health officials say an infant botulism outbreak linked to recalled ByHeart baby formula is over",
+          "preview_image_id": "9ade1ff8-9ee5-4297-a9c3-a07222f808d6",
+          "feedback": null,
+          "position_in_section": 3
+        }
+      ],
+      "position": 4
+    },
+    {
+      "section_id": "cc3f87f9-5aa5-40b9-ac24-f9d0f987c758",
+      "title": "In Other News",
+      "flavor": null,
+      "personalized": true,
+      "seed_entity_id": null,
+      "impressions": [
+        {
+          "impression_id": "3c724945-c0d0-45e9-a5c2-bca4fe4771c4",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 13,
+          "article": {
+            "article_id": "a1ac80a4-4d6f-4128-ab4d-3b16055182e8",
+            "headline": "A total lunar eclipse will turn the moon blood red on Tuesday across several continents",
+            "subhead": "A blood-red moon will soon grace the skies for a total lunar eclipse",
+            "body": null,
+            "url": "https://apnews.com/article/total-lunar-eclipse-blood-moon-2dd5f67f5f7a6fa0f9b248ad6cade9cf",
+            "preview_image_id": "76d1876e-e98c-4d17-8f2e-fec5d4bcf874",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "2dd5f67f5f7a6fa0f9b248ad6cade9cf",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "76d1876e-e98c-4d17-8f2e-fec5d4bcf874",
+                "url": "https://mapi.associatedpress.com/v2/items/421abea4fd964f818ccab69b096993e5.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~421abea4fd964f818ccab69b096993e5!rsn~1!cid~bbf208b721bf42089fc053a8cda96d9e!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - A total lunar eclipse, known as the blood moon, is visible between skyscrapers Friday, March 14, 2025, in downtown Chicago. (AP Photo/Kiichiro Sato)",
+                "source": "AP",
+                "external_id": "421abea4fd964f818ccab69b096993e5",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/421abea4fd964f818ccab69b096993e5?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=2dd5f67f5f7a6fa0f9b248ad6cade9cf",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "5b86bbd082b01004839adf092526b43e",
+                      "name": "Chicago",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "2c6a186082b010048379df092526b43e"
+                      ],
+                      "relevance": 64,
+                      "parentnames": [
+                        "Illinois"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -87.65005,
+                          41.85003
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Lunar Eclipse",
+                  "altids": {
+                    "etag": "421abea4fd964f818ccab69b096993e5_1a1aza3c0",
+                    "itemid": "421abea4fd964f818ccab69b096993e5",
+                    "friendlykey": "26057671428852",
+                    "referenceid": "26057671428852"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "sci",
+                      "name": "SCI",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "file",
+                      "name": "File photo",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    },
+                    {
+                      "code": "813be0e885ea10048ca0ff2260dd383e",
+                      "name": "Eclipses",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 76
+                    },
+                    {
+                      "code": "5280169085d91004860cff2260dd383e",
+                      "name": "Astronomy",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 65
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "Lunar Eclipse",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Lunar Eclipse",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/421abea4fd964f818ccab69b096993e5.1/download?role=main&qt=b2ODsYNIMPeF&cid=92920a1f25ed4a7ebc214963033b4225&ai=2dd5f67f5f7a6fa0f9b248ad6cade9cf",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 4047,
+                      "digest": "019ffd45ca4a566c6f2894552f1e13bd",
+                      "format": "JPEG Baseline",
+                      "height": 2698,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "92920a1f25ed4a7ebc214963033b4225",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 7869602,
+                      "fileextension": "jpg",
+                      "originalfilename": "Lunar_Eclipse_28852.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/421abea4fd964f818ccab69b096993e5.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~421abea4fd964f818ccab69b096993e5!rsn~1!cid~bbf208b721bf42089fc053a8cda96d9e!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "dc062b6593db33e572caf83e08e67a6f",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "bbf208b721bf42089fc053a8cda96d9e",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 66499,
+                      "fileextension": "jpg",
+                      "originalfilename": "Lunar_Eclipse_28852.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/421abea4fd964f818ccab69b096993e5.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~421abea4fd964f818ccab69b096993e5!rsn~1!cid~61f86ea1b5fc4a9cb50d83f0c9307486!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "5a5f8e690a7d39572fd8fc05c7c80e92",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "61f86ea1b5fc4a9cb50d83f0c9307486",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 13749,
+                      "fileextension": "jpg",
+                      "originalfilename": "Lunar_Eclipse_28852.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/421abea4fd964f818ccab69b096993e5.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=2dd5f67f5f7a6fa0f9b248ad6cade9cf",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 25,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "081cbe0a97b5489cb0461ec206988e19",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "derivedfrom": [
+                    {
+                      "code": "24544cf201494508a61c5c3aebc5d5f8"
+                    }
+                  ],
+                  "firstcreated": "2025-03-14T02:05:19Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Kiichiro Sato",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-02-27T13:00:33Z",
+                  "copyrightnotice": "Copyright 2025 The Associated Press. All rights reserved",
+                  "datelinelocation": {
+                    "city": "Chicago",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "IL",
+                    "countryareaname": "ILLINOIS",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -87.65005,
+                        41.85003
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - A total lunar eclipse, known as the blood moon, is visible between skyscrapers Friday, March 14, 2025, in downtown Chicago. (AP Photo/Kiichiro Sato)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-27T13:07:53",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Eclipses",
+          "headline": "A total lunar eclipse will turn the moon blood red on Tuesday across several continents",
+          "subhead": "A blood-red moon will soon grace the skies for a total lunar eclipse",
+          "preview_image_id": "76d1876e-e98c-4d17-8f2e-fec5d4bcf874",
+          "feedback": null,
+          "position_in_section": 1
+        },
+        {
+          "impression_id": "b4ba7d25-b664-46e3-bc57-fb221c8d6703",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 14,
+          "article": {
+            "article_id": "01f62992-47aa-4ed9-9622-b056a83b6c7c",
+            "headline": "The IRS broke the law by disclosing confidential information to ICE 42,695 times, judge says",
+            "subhead": "A federal judge said that the IRS broke the law by illegally sharing thousands of taxpayers’ addresses with Immigration and Customs Enforcement",
+            "body": null,
+            "url": "https://apnews.com/article/irs-breaks-law-judge-finds-2dbe472e46121091a32309bdab6795d7",
+            "preview_image_id": "6e6d36ec-d226-4e99-815b-d163c6e854f5",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "2dbe472e46121091a32309bdab6795d7",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "6e6d36ec-d226-4e99-815b-d163c6e854f5",
+                "url": "https://mapi.associatedpress.com/v2/items/7412c478c0444791b669514efe505b3a.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~7412c478c0444791b669514efe505b3a!rsn~1!cid~614cfb46a55e40058160b870bad81c69!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "FILE - The exterior of the Internal Revenue Service (IRS) building in Washington, is photographed March 22, 2013. (AP Photo/Susan Walsh, File)",
+                "source": "AP",
+                "external_id": "7412c478c0444791b669514efe505b3a",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/7412c478c0444791b669514efe505b3a?qt=b2ODsYNIMPeF&et=1a1aza3c0&ai=2dbe472e46121091a32309bdab6795d7",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "788b364882f110048df3df092526b43e",
+                      "name": "District of Columbia",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661e48387d5b10048291c076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "United States"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -77.00025,
+                          38.91706
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "IRS Report",
+                  "altids": {
+                    "etag": "7412c478c0444791b669514efe505b3a_1a1aza3c0",
+                    "itemid": "7412c478c0444791b669514efe505b3a",
+                    "friendlykey": "26028037983590",
+                    "referenceid": "26028037983590"
+                  },
+                  "ednote": "FILE PHOTO",
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "ffile",
+                      "name": "FFILE",
+                      "rels": [
+                        "suppcategory"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "f25af2d07e4e100484f5df092526b43e",
+                      "name": "General news",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 73
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 1,
+                  "headline": "IRS Report",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "IRS Report",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/7412c478c0444791b669514efe505b3a.1/download?role=main&qt=b2ODsYNIMPeF&cid=4bc9e2107ca1475f8bf84c078368bdb8&ai=2dbe472e46121091a32309bdab6795d7",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 3736,
+                      "digest": "a5db08f85b1a642cd4909e51fa7c423a",
+                      "format": "JPEG Baseline",
+                      "height": 2652,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "4bc9e2107ca1475f8bf84c078368bdb8",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 2533773,
+                      "fileextension": "jpg",
+                      "originalfilename": "IRS_Report_83590.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/7412c478c0444791b669514efe505b3a.1/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~7412c478c0444791b669514efe505b3a!rsn~1!cid~614cfb46a55e40058160b870bad81c69!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "e41ff45f19998b72e6676e221df4e15b",
+                      "format": "JPEG Baseline",
+                      "height": 363,
+                      "mimetype": "image/jpeg",
+                      "contentid": "614cfb46a55e40058160b870bad81c69",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 100815,
+                      "fileextension": "jpg",
+                      "originalfilename": "IRS_Report_83590.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/7412c478c0444791b669514efe505b3a.1/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~7412c478c0444791b669514efe505b3a!rsn~1!cid~c1e74faa5b584a3e9c6ba785e73f5497!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "02b08698b38467a9662bef138e37b714",
+                      "format": "JPEG Baseline",
+                      "height": 89,
+                      "mimetype": "image/jpeg",
+                      "contentid": "c1e74faa5b584a3e9c6ba785e73f5497",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14665,
+                      "fileextension": "jpg",
+                      "originalfilename": "IRS_Report_83590.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/7412c478c0444791b669514efe505b3a.1/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=1a1aza3c0&ai=2dbe472e46121091a32309bdab6795d7",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 22,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "4bb63d3753074b6fa47b2dc1ba9b2a98",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "firstcreated": "2013-03-22T05:00:00Z",
+                  "photographer": {
+                    "code": "stf",
+                    "name": "Susan Walsh",
+                    "title": "STAFF"
+                  },
+                  "versioncreated": "2026-01-28T15:00:42Z",
+                  "copyrightnotice": "Copyright 2026 The Associated Press. All rights reserved.",
+                  "datelinelocation": {
+                    "city": "Washington",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "DC",
+                    "countryareaname": "DIST. OF COLUMBIA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -77.03637,
+                        38.89511
+                      ]
+                    }
+                  },
+                  "description_caption": "FILE - The exterior of the Internal Revenue Service (IRS) building in Washington, is photographed March 22, 2013. (AP Photo/Susan Walsh, File)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T20:27:46",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Taxes",
+          "headline": "The IRS broke the law by disclosing confidential information to ICE 42,695 times, judge says",
+          "subhead": "A federal judge said that the IRS broke the law by illegally sharing thousands of taxpayers’ addresses with Immigration and Customs Enforcement",
+          "preview_image_id": "6e6d36ec-d226-4e99-815b-d163c6e854f5",
+          "feedback": null,
+          "position_in_section": 2
+        },
+        {
+          "impression_id": "2e1a830d-9c2e-4c54-a314-696300a4dd90",
+          "newsletter_id": "0eeeca8d-0642-4823-9f12-4058ffe34b86",
+          "position": 15,
+          "article": {
+            "article_id": "20ba6886-4b22-4e8c-88c1-4efa98c877ec",
+            "headline": "NTSB chair slams House aviation bill as 'watered-down' after 67 deaths near Washington",
+            "subhead": "The head of the National Transportation Safety Board said Thursday it’s misleading for members of the House to say their package of aviation safety reforms would address the recommendations that her agency made in January to prevent another midair collision like the one last year near Washington, D.C., that killed 67 people",
+            "body": null,
+            "url": "https://apnews.com/article/washington-dc-midair-collision-ntsb-congress-homendy-fc2b0bcf5c7ae9eaee0b9fd9a64edfc4",
+            "preview_image_id": "7fbef73b-ebdb-4d7d-a4c0-b31f90cb09ea",
+            "mentions": [],
+            "linked_articles": {},
+            "source": "AP",
+            "external_id": "fc2b0bcf5c7ae9eaee0b9fd9a64edfc4",
+            "raw_data": null,
+            "images": [
+              {
+                "image_id": "7fbef73b-ebdb-4d7d-a4c0-b31f90cb09ea",
+                "url": "https://mapi.associatedpress.com/v2/items/563284e3e2ad41e7b8948cc7dadcf366.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~563284e3e2ad41e7b8948cc7dadcf366!rsn~0!cid~1649e9f0e8074679828ca80a5b6461e9!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                "caption": "National Transportation Safety Board (NTSB) Chairwoman Jennifer Homendy testifies before the Senate Committee on Commerce, Science, and Transportation hearing at Capitol Hill, Thursday, Feb. 12, 2026, in Washington. (AP Photo/Jose Luis Magana)",
+                "source": "AP",
+                "external_id": "563284e3e2ad41e7b8948cc7dadcf366",
+                "raw_data": {
+                  "uri": "https://api.ap.org/media/v/content/563284e3e2ad41e7b8948cc7dadcf366?qt=b2ODsYNIMPeF&et=0a1aza3c0&ai=fc2b0bcf5c7ae9eaee0b9fd9a64edfc4",
+                  "type": "picture",
+                  "place": [
+                    {
+                      "code": "788b364882f110048df3df092526b43e",
+                      "name": "District of Columbia",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "parentids": [
+                        "661e48387d5b10048291c076b8e3055c"
+                      ],
+                      "relevance": 47,
+                      "parentnames": [
+                        "United States"
+                      ],
+                      "locationtype": {
+                        "code": "9d26a20b35f0484a891740f8189d4c7b",
+                        "name": "City"
+                      },
+                      "geometry_geojson": {
+                        "type": "Point",
+                        "coordinates": [
+                          -77.00025,
+                          38.91706
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Congress Washington Midair Collision",
+                  "altids": {
+                    "etag": "563284e3e2ad41e7b8948cc7dadcf366_0a1aza3c0",
+                    "itemid": "563284e3e2ad41e7b8948cc7dadcf366",
+                    "friendlykey": "26043688293512",
+                    "referenceid": "26043688293512"
+                  },
+                  "person": [
+                    {
+                      "name": "Jennifer Homendy",
+                      "rels": [
+                        "personfeatured"
+                      ],
+                      "creator": "Editorial",
+                      "person_featured": "Jennifer Homendy"
+                    },
+                    {
+                      "name": "Jennifer Homendy",
+                      "rels": [
+                        "direct"
+                      ],
+                      "types": [
+                        "PERSON"
+                      ],
+                      "creator": "Machine",
+                      "relevance": 43
+                    }
+                  ],
+                  "signals": [
+                    "newscontent"
+                  ],
+                  "subject": [
+                    {
+                      "code": "a",
+                      "name": "Domestic News",
+                      "rels": [
+                        "category"
+                      ],
+                      "creator": "Editorial"
+                    },
+                    {
+                      "code": "86aad5207dac100488ecba7fa5283c3e",
+                      "name": "Politics",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 58
+                    }
+                  ],
+                  "urgency": 5,
+                  "version": 0,
+                  "headline": "Congress Washington Midair Collision",
+                  "language": "en",
+                  "provider": "AP",
+                  "slugline": "Congress Washington Midair Collision",
+                  "pubstatus": "usable",
+                  "infosource": [
+                    {
+                      "name": "FR159526 AP",
+                      "type": "AP"
+                    }
+                  ],
+                  "renditions": {
+                    "main": {
+                      "rel": "Main",
+                      "href": "https://api.ap.org/media/v/content/563284e3e2ad41e7b8948cc7dadcf366.0/download?role=main&qt=b2ODsYNIMPeF&cid=873f4f7ac6b74f8cbe589ed3f2bd25bb&ai=fc2b0bcf5c7ae9eaee0b9fd9a64edfc4",
+                      "type": "picture",
+                      "title": "Full Resolution (JPG)",
+                      "width": 6000,
+                      "digest": "c73fdb77ad8debc0ad49217ae19c6d01",
+                      "format": "JPEG Baseline",
+                      "height": 4000,
+                      "mimetype": "image/jpeg",
+                      "pricetag": "Unlimited",
+                      "contentid": "873f4f7ac6b74f8cbe589ed3f2bd25bb",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 2719484,
+                      "fileextension": "jpg",
+                      "originalfilename": "Congress_Washington_Midair_Collision_93512.jpg"
+                    },
+                    "preview": {
+                      "rel": "Preview",
+                      "href": "https://mapi.associatedpress.com/v2/items/563284e3e2ad41e7b8948cc7dadcf366.0/preview/preview.jpg?nfe=true&s=512&wm=false&app=MPK&tag=iid~563284e3e2ad41e7b8948cc7dadcf366!rsn~0!cid~1649e9f0e8074679828ca80a5b6461e9!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Preview!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Preview (JPG)",
+                      "width": 512,
+                      "digest": "a8d01bb4b762ec4c65f74859be4f1d0a",
+                      "format": "JPEG Baseline",
+                      "height": 341,
+                      "mimetype": "image/jpeg",
+                      "contentid": "1649e9f0e8074679828ca80a5b6461e9",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 68299,
+                      "fileextension": "jpg",
+                      "originalfilename": "Congress_Washington_Midair_Collision_93512.jpg"
+                    },
+                    "thumbnail": {
+                      "rel": "Thumbnail",
+                      "href": "https://mapi.associatedpress.com/v2/items/563284e3e2ad41e7b8948cc7dadcf366.0/thumbnail/thumbnail.jpg?nfe=true&wm=false&app=MPK&tag=iid~563284e3e2ad41e7b8948cc7dadcf366!rsn~0!cid~2819b37288a14ae79d7bbd2a3ce382f9!orgId~124748!qt~b2ODsYNIMPeF!orgNm~Five%20University%20Consortium!role~Thumbnail!mt~photo!fmt~JPEG%20Baseline",
+                      "type": "picture",
+                      "title": "Thumbnail (JPG)",
+                      "width": 125,
+                      "digest": "04e4ff80fd6eca912fff25d981edf86e",
+                      "format": "JPEG Baseline",
+                      "height": 83,
+                      "mimetype": "image/jpeg",
+                      "contentid": "2819b37288a14ae79d7bbd2a3ce382f9",
+                      "orientation": "Horizontal",
+                      "sizeinbytes": 14888,
+                      "fileextension": "jpg",
+                      "originalfilename": "Congress_Washington_Midair_Collision_93512.jpg"
+                    },
+                    "caption_nitf": {
+                      "rel": "Caption",
+                      "href": "https://api.ap.org/media/v/content/563284e3e2ad41e7b8948cc7dadcf366.0/download?qt=b2ODsYNIMPeF&type=text&format=nitf&text=caption&et=0a1aza3c0&ai=fc2b0bcf5c7ae9eaee0b9fd9a64edfc4",
+                      "type": "text",
+                      "title": "NITF Caption Download",
+                      "words": 32,
+                      "format": "IIM",
+                      "mimetype": "text/xml",
+                      "contentid": "563284e3e2ad41e7b8948cc7dadcf366",
+                      "fileextension": "xml"
+                    }
+                  },
+                  "usageterms": [
+                    "This content is intended for editorial use only. For other uses, additional clearances may be required."
+                  ],
+                  "firstcreated": "2026-02-12T15:25:20Z",
+                  "organisation": [
+                    {
+                      "code": "9988ec60892110048b7bdcd60602cf03",
+                      "name": "U.S. Department of Commerce",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 46
+                    },
+                    {
+                      "code": "86b5cdb87dac10048932ba7fa5283c3e",
+                      "name": "United States Congress",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 46
+                    },
+                    {
+                      "code": "36624508892310048fa2fb7860a2fc03",
+                      "name": "National Transportation Safety Board",
+                      "rels": [
+                        "direct"
+                      ],
+                      "scheme": "http://cv.ap.org/id/",
+                      "creator": "Machine",
+                      "relevance": 62
+                    }
+                  ],
+                  "photographer": {
+                    "code": "fre",
+                    "name": "Jose Luis Magana",
+                    "title": "Freelancer"
+                  },
+                  "versioncreated": "2026-02-12T19:18:42Z",
+                  "datelinelocation": {
+                    "city": "Washington",
+                    "countrycode": "USA",
+                    "countryname": "UNITED STATES",
+                    "countryareacode": "DC",
+                    "countryareaname": "DIST. OF COLUMBIA",
+                    "geometry_geojson": {
+                      "type": "Point",
+                      "coordinates": [
+                        -77.03637,
+                        38.89511
+                      ]
+                    }
+                  },
+                  "description_caption": "National Transportation Safety Board (NTSB) Chairwoman Jennifer Homendy testifies before the Senate Committee on Commerce, Science, and Transportation hearing at Capitol Hill, Thursday, Feb. 12, 2026, in Washington. (AP Photo/Jose Luis Magana)",
+                  "description_creditline": "ASSOCIATED PRESS"
+                }
+              }
+            ],
+            "published_at": "2026-02-26T22:48:50",
+            "created_at": null
+          },
+          "created_at": "2026-02-27T17:48:01.967978",
+          "extra": null,
+          "label": "Aviation safety",
+          "headline": "NTSB chair slams House aviation bill as 'watered-down' after 67 deaths near Washington",
+          "subhead": "The head of the National Transportation Safety Board said Thursday it’s misleading for members of the House to say their package of aviation safety reforms would address the recommendations that her agency made in January to prevent another midair collision like the one last year near Washington, D.C., that killed 67 people",
+          "preview_image_id": "7fbef73b-ebdb-4d7d-a4c0-b31f90cb09ea",
+          "feedback": null,
+          "position_in_section": 3
+        }
+      ],
+      "position": 5
+    }
+  ],
+  "subject": "(nrms_sections_test - nrms_sections) Fri Feb 27, 2026: Ancient coupling may have happened more between human females and Neanderthal males",
+  "body_html": "",
+  "created_at": "2026-02-27T17:48:01.967978",
+  "recommender_info": {
+    "name": "nrms_sections",
+    "version": "0.0.1",
+    "hash": "1b2b97703da54abb248c194fd743a84844c7f740cd4c37b15cec12d2b9eedfa6"
+  },
+  "feedback": null
+}

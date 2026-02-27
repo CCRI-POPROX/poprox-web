@@ -1,0 +1,30 @@
+{% extends "dev_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">dev dashboard</li>
+
+{% endblock %}
+
+{% block content %}
+<h1> DEV TOOLS </h1>
+<div class="tool">
+    <form action="{{url_for('dev.dev_decode')}}" method="get">
+        <label for="decode_url">tracking link or other code to try to decode</label>
+        <input name="input" id="decode_url" required>
+        <button type="submit">Decode</button>
+    </form>
+</div>
+<div class="tool">
+    <form action="{{url_for('dev.dev_login')}}" method="get">
+        <label for="email">Email:</label>
+        <input name="email" id="email">
+        <label for="source">Source:</label>
+        <input name="source" id="source">
+        <label for="subsource">Subsource:</label>
+        <input name="subsource" id="subsource">
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+<a href="{{url_for('dev.newsletter_loader_get')}}">Newsletter Loading Utility</a>
+{% endblock %}

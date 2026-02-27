@@ -23,6 +23,7 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
+from dev.dev_blueprint import dev
 from experimenter.experimenter_blueprint import exp
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
@@ -122,6 +123,9 @@ def validate(val, options):
 
 # Register Blueprints at the top
 app.register_blueprint(admin)
+if app.debug:  # only load this if in development mode -- not prod mode.
+    print("ENABLING DEV BLUEPRINT")
+    app.register_blueprint(dev)
 app.register_blueprint(exp)
 app.register_blueprint(static_web)
 
@@ -417,8 +421,8 @@ def feedback():
 
         if feedbackType:
             newsletter_repo.store_newsletter_feedback(account_id, newsletter_id, feedbackType)
-            newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
             conn.commit()
+        newsletter = newsletter_repo.fetch_newsletter(newsletter_id)
 
         # Fetch images for all impressions
         all_impressions = newsletter.impressions if newsletter else []
