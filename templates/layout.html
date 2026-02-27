@@ -71,7 +71,7 @@
                                     <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Log Out</a>
                                     <a href="{{ url_for('topics') }}" class="list-group-item list-group-item-action">Customize Newsletter</a>
                                     <a href="{{ url_for('demographic_form') }}" class="list-group-item list-group-item-action">User Demographic</a>
-                                    <a href="{{ url_for('compensation_preference_form') }}" class="list-group-item list-group-item-action">Compensation preference</a>
+                                    <a href="{{ url_for('compensation_preference_form') }}" class="list-group-item list-group-item-action">Compensation Status & Settings</a>
                                     {% if auth.get_account_teams()|length > 0%}
                                         <a href="{{url_for('experimenter.expt_home')}}" class="list-group-item list-group-item-action">Experimenter Dashboard</a>
                                     {% endif %}
