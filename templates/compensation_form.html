@@ -94,9 +94,9 @@
                         <h6><strong>Reward Rules</strong></h6>
                         <ul class="small mb-0 list-unstyled">
                             <li><i class="fa fa-book text-secondary me-2"></i><strong>Reading Activity:</strong></li>
-                            <li class="ms-4">Read on 10+ different days: <span class="text-success fw-bold">$5</span></li>
-                            <li class="ms-4">Read on 15+ different days: <span class="text-success fw-bold">$10</span></li>
-                            <li class="ms-4">Read on 20+ different days: <span class="text-success fw-bold">$20</span></li>
+                            <li class="ms-4">Click and Read articles from 10+ different newsletters during the event period: <span class="text-success fw-bold">$5</span></li>
+                            <li class="ms-4">Click and Read articles from 15+ different newsletters during the event period: <span class="text-success fw-bold">$10</span></li>
+                            <li class="ms-4">Click and Read articles from 20+ different newsletters during the event period: <span class="text-success fw-bold">$20</span></li>
 
                             <li class="mt-2"><i class="fa fa-check-square-o text-secondary me-2"></i><strong>Survey Activity:</strong></li>
                             <li class="ms-4">Complete 2+ weekly surveys: <span class="text-success fw-bold">$5</span></li>
@@ -110,7 +110,7 @@
                         {% set surveys = click_and_survey_activity['survey_count'] %}
 
                         <div class="mb-2">
-                            <span class="d-block text-muted small">Active Reading Days: <strong>{{ clicks }}</strong></span>
+                            <span class="d-block text-muted small">Qualified Reading Days: <strong>{{ clicks }}</strong></span>
                             {% if clicks >= 20 %}
                                 <span class="badge bg-success">Tier 3 ($20) Unlocked!</span>
                             {% elif clicks >= 15 %}
