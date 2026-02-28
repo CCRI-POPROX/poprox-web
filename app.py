@@ -138,7 +138,7 @@ def tracking_url_for(account_id, newsletter_id, impression):
         article_id=str(article.article_id),
         url=article.url,
     )
-    return f"{url_for('track_email_click')}/{to_hashed_base64(data, HMAC_KEY)}"
+    return f"{url_for('track_email_click', path=to_hashed_base64(data, HMAC_KEY))}"
 
 
 @app.context_processor
