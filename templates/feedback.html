@@ -75,17 +75,7 @@
 	<h3 class="feedback-section-title">{{ section.title }}</h3>
 	{% endif %}
 	{% for impression in section.impressions %}
-	<div class="row" style="margin-top: 1em; margin-bottom: 1em;">
-		<div class="col-4">
-			{% if impression.preview_image_id and impression.preview_image_id in images %}
-			{% set image = images[impression.preview_image_id] %}
-			<img src="{{image.url}}" style="width: 100%">
-			{% endif %}
-		</div>
-		<div class="col-6">
-			<a href="{{ tracking_url_for(auth.get_account_id(), newsletter.newsletter_id, impression) }}">{{ impression.headline }}</a>
-			<p>{{ impression.subhead }}</p>
-		</div>
+	<div class="row" style="margin-top: 0.5em;">
 		<div class="col-2">
 			<form class="feedback-form feedback-class" action="{{ url_for('feedback') }}" method="POST">
 				<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
@@ -103,6 +93,17 @@
 					👎
 				</button>
 			</form>
+		</div>
+		<div class="col-2">
+			{% if impression.preview_image_id and impression.preview_image_id in images %}
+			{% set image = images[impression.preview_image_id] %}
+			<img src="{{image.url}}" style="width: 100%">
+			{% endif %}
+		</div>
+		<div class="col-8">
+			<p class="feedback-label">🏷️ {{ impression.label }}</p>
+			<a class="feedback-headline" href="{{ impression.article.url }}">{{ impression.headline }}</a>
+
 		</div>
 	</div>
 	{% endfor %}
