@@ -546,7 +546,7 @@ h1 {
 
 .emoji-button {
     background: none;
-    border: 1px solid #6c757d;
+    border: 1px solid #bdbdc5;
     font-size: 1.5em;
     cursor: pointer;
 
@@ -559,6 +559,7 @@ h1 {
 }
 
 .emoji-button:last-child {
+    margin-left: 1rem;
     margin-right: 1rem;
 }
 
