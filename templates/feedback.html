@@ -102,8 +102,7 @@
 		</div>
 		<div class="col-8">
 			<p class="feedback-label">{{ impression.label }}</p>
-			<a class="feedback-headline" href="{{ impression.article.url }}">{{ impression.headline }}</a>
-
+			<a class="feedback-headline" href="{{ tracking_url_for(auth.get_account_id(), newsletter.newsletter_id, impression) }}">{{ impression.headline }}</a>
 		</div>
 	</div>
 	{% endfor %}
