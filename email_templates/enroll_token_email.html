@@ -3,19 +3,16 @@
 <div>
     <h1> Confirm Your Email Address </h1>
     <hr>
-    <p>Thank you for signing up to receive a POPROX daily personalized email newsletter.
-        To start reading, please confirm your email address using the code below:
-    </p>
+    <p>Thank you for signing up for POPROX, our ad-free personalized daily news briefing.
+    To start reading, please <a href="{{enroll_link}}">confirm your email address using this link</a>,
+    or by entering the code below at the POPROX enrollment page:</p>
     <div class="token_code">
         {{token.code}}
     </div>
     <p>
-        This code will be valid for one hour.
-        You can enter the code at the POPROX enrollment page,
-        or you can <a href="{{enroll_link}}">click here.</a>
-        Once you confirm your email address, we'll ask about
-        your interests, demographics, and compensation preferences,
-        and then send you your first newsletter!
+    This code will be valid for one hour. Once you confirm your email address,
+    we’ll confirm your consent to participate in POPROX research and ask about your news interests.
+    After that, we’ll send you your first newsletter right away!
     </p>
 </div>
 {% endblock %}
