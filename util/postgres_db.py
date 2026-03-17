@@ -201,7 +201,7 @@ def fetch_user_click_and_survey_activity(account_id, start_date, end_date):
                 clicked_newsletters.add(click.newsletter_id)
             click_count = len(clicked_newsletters)
 
-        user_survey_activity = survey_repo.fetch_clean_responses_between(start_date, end_date, account)
+        user_survey_activity = survey_repo.fetch_clean_responses_sent_between(start_date, end_date, account)
         survey_count = len(user_survey_activity)
         return {
             "click_count": click_count,
