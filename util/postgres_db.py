@@ -190,7 +190,7 @@ def fetch_user_click_and_survey_activity(account_id, start_date, end_date):
         click_repo = DbClicksRepository(conn)
         survey_repo = DbQualtricsSurveyRepository(conn)
         account = account_repo.fetch_accounts([account_id])
-        user_click_activity = click_repo.fetch_clicks_between(start_date, end_date, account)
+        user_click_activity = click_repo.filter_clicks_on_newsletters_between(start_date, end_date, account)
         click_count = 0
         survey_count = 0
 
