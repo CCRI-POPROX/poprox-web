@@ -24,6 +24,7 @@ from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
+from poprox_concepts.api.recommendations.versions import ProtocolVersions
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -601,6 +602,7 @@ def update_demographics():
                 profile_id=account_id,
                 group_id=None,
                 recommender_url=DEFAULT_RECS_ENDPOINT_URL,
+                api_version=ProtocolVersions.VERSION_5_0,
             )
             return redirect(url_for("compensation_preference_form"))
         else:
