@@ -209,8 +209,10 @@ class Auth:
         )
 
         template = jinja_env.get_template("enroll_token_email.html")
-        enroll_link = url_for("enroll_with_token", link_data_raw=link_data_signed, _external=True)
-        html = template.render(enroll_link=enroll_link, token=token)
+        enroll_link_with_code = url_for(
+            "enroll_with_token", link_data_raw=link_data_signed, code=token.code, _external=True
+        )
+        html = template.render(enroll_link=enroll_link_with_code, token=token)
         message = json.dumps(
             {
                 "email_to": email,
@@ -227,7 +229,10 @@ class Auth:
             import html_previewer
 
             html_previewer.preview(html)
-        return redirect(enroll_link)
+
+        enroll_link_without_code = url_for("enroll_with_token", link_data_raw=link_data_signed, _external=True)
+
+        return redirect(enroll_link_without_code)
 
     def send_post_consent(self):
         queue_url = env.get("SEND_EMAIL_QUEUE_URL")

@@ -25,6 +25,7 @@ from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
 from experimenter.experimenter_blueprint import exp
+from poprox_concepts.api.recommendations.versions import ProtocolVersions
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
 from poprox_concepts.domain import AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
@@ -194,7 +195,7 @@ def pre_enroll_post():
         return auth.send_enroll_token(source, subsource, email)
 
 
-@app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["GET"])
+@app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["GET", "POST"])
 def enroll_with_token(link_data_raw):
     try:
         link_data: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
@@ -216,33 +217,16 @@ def enroll_with_token(link_data_raw):
             )
         )
     else:
-        return render_template("enroll_with_token.html", link_data_raw=link_data_raw)
+        # attempt to get code.
+        user_code = None
+        if request.method == "POST" and request.form:
+            user_code = request.form.get("code")
+        else:
+            user_code = request.args.get("code")
 
-
-@app.route(f"{URL_PREFIX}/confirm_subscription/<link_data_raw>", methods=["POST"])
-def enroll_with_token_post(link_data_raw):
-    try:
-        link_data: SignUpLinkData = from_hashed_base64(link_data_raw, HMAC_KEY, SignUpLinkData)
-    except ValueError:
-        return redirect(
-            url_for(
-                "pre_enroll_get",
-                error="The enrollment link you used was invalid. Please request a new enrollment link below.",
-            )
-        )
-    token = get_token(link_data.token_id)
-    if (not link_data) or (not token):
-        return redirect(
-            url_for(
-                "pre_enroll_get",
-                source=link_data.source,
-                subsource=link_data.subsource,
-                error="The enrollment link you used was expired. Please request a new enrollment link below.",
-            )
-        )
-    else:
-        user_code = request.form.get("code")
-        if token.code == user_code:
+        if user_code is None:
+            return render_template("enroll_with_token.html", link_data_raw=link_data_raw)
+        elif token.code == user_code:
             return auth.enroll(link_data.email, link_data.source, link_data.subsource)
         else:
             # this would be a good place to delay if we wanted to prevent brute-force
@@ -659,6 +643,7 @@ def update_demographics():
                 profile_id=account_id,
                 group_id=None,
                 recommender_url=DEFAULT_RECS_ENDPOINT_URL,
+                api_version=ProtocolVersions.VERSION_5_0,
             )
             return redirect(url_for("compensation_preference_form"))
         else:
