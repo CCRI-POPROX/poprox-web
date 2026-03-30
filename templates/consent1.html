@@ -142,7 +142,6 @@
 	</p>
 
 	<form id="content" method="GET" action="/consent2">
-		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 		<div class="accordion accordion-flush" id="consent-form-accordion">
 			<div class="accordion-item mb-1">
 				<header id="consent-header-1" class="accordion-header {% if 'agree1' in missing %}error{% endif %}">
