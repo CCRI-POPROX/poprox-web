@@ -43,6 +43,7 @@
 		<p class="card-text">Once we confirm your eligibility and email address, we’ll get your permission to participate in POPROX research, ask some quick questions about you and your news interests, then send your first newsletter right away.</p>
 
 		<form action="{{url_for('pre_enroll_post')}}" method="post">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 			<input type="hidden" id="source" name="source" value="{{source}}" >
 			<input type="hidden" id="subsource" name="subsource" value="{{subsource}}" >
 			<div class="form-group row">

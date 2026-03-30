@@ -277,7 +277,7 @@
         use only; your exact zip code will not be shared with external researchers"><strong>(?)</strong></span>
     </p>
     <form action="{{url_for('update_demographics')}}" onsubmit="return validateForm()" method="POST">
-
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <!-- Gender -->
         <label class="form-label mt-4 fw-bold" for="genderselect">What is your gender identity?</label>
         <select class="form-select" id="genderselect"
