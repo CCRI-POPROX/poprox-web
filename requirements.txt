@@ -9,7 +9,6 @@ psycopg2-binary
 tqdm
 markdown
 stamina
-flask-wtf
 
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git

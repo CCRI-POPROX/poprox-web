@@ -139,7 +139,6 @@
     </div>
 
     <form action="{{url_for('update_compensation_preference')}}" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label class="form-label mt-4 fw-bold" for="compensationSelect">Choose your preferred method of compensation:</label>
         <select class="form-select"
             id="compensationSelect"
