@@ -18,8 +18,9 @@
 <form class="row g-3" method="post" action="{{url_for('experimenter.team_edit_experience_post',team_id=team.team_id, experience_id=experience.experience_id)}}">
 {% else %}
 <form class="row g-3" method="post" action="{{url_for('experimenter.team_edit_experience_post',team_id=team.team_id)}}">
-
 {% endif %}
+
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <div class="form-group col-4">
     <label for="name" class="form-label"> name </label>
     <input id="name" required name="name" type="text" class="form-control col-6" value="{{experience.name if experience else ''}}" placeholder="name">

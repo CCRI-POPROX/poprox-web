@@ -8,6 +8,7 @@
   <h2>{{team.team_name}} ({{team.team_id}})</h2>
   <h3>Rename</h3>
   <form method="post" action = "{{url_for('admin.edit_team_name', team_id=team.team_id)}}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <input type="text" id="team_name" name="team_name" placeholder="team_name" required>
     <input type="submit">
   </form>
@@ -20,6 +21,7 @@
 
   <h3>Add Member</h3>
   <form method="post" action="{{url_for('admin.add_to_team', team_id = team.team_id)}}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <input type="email" id="email" name="email" placeholder="who">
     <input type="submit">
   </form>

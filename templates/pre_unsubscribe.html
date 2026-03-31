@@ -51,6 +51,7 @@
 {% endblock %}
 {% block content %}
 <form action="{{url_for('pre_unsubscribe')}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <h2>
         We're sorry to see you go!
     </h2>
@@ -87,7 +88,7 @@
     </div>
 
     <div id="survey" class="field hidden" style="display:none;">
-        <p>By clicking the button below, we will remove you from the current newsletter variant. 
+        <p>By clicking the button below, we will remove you from the current newsletter variant.
             You will be receiving the standard POPROX newsletter until you are assigned to the next experiment. <br>
             We will send you a survey asking you why you want to return to the standard newsletter. <br>
         </p>
