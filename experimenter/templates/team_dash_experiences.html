@@ -53,6 +53,7 @@
             <td>{{recommenders[experience.recommender_id]}}</td>
             <td>
               <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input type="checkbox" required/>
                 <button type="submit" class="btn btn-warning btn-sm">TEST</button>
               </form>
@@ -106,6 +107,7 @@
             <td>{{recommenders[experience.recommender_id]}}</td>
             <td>
               <form method="post" action="{{url_for('experimenter.team_experience_test_now', team_id = team.team_id, experience_id=experience.experience_id)}}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input type="checkbox" required/>
                 <button type="submit" class="btn btn-warning btn-sm">TEST</button>
               </form>

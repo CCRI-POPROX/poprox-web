@@ -15,6 +15,7 @@
   </table>
   <h4>New Team</h4>
   <form action="{{url_for('admin.new_team')}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <input type="text" placeholder="team_name" id="team_name" name="team_name" required>
     <input type="submit">
   </form>
