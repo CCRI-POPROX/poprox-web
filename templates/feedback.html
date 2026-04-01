@@ -82,6 +82,7 @@
 	{% for impression in section.impressions %}
 	<div class="row" style="margin-top: 0.5em;">
 		<div class="col-2">
+			{% if not nls_survey %}
 			<form class="feedback-form feedback-class" action="{{ url_for('feedback') }}" method="POST">
     			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 				<input type="hidden" id="newsletter_id" name="newsletter_id" value="{{ impression.newsletter_id }}">
@@ -99,6 +100,7 @@
 					👎
 				</button>
 			</form>
+			{% endif %}
 		</div>
 		<div class="col-2">
 			{% if impression.preview_image_id and impression.preview_image_id in images %}

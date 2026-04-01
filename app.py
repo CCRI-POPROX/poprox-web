@@ -429,6 +429,7 @@ def feedback():
         "feedback.html",
         newsletter=newsletter,
         images=images,
+        nls_survey=request.args.get("nls_survey"),
     )
 
 
