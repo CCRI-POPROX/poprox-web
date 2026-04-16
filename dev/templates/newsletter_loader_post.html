@@ -1,0 +1,12 @@
+{% extends "dev_main_layout.html" %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item" aria-current="page"><a href="{{url_for('dev.dev_home')}}">dev dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">decoding page</li>
+
+{% endblock %}
+
+{% block content %}
+<h1> Newsletter Loading Tool </h1>
+ok. <a href="{{url}}">go here for feedback page</a>
+{% endblock %}
