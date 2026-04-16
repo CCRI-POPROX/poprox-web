@@ -9,6 +9,8 @@
 {% block content %}
 <h1> Newsletter Loading Tool </h1>
 <form action="{{url_for('dev.newsletter_loader_post')}}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
     <textarea name="newsletter">{{newsletter}}</textarea>
     <button type="submit">Submit</button>
 </form>

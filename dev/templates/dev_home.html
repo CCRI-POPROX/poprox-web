@@ -9,6 +9,8 @@
 <h1> DEV TOOLS </h1>
 <div class="tool">
     <form action="{{url_for('dev.dev_decode')}}" method="get">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
         <label for="decode_url">tracking link or other code to try to decode</label>
         <input name="input" id="decode_url" required>
         <button type="submit">Decode</button>
@@ -16,6 +18,8 @@
 </div>
 <div class="tool">
     <form action="{{url_for('dev.dev_login')}}" method="get">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
         <label for="email">Email:</label>
         <input name="email" id="email">
         <label for="source">Source:</label>
