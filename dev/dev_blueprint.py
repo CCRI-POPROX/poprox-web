@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import sys
 from os import environ as env
 from pathlib import Path
 
@@ -13,6 +14,13 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 from poprox_concepts.api.tracking import LoginLinkData, TrackingLinkData
 from poprox_concepts.domain.newsletter import Newsletter
 from util.auth import auth
+
+try:
+    from poprox_platform.newsletter.preview import DEFAULT_PREVIEW_NEWSLETTER_ID, newsletter_preview_context
+except ModuleNotFoundError:
+    platform_root = Path(__file__).resolve().parents[2] / "poprox-platform"
+    sys.path.insert(0, str(platform_root))
+    from poprox_platform.newsletter.preview import DEFAULT_PREVIEW_NEWSLETTER_ID, newsletter_preview_context
 
 dev = Blueprint("dev", __name__, template_folder="templates", url_prefix="/dev")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
@@ -78,6 +86,30 @@ def newsletter_loader_post():
     return render_template(
         "newsletter_loader_post.html", url=url_for("feedback", newsletter_id=the_newsletter.newsletter_id)
     )
+
+
+@dev.route("/newsletter_preview")
+def newsletter_preview():
+    newsletter_id = request.args.get("newsletter_id", str(DEFAULT_PREVIEW_NEWSLETTER_ID))
+    disable_links = request.args.get("disable_links", "false").lower() == "true"
+    remove_footer = request.args.get("remove_footer", "false").lower() == "true"
+
+    with DB_ENGINE.connect() as conn:
+        newsletter_repo = DbNewsletterRepository(conn)
+        try:
+            context = newsletter_preview_context(
+                newsletter_repo,
+                newsletter_id,
+                disable_links=disable_links,
+                remove_footer=remove_footer,
+            )
+        except ValueError:
+            return "Invalid newsletter_id", 400
+
+    if context is None:
+        return "Newsletter not found", 404
+
+    return render_template("newsletter_preview.html", **context)
 
 
 @dev.route("/decode")
