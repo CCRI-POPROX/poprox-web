@@ -93,7 +93,7 @@ def newsletter_preview():
     newsletter_id = request.args.get("newsletter_id")
     account_id = request.args.get("account_id")
     disable_links = request.args.get("disable_links", "false").lower() == "true"
-    remove_footer = request.args.get("remove_footer", "false").lower() == "true"
+    remove_footer = request.args.get("remove_footer", "true").lower() != "false"
 
     with DB_ENGINE.connect() as conn:
         newsletter_repo = DbNewsletterRepository(conn)
