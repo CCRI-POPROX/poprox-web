@@ -1,8 +1,10 @@
 # ruff: noqa: E402
 
 import logging
+import sys
 from datetime import datetime, timezone
 from os import environ as env
+from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
@@ -184,6 +186,43 @@ def pre_enroll_get():
         template = templates[(source, subsource)]
 
     return render_template(template, source=source, subsource=subsource, error=error)
+
+
+def get_newsletter_preview_context():
+    try:
+        from poprox_platform.newsletter.preview import newsletter_preview_context
+    except ModuleNotFoundError:
+        platform_root = Path(__file__).resolve().parents[1] / "poprox-platform"
+        sys.path.insert(0, str(platform_root))
+        from poprox_platform.newsletter.preview import newsletter_preview_context
+
+    newsletter_id = request.args.get("newsletter_id")
+    account_id = request.args.get("account_id")
+    disable_links = request.args.get("disable_links", "false").lower() == "true"
+    remove_footer = request.args.get("remove_footer", "true").lower() != "false"
+
+    with DB_ENGINE.connect() as conn:
+        newsletter_repo = DbNewsletterRepository(conn)
+        return newsletter_preview_context(
+            newsletter_repo,
+            newsletter_id,
+            account_id,
+            disable_links=disable_links,
+            remove_footer=remove_footer,
+        )
+
+
+@app.route(f"{URL_PREFIX}/newsletter_preview")
+def newsletter_preview():
+    try:
+        context = get_newsletter_preview_context()
+    except ValueError:
+        return "Invalid newsletter_id or account_id", 400
+
+    if context is None:
+        return "Newsletter not found", 404
+
+    return render_template("newsletter_preview.html", **context)
 
 
 @app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])
