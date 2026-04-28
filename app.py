@@ -3,6 +3,8 @@
 import logging
 from datetime import datetime, timezone
 from os import environ as env
+from pathlib import Path
+import sys
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
@@ -12,6 +14,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from poprox_storage.aws import DB_ENGINE as NEWSLETTER_PREVIEW_DB_ENGINE
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
@@ -52,6 +55,13 @@ from util.postgres_db import (
     finish_topic_selection,
     get_token,
 )
+
+try:
+    from poprox_platform.newsletter.preview import newsletter_preview_context # type: ignore
+except ModuleNotFoundError:
+    platform_root = Path(__file__).resolve().parents[1] / "poprox-platform"
+    sys.path.insert(0, str(platform_root))
+    from poprox_platform.newsletter.preview import newsletter_preview_context # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -176,14 +186,37 @@ def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
     subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
+    sample_newsletter_id = request.args.get("newsletter_id")
+    sample_account_id = request.args.get("account_id")
+    sample_newsletter_html = None
+    with NEWSLETTER_PREVIEW_DB_ENGINE.connect() as conn:
+        newsletter_repo = DbNewsletterRepository(conn)
+        try:
+            preview_context = newsletter_preview_context(
+                newsletter_repo,
+                sample_newsletter_id,
+                sample_account_id,
+                disable_links=True,
+                remove_footer=True,
+            )
+        except ValueError:
+            preview_context = None
 
-    # To test a source, subsource pair with a custom template just add that to this dictionary
+    if preview_context:
+        sample_newsletter_html = preview_context["newsletter_html"]
+
     templates = {}
     template = "pre_enroll.html"
     if (source, subsource) in templates:
         template = templates[(source, subsource)]
 
-    return render_template(template, source=source, subsource=subsource, error=error)
+    return render_template(
+        template,
+        source=source,
+        subsource=subsource,
+        error=error,
+        sample_newsletter_html=sample_newsletter_html,
+    )
 
 
 @app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])

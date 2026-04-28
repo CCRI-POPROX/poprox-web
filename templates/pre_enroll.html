@@ -32,11 +32,39 @@
 	<h5 class="card-title text-center">There's so much more happening in the world. We can help you discover it!</h5>
 </div>
 
-<div class="row">
-	<div class="card-body col-md-6 col-lg-5">
-		<img class="image-fluid mx-auto d-block" src="static/example-newsletter.jpg" width="80%" style="max-width:400px;max-height:600px;">
+<div class="row gx-lg-5">
+	<div class="preview-card-body col-md-7 col-lg-7">
+		{% set sample_newsletter_profiles = [
+			("popular", "Example Profile 1", "(Popular topics)"),
+			("sports", "Example Profile 2", "(Sports / entertainment)"),
+			("science", "Example Profile 3", "(Science and oddities)")
+		] %}
+		<div class="sample-newsletter-shell">
+			<div class="sample-newsletter-tabs" role="tablist" aria-label="Example newsletter profiles">
+				{% for profile_id, profile_name, profile_description in sample_newsletter_profiles %}
+				<button class="sample-newsletter-tab 
+				{% if loop.first %}active{% endif %}" type="button" role="tab" 
+				aria-selected="{{ 'true' if loop.first else 'false' }}" 
+				data-sample-newsletter-tab="{{ profile_id }}">{{ profile_name }}<br>{{ profile_description }}</button>
+				{% endfor %}
+				<a class="sample-newsletter-tab sample-newsletter-tab-link" href="#email">Create your own!</a>
+			</div>
+			{% if sample_newsletter_html %}
+			<div class="sample-newsletter-preview mx-auto d-block">
+				{% for profile_id, profile_name, profile_description in sample_newsletter_profiles %}
+				<div class="sample-newsletter-panel 
+				{% if loop.first %}active{% endif %}" 
+				data-sample-newsletter-panel="{{ profile_id }}">
+					{{ sample_newsletter_html|safe }}
+				</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			<img class="sample-newsletter-preview mx-auto d-block" src="static/example-newsletter.jpg">
+			{% endif %}
+		</div>
 	</div>
-	<div class="card-body col-md-6 col-lg-5 pt-lg-5">
+	<div class="card-body col-md-5 col-lg-5">
 		<h5 class="card-title">What's POPROX News?</h5>
 		<p class="card-text">POPROX is an ad-free daily news briefing curated just for you based on the topics you like and the articles you read. We’re an independent, non-commercial research project and your subscription helps us improve news recommendation technology.</p>
 		<h5 class="card-title">Ready to get started?</h5>
@@ -77,5 +105,30 @@
 		in Research Agreement</a>.
 	</p>
 </div>
+
+<script>
+	const sampleNewsletterTabs = document.querySelectorAll("[data-sample-newsletter-tab]");
+	const sampleNewsletterPanels = document.querySelectorAll("[data-sample-newsletter-panel]");
+	sampleNewsletterTabs.forEach((tab) => {
+		tab.addEventListener("click", () => {
+			const selectedProfile = tab.dataset.sampleNewsletterTab;
+			sampleNewsletterTabs.forEach((inactiveTab) => {
+				inactiveTab.classList.remove("active");
+				inactiveTab.setAttribute("aria-selected", "false");
+			});
+			sampleNewsletterPanels.forEach((panel) => {
+				const isSelectedPanel = panel.dataset.sampleNewsletterPanel === selectedProfile;
+				panel.classList.toggle("active", isSelectedPanel);
+				panel.classList.remove("tab-changed");
+				if (isSelectedPanel) {
+					void panel.offsetWidth;
+					panel.classList.add("tab-changed");
+				}
+			});
+			tab.classList.add("active");
+			tab.setAttribute("aria-selected", "true");
+		});
+	});
+</script>
 
 {% endblock %}
