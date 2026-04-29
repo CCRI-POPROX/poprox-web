@@ -123,7 +123,7 @@ body {
     display: none;
     margin-left: auto;
     margin-right: auto;
-    max-height: 410px;
+    max-height: 500px;
     overflow-x: hidden;
     overflow-y: auto;
     width: 72%;
@@ -235,17 +235,12 @@ footer {
     background-color: #a3abbd22;
     color: #212A37;
     box-shadow: 0 6px 12px #a3abbd99;
-    padding: 15px;
     transition: all 0.3s ease-in-out;
     margin-bottom: 20px;
 }
 
 .card-title {
     padding-bottom: 5px;
-}
-
-.card-body {
-    padding: 10px;
 }
 
 /* Buttons */
