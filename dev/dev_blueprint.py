@@ -1,7 +1,6 @@
 import base64
 import hashlib
 import hmac
-import sys
 from os import environ as env
 from pathlib import Path
 
@@ -14,13 +13,7 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 from poprox_concepts.api.tracking import LoginLinkData, TrackingLinkData
 from poprox_concepts.domain.newsletter import Newsletter
 from util.auth import auth
-
-try:
-    from poprox_platform.newsletter.preview import newsletter_preview_context
-except ModuleNotFoundError:
-    platform_root = Path(__file__).resolve().parents[2] / "poprox-platform"
-    sys.path.insert(0, str(platform_root))
-    from poprox_platform.newsletter.preview import newsletter_preview_context
+from util.newsletter_preview import newsletter_preview_context
 
 dev = Blueprint("dev", __name__, template_folder="templates", url_prefix="/dev")
 HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
