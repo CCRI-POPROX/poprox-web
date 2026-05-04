@@ -34,7 +34,12 @@
 
 <div class="row">
 	<div class="card-body col-md-6 col-lg-5">
-		<img class="image-fluid mx-auto d-block" src="static/example-newsletter.jpg" width="80%" style="max-width:400px;max-height:600px;">
+		<iframe
+			class="mx-auto d-block"
+			src="{{ url_for('newsletter_preview') }}"
+			title="Example POPROX newsletter"
+			style="width: 100%; max-width: 420px; height: 620px; border: 1px solid #bdbdc5; border-radius: 4px; background: #f8f8ff;"
+		></iframe>
 	</div>
 	<div class="card-body col-md-6 col-lg-5 pt-lg-5">
 		<h5 class="card-title">What's POPROX News?</h5>
