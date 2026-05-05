@@ -7,7 +7,7 @@ from poprox_storage.repositories.newsletters import DbNewsletterRepository
 logger = logging.getLogger(__name__)
 
 
-def process_html(body: str, *, disable_links: bool = False, remove_footer: bool = True) -> str:
+def remove_newsletter_feedback(body: str, *, disable_links: bool = False, remove_footer: bool = True) -> str:
     soup = BeautifulSoup(body or "", "html.parser")
     remove_newsletter_footers(soup)
 
@@ -53,5 +53,7 @@ def newsletter_preview_context(
         return None
 
     return {
-        "newsletter_html": process_html(body_html, disable_links=disable_links, remove_footer=remove_footer),
+        "newsletter_html": remove_newsletter_feedback(
+            body_html, disable_links=disable_links, remove_footer=remove_footer
+        ),
     }
