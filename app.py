@@ -3,8 +3,6 @@
 import logging
 from datetime import datetime, timezone
 from os import environ as env
-from pathlib import Path
-import sys
 
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
@@ -55,13 +53,7 @@ from util.postgres_db import (
     finish_topic_selection,
     get_token,
 )
-
-try:
-    from poprox_platform.newsletter.preview import newsletter_preview_context # type: ignore
-except ModuleNotFoundError:
-    platform_root = Path(__file__).resolve().parents[1] / "poprox-platform"
-    sys.path.insert(0, str(platform_root))
-    from poprox_platform.newsletter.preview import newsletter_preview_context # type: ignore
+from util.newsletter_preview import newsletter_preview_context
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +61,8 @@ COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS 
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
+SAMPLE_NEWSLETTER_ID = env.get("POPROX_SAMPLE_NEWSLETTER_ID")
+SAMPLE_NEWSLETTER_ACCOUNT_ID = env.get("POPROX_SAMPLE_NEWSLETTER_ACCOUNT_ID")
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
@@ -186,16 +180,14 @@ def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
     subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
-    sample_newsletter_id = request.args.get("newsletter_id")
-    sample_account_id = request.args.get("account_id")
     sample_newsletter_html = None
     with NEWSLETTER_PREVIEW_DB_ENGINE.connect() as conn:
         newsletter_repo = DbNewsletterRepository(conn)
         try:
             preview_context = newsletter_preview_context(
                 newsletter_repo,
-                sample_newsletter_id,
-                sample_account_id,
+                SAMPLE_NEWSLETTER_ID,
+                SAMPLE_NEWSLETTER_ACCOUNT_ID,
                 disable_links=True,
                 remove_footer=True,
             )
