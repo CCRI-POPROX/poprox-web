@@ -12,6 +12,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+from poprox_storage.aws import DB_ENGINE as NEWSLETTER_PREVIEW_DB_ENGINE
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
@@ -52,6 +53,7 @@ from util.postgres_db import (
     finish_topic_selection,
     get_token,
 )
+from util.newsletter_preview import newsletter_preview_context
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +61,8 @@ COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS 
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
+SAMPLE_NEWSLETTER_ID = env.get("POPROX_SAMPLE_NEWSLETTER_ID")
+SAMPLE_NEWSLETTER_ACCOUNT_ID = env.get("POPROX_SAMPLE_NEWSLETTER_ACCOUNT_ID")
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
@@ -176,14 +180,35 @@ def pre_enroll_get():
     source = request.args.get("source", DEFAULT_SOURCE)
     subsource = request.args.get("subsource", DEFAULT_SOURCE)
     error = request.args.get("error")
+    sample_newsletter_html = None
+    with NEWSLETTER_PREVIEW_DB_ENGINE.connect() as conn:
+        newsletter_repo = DbNewsletterRepository(conn)
+        try:
+            preview_context = newsletter_preview_context(
+                newsletter_repo,
+                SAMPLE_NEWSLETTER_ID,
+                SAMPLE_NEWSLETTER_ACCOUNT_ID,
+                disable_links=True,
+                remove_footer=True,
+            )
+        except ValueError:
+            preview_context = None
 
-    # To test a source, subsource pair with a custom template just add that to this dictionary
+    if preview_context:
+        sample_newsletter_html = preview_context["newsletter_html"]
+
     templates = {}
     template = "pre_enroll.html"
     if (source, subsource) in templates:
         template = templates[(source, subsource)]
 
-    return render_template(template, source=source, subsource=subsource, error=error)
+    return render_template(
+        template,
+        source=source,
+        subsource=subsource,
+        error=error,
+        sample_newsletter_html=sample_newsletter_html,
+    )
 
 
 @app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])
