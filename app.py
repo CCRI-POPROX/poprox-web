@@ -188,6 +188,7 @@ def pre_enroll_get():
 
 @app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])
 def pre_enroll_post():
+    logger.warning(f"SENDING PRE_ENROLL FROM IP {request.remote_addr} with headers: {request.headers}")
     source = request.form.get("source", DEFAULT_SOURCE)
     subsource = request.form.get("subsource", DEFAULT_SOURCE)
     legal_age = request.form.get("legal_age")
