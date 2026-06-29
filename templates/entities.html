@@ -4,6 +4,7 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
+    /* ---- Search ---- */
     .entity-search-wrap { position: relative; max-width: 480px; }
     .entity-search-results {
         position: absolute; z-index: 1000; width: 100%;
@@ -16,175 +17,400 @@
     }
     .entity-search-results .result-item:hover { background: #f1f3f5; }
     .entity-search-results .result-type { color: #868e96; font-size: 0.85rem; text-transform: capitalize; }
+
+    /* ---- Type badges ---- */
     .entity-type-badge {
         display: inline-block; padding: 0.1rem 0.55rem; border-radius: 1rem;
         font-size: 0.72rem; font-weight: 600; text-transform: capitalize; vertical-align: middle;
         background: #eceff1; color: #607d8b;
     }
-    .etype-person       { background: #e7f1ff; color: #0d6efd; }   /* blue  */
-    .etype-organization { background: #e6f4ea; color: #198754; }   /* green */
+    .etype-person       { background: #e7f1ff; color: #0d6efd; }   /* blue   */
+    .etype-organization { background: #e6f4ea; color: #198754; }   /* green  */
     .etype-organisation { background: #e6f4ea; color: #198754; }   /* green (alt spelling) */
     .etype-place        { background: #fff3e0; color: #fb8c00; }   /* orange */
-    .entity-list-controls { display: flex; align-items: center; gap: 0.5rem; margin: 0 1rem 0.5rem; }
+
+    /* ---- List controls ---- */
+    .entity-list-controls { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.75rem; flex-wrap: wrap; }
     .entity-list-controls select { max-width: 220px; }
+
+    /* ---- Group cards (collapsible) ---- */
+    .entity-group { border: 1px solid #dee2e6; border-radius: 0.25rem; margin-bottom: 0.75rem; background: #fff; }
+    .entity-group-header {
+        display: flex; align-items: center; gap: 0.5rem; width: 100%;
+        padding: 0.6rem 0.9rem; background: #f8f9fa; border: none;
+        border-radius: 0.25rem; font-weight: 600; cursor: pointer; text-align: left;
+    }
+    .entity-group-header:hover { background: #f1f3f5; }
+    .entity-group-header .chevron { transition: transform 0.15s ease; font-size: 0.9rem; color: #6c757d; }
+    .entity-group-header.collapsed .chevron { transform: rotate(-90deg); }
+    .entity-group-header .group-count {
+        margin-left: auto; background: #e9ecef; color: #495057;
+        border-radius: 1rem; padding: 0.05rem 0.6rem; font-size: 0.78rem; font-weight: 600;
+    }
+    .entity-group-body { padding: 0.25rem 0.5rem 0.5rem; }
+
+    /* ---- Compact entity rows ---- */
+    .entity-row {
+        display: flex; align-items: center; gap: 0.75rem;
+        padding: 0.4rem 0.55rem; border-bottom: 1px solid #f1f3f5;
+        border-left: 4px solid transparent;
+    }
+    .entity-row:last-child { border-bottom: none; }
+    .entity-row:hover { background: #fbfcfd; }
+    .entity-row.sent-avoid   { border-left-color: #dc3545; }
+    .entity-row.sent-neutral { border-left-color: #ced4da; }
+    .entity-row.sent-prefer  { border-left-color: #198754; }
+    /* Brief highlight so a just-added (or re-selected) entity is easy to spot. */
+    @keyframes entityRowFlash {
+        0%   { background-color: rgba(0, 142, 130, 0.28); }
+        100% { background-color: transparent; }
+    }
+    .entity-row.entity-row-new { animation: entityRowFlash 2.2s ease-out; }
+    .entity-row .entity-new-tag {
+        display: none; margin-left: 0.4rem; font-size: 0.65rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; color: #008e82;
+    }
+    .entity-row.entity-row-new .entity-new-tag { display: inline; }
+    .entity-row-label { flex: 1 1 auto; min-width: 0; }
+    .entity-row-name {
+        font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        display: inline-block; max-width: 100%; vertical-align: middle;
+    }
+    .entity-row-control { flex: 0 0 auto; display: flex; align-items: center; gap: 0.6rem; }
+    .entity-row-status { font-size: 0.8rem; min-width: 6.5rem; text-align: left; color: #495057; }
+
+    /* ---- Compact rating slider ----
+       Same teal "fill" slider used on the Customize Newsletter (topics) page,
+       just shorter so it fits inline in a scannable row. Reuses the
+       --fill-percentage mechanism from .pref-range-slider. */
+    .pref-range-compact {
+        width: 150px; height: 1.25rem; padding: 0; vertical-align: middle;
+    }
+    .pref-range-compact::-webkit-slider-runnable-track {
+        height: 8px; margin: 0; border-radius: 5px;
+        background: linear-gradient(to right, #008e82 0%, #008e82 var(--fill-percentage), #ccc var(--fill-percentage), #ccc 100%);
+    }
+    .pref-range-compact::-moz-range-track {
+        height: 8px; margin: 0; border-radius: 5px;
+        background: linear-gradient(to right, #008e82 0%, #008e82 var(--fill-percentage), #ccc var(--fill-percentage), #ccc 100%);
+    }
+    .pref-range-compact::-webkit-slider-thumb {
+        -webkit-appearance: none; appearance: none;
+        width: 16px; height: 16px; margin-top: -4px; border-radius: 50%;
+        background: #fff; border: 2px solid #008e82; box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        cursor: pointer;
+    }
+    .pref-range-compact::-moz-range-thumb {
+        width: 16px; height: 16px; border-radius: 50%;
+        background: #fff; border: 2px solid #008e82; box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        cursor: pointer;
+    }
+    .entity-scale-end { font-size: 0.95rem; color: #adb5bd; line-height: 1; }
+
+    .entity-empty { color: #868e96; padding: 1rem 0.25rem; }
+    .group-show-more { padding: 0.35rem 0.55rem; }
+
+    @media (max-width: 575px) {
+        .entity-row { flex-wrap: wrap; }
+        .entity-row-status { display: none; }
+        .pref-range-compact { width: 120px; }
+    }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const discreteLabels = [{{ intlvls | map("first") | map("tojson") | join(', ') }}];
-        const minVal = {{ intlvls[0][1] }};
-        const maxVal = {{ intlvls[-1][1] }};
-        const defaultVal = {{ intlvls[(intlvls|length)//2][1] }};
+        // ----- data passed from the server -----
+        const intlvls = {{ intlvls | tojson }};                 // [[label, value], ...]
+        const initialEntities = {{ user_entities | tojson }};   // [{entity_name, entity_type, preference}, ...]
+        const labels = intlvls.map(l => l[0]);
+        const values = intlvls.map(l => l[1]);
+        const minVal = values[0];
+        const maxVal = values[values.length - 1];
+        const defaultVal = values[Math.floor(values.length / 2)];
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        const list = document.getElementById('entity-list');
+        // Type -> display group. Unknown types fall into "Other".
+        const TYPE_META = {
+            person:       { label: 'People',        order: 0 },
+            organization: { label: 'Organizations', order: 1 },
+            organisation: { label: 'Organizations', order: 1 },
+            place:        { label: 'Places',        order: 2 },
+        };
+        const COLLAPSE_LIMIT = 12; // rows shown before a "show all" toggle appears
+
+        const groupsContainer = document.getElementById('entity-groups');
+        const controls = document.getElementById('entity-list-controls');
+        const sortSelect = document.getElementById('entity-sort');
+        const emptyState = document.getElementById('entity-empty');
         const searchInput = document.getElementById('entity-search-input');
         const resultsBox = document.getElementById('entity-search-results');
 
-        function labelFor(value) {
-            return discreteLabels[value - minVal] || '';
+        let orderCounter = 0;
+        const groupEls = {}; // groupKey -> { card, body, rows, count, moreBtn }
+
+        function labelFor(value) { return labels[values.indexOf(parseInt(value, 10))] || ''; }
+        function groupKeyFor(type) { return TYPE_META[type] ? TYPE_META[type].label : 'Other'; }
+        function groupOrderFor(key) {
+            for (const k in TYPE_META) { if (TYPE_META[k].label === key) return TYPE_META[k].order; }
+            return 99;
+        }
+        function sentimentClass(value) {
+            const v = parseInt(value, 10);
+            if (v <= 2) return 'sent-avoid';
+            if (v === 3) return 'sent-neutral';
+            return 'sent-prefer';
+        }
+        // Same teal "fill" behaviour as the topics page slider.
+        function setFill(slider) {
+            const pct = ((parseFloat(slider.value) - minVal) / (maxVal - minVal)) * 100;
+            slider.style.setProperty('--fill-percentage', `${pct}%`);
         }
 
-        function setFill(rangeInput) {
-            const value = parseFloat(rangeInput.value);
-            const percentage = ((value - minVal) / (maxVal - minVal)) * 100;
-            rangeInput.style.setProperty('--fill-percentage', `${percentage}%`);
-        }
-
-        async function savePreference(entityName, value, valueDisplay, rangeInput) {
-            rangeInput.disabled = true;
-            const originalText = valueDisplay.textContent;
-            valueDisplay.textContent = 'Saving...';
-            valueDisplay.classList.add('text-muted');
+        // ----- save a rating -----
+        async function savePreference(name, type, value, statusEl) {
+            const original = statusEl.textContent;
+            statusEl.textContent = 'Saving...';
+            statusEl.style.color = '';
             try {
-                const response = await fetch('/update-entity-preference', {
+                const resp = await fetch('/update-entity-preference', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
-                    body: JSON.stringify({ entity: entityName, value: value })
+                    body: JSON.stringify({ entity: name, entity_type: type, value: value })
                 });
-                if (!response.ok) { throw new Error('network error'); }
-                valueDisplay.textContent = 'Saved';
-                valueDisplay.style.color = 'green';
-                setTimeout(() => { valueDisplay.textContent = originalText; valueDisplay.style.color = ''; }, 1500);
+                if (!resp.ok) throw new Error('network error');
+                statusEl.textContent = 'Saved';
+                statusEl.style.color = 'green';
+                setTimeout(() => {
+                    if (statusEl.textContent === 'Saved') { statusEl.textContent = labelFor(value); statusEl.style.color = ''; }
+                }, 1200);
             } catch (err) {
                 console.error('Error saving preference:', err);
-                valueDisplay.textContent = 'Failed to save';
-                valueDisplay.style.color = 'red';
-            } finally {
-                rangeInput.disabled = false;
-                valueDisplay.classList.remove('text-muted');
+                statusEl.textContent = 'Failed to save';
+                statusEl.style.color = 'red';
             }
         }
 
-        function wireBlock(block) {
-            const rangeInput = block.querySelector('.pref-range-slider');
-            const valueDisplay = block.querySelector('.current-value-text');
-            const entityName = rangeInput.getAttribute('data-entity');
+        // ----- build one compact entity row -----
+        function buildRow(name, type, value) {
+            const row = document.createElement('div');
+            row.className = 'entity-row ' + sentimentClass(value);
+            row.dataset.entityName = name.toLowerCase();
+            row.dataset.name = name;
+            row.dataset.type = type;
+            row.dataset.rating = value;
+            row.dataset.order = ++orderCounter;
 
-            setFill(rangeInput);
-            valueDisplay.textContent = labelFor(parseInt(rangeInput.value, 10));
+            const label = document.createElement('div');
+            label.className = 'entity-row-label';
+            label.innerHTML =
+                `<span class="entity-row-name" title="${name}">${name}</span>` +
+                ` <span class="entity-type-badge etype-${type}">${type}</span>` +
+                `<span class="entity-new-tag">New</span>`;
 
-            rangeInput.addEventListener('input', () => {
-                setFill(rangeInput);
-                valueDisplay.textContent = labelFor(parseInt(rangeInput.value, 10));
+            const control = document.createElement('div');
+            control.className = 'entity-row-control';
+
+            const status = document.createElement('span');
+            status.className = 'entity-row-status';
+            status.textContent = labelFor(value);
+
+            // Compact version of the topics-page slider (same teal fill style).
+            const lowEnd = document.createElement('span');
+            lowEnd.className = 'entity-scale-end';
+            lowEnd.title = labels[0];
+            lowEnd.textContent = '−'; // minus sign
+
+            const highEnd = document.createElement('span');
+            highEnd.className = 'entity-scale-end';
+            highEnd.title = labels[labels.length - 1];
+            highEnd.textContent = '+';
+
+            const slider = document.createElement('input');
+            slider.type = 'range';
+            slider.className = 'form-range pref-range-slider pref-range-compact';
+            slider.min = minVal;
+            slider.max = maxVal;
+            slider.step = 1;
+            slider.value = value;
+            slider.setAttribute('data-entity', name);
+            slider.setAttribute('aria-label', 'Preference for ' + name);
+            setFill(slider);
+
+            slider.addEventListener('input', () => {
+                setFill(slider);
+                const v = parseInt(slider.value, 10);
+                row.dataset.rating = v;
+                row.className = 'entity-row ' + sentimentClass(v);
+                status.textContent = labelFor(v);
             });
-            rangeInput.addEventListener('change', () => {
-                savePreference(entityName, rangeInput.value, valueDisplay, rangeInput);
+            slider.addEventListener('change', () => {
+                const v = parseInt(slider.value, 10);
+                savePreference(name, type, v, status);
+                if (sortSelect.value.startsWith('rating')) sortGroup(groupKeyFor(type));
             });
+
+            control.appendChild(lowEnd);
+            control.appendChild(slider);
+            control.appendChild(highEnd);
+            control.appendChild(status);
+            row.appendChild(label);
+            row.appendChild(control);
+            return row;
         }
 
-        function buildBlock(name, type, value) {
-            const block = document.createElement('div');
-            block.className = 'pref-item-block container shadow-sm rounded m-3 p-3';
-            block.setAttribute('data-entity-name', name.toLowerCase());
-            block.innerHTML = `
-                <div class="col">
-                    <div class="topic-top-row row mb-0">
-                        <div class="col">
-                            <span class="fw-bold">${name}</span>
-                            <span class="entity-type-badge etype-${type} ms-2">${type}</span>
-                        </div>
-                        <div class="col text-end">
-                            <span class="current-value-text"></span>
-                        </div>
-                    </div>
-                    <div class="row m-3">
-                        <input data-entity="${name}" value="${value}" type="range"
-                            class="form-range pref-range-slider" min="${minVal}" max="${maxVal}" step="1" />
-                    </div>
-                    <div class="row justify-content-between mt-3">
-                        <div class="col-auto">${discreteLabels[0]}</div>
-                        <div class="col-auto">${discreteLabels[discreteLabels.length - 1]}</div>
-                    </div>
-                </div>`;
-            return block;
+        // ----- groups -----
+        function ensureGroup(key) {
+            if (groupEls[key]) return groupEls[key];
+
+            const card = document.createElement('div');
+            card.className = 'entity-group';
+            card.dataset.groupKey = key;
+            card.dataset.order = groupOrderFor(key);
+
+            const bodyId = 'group-body-' + key.toLowerCase().replace(/\s+/g, '-');
+            const header = document.createElement('button');
+            header.type = 'button';
+            header.className = 'entity-group-header';
+            header.setAttribute('aria-expanded', 'true');
+            header.innerHTML =
+                `<i class="bi bi-chevron-down chevron"></i>` +
+                `<span class="group-name">${key}</span>` +
+                `<span class="group-count">0</span>`;
+
+            const body = document.createElement('div');
+            body.className = 'entity-group-body';
+            body.id = bodyId;
+
+            const rows = document.createElement('div');
+            rows.className = 'entity-rows';
+
+            const moreBtn = document.createElement('button');
+            moreBtn.type = 'button';
+            moreBtn.className = 'btn btn-link btn-sm group-show-more p-0';
+            moreBtn.style.display = 'none';
+            moreBtn.addEventListener('click', () => {
+                const g = groupEls[key];
+                g.expanded = !g.expanded;
+                refreshOverflow(key, g.expanded);
+            });
+
+            header.addEventListener('click', () => {
+                const isCollapsed = header.classList.toggle('collapsed');
+                body.style.display = isCollapsed ? 'none' : '';
+                header.setAttribute('aria-expanded', String(!isCollapsed));
+            });
+
+            body.appendChild(rows);
+            body.appendChild(moreBtn);
+            card.appendChild(header);
+            card.appendChild(body);
+
+            // insert card in type order
+            const siblings = Array.from(groupsContainer.children);
+            const next = siblings.find(c => parseInt(c.dataset.order, 10) > groupOrderFor(key));
+            groupsContainer.insertBefore(card, next || null);
+
+            groupEls[key] = {
+                card, header, body, rows, moreBtn,
+                count: header.querySelector('.group-count'),
+                expanded: false,
+            };
+            return groupEls[key];
         }
 
-        function addEntity(name, type) {
-            const existing = list.querySelector(`[data-entity-name="${name.toLowerCase()}"]`);
-            if (existing) {
-                existing.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
+        function updateCount(key) {
+            const g = groupEls[key];
+            if (!g) return;
+            g.count.textContent = g.rows.children.length;
+        }
+
+        function refreshOverflow(key, expanded) {
+            const g = groupEls[key];
+            if (!g) return;
+            const rows = Array.from(g.rows.children);
+            const overflow = rows.length - COLLAPSE_LIMIT;
+            rows.forEach((r, i) => { r.style.display = (expanded || i < COLLAPSE_LIMIT) ? '' : 'none'; });
+            if (overflow > 0) {
+                g.moreBtn.style.display = '';
+                g.moreBtn.textContent = expanded ? 'Show less' : `Show all ${rows.length}`;
+            } else {
+                g.moreBtn.style.display = 'none';
             }
-            const block = buildBlock(name, type, defaultVal);
-            block.dataset.order = ++orderCounter;
-            list.prepend(block);
-            wireBlock(block);
-            revealControls();
-            applySort();
-            // Persist the default rating immediately so the choice is saved.
-            const rangeInput = block.querySelector('.pref-range-slider');
-            const valueDisplay = block.querySelector('.current-value-text');
-            savePreference(name, defaultVal, valueDisplay, rangeInput);
         }
 
-        // Wire up server-rendered (already-rated) entities.
-        list.querySelectorAll('.pref-item-block').forEach(wireBlock);
-
-        // --- Sorting of the rated entity list ---
-        let orderCounter = 0;
-        const sortControls = document.getElementById('entity-list-controls');
-        const sortSelect = document.getElementById('entity-sort');
-
-        // Give each already-rendered block an order value (used by "Recently added").
-        list.querySelectorAll('.pref-item-block').forEach(block => { block.dataset.order = ++orderCounter; });
-
-        function revealControls() {
-            sortControls.style.display = list.querySelectorAll('.pref-item-block').length > 0 ? 'flex' : 'none';
-        }
-
-        function applySort() {
+        function sortGroup(key) {
+            const g = groupEls[key];
+            if (!g) return;
             const mode = sortSelect.value;
-            const blocks = Array.from(list.querySelectorAll('.pref-item-block'));
-            blocks.sort((a, b) => {
-                const ra = parseInt(a.querySelector('.pref-range-slider').value, 10);
-                const rb = parseInt(b.querySelector('.pref-range-slider').value, 10);
-                const na = a.querySelector('.fw-bold').textContent.trim().toLowerCase();
-                const nb = b.querySelector('.fw-bold').textContent.trim().toLowerCase();
-                const ta = a.querySelector('.entity-type-badge').textContent.trim().toLowerCase();
-                const tb = b.querySelector('.entity-type-badge').textContent.trim().toLowerCase();
-                const oa = parseInt(a.dataset.order || '0', 10);
-                const ob = parseInt(b.dataset.order || '0', 10);
+            const rows = Array.from(g.rows.children);
+            rows.sort((a, b) => {
+                const ra = parseInt(a.dataset.rating, 10), rb = parseInt(b.dataset.rating, 10);
+                const na = a.dataset.name.toLowerCase(), nb = b.dataset.name.toLowerCase();
+                const oa = parseInt(a.dataset.order, 10), ob = parseInt(b.dataset.order, 10);
                 switch (mode) {
                     case 'rating-desc': return rb - ra || na.localeCompare(nb);
                     case 'rating-asc':  return ra - rb || na.localeCompare(nb);
                     case 'name-asc':    return na.localeCompare(nb);
-                    case 'type':        return ta.localeCompare(tb) || na.localeCompare(nb);
                     default:            return ob - oa; // recently added (newest first)
                 }
             });
-            blocks.forEach(block => list.appendChild(block));
+            rows.forEach(r => g.rows.appendChild(r));
+            refreshOverflow(key, g.expanded);
         }
 
-        sortSelect.addEventListener('change', applySort);
-        // Re-sort when a slider changes (keeps a rating-sorted list correct after edits).
-        list.addEventListener('change', (e) => {
-            if (e.target.classList.contains('pref-range-slider') && sortSelect.value.startsWith('rating')) {
-                applySort();
+        // Make a row clearly visible: open its group, reveal it if hidden by the
+        // "show all" overflow, scroll to it, and flash it briefly.
+        function revealRow(key, row) {
+            const g = groupEls[key];
+            if (!g) return;
+            g.header.classList.remove('collapsed');
+            g.body.style.display = '';
+            g.header.setAttribute('aria-expanded', 'true');
+            if (row.style.display === 'none') {  // hidden behind "Show all"
+                g.expanded = true;
+                refreshOverflow(key, true);
             }
-        });
-        revealControls();
+            row.classList.remove('entity-row-new');
+            void row.offsetWidth;  // restart the CSS animation if re-triggered
+            row.classList.add('entity-row-new');
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => row.classList.remove('entity-row-new'), 2200);
+        }
 
-        // --- Autocomplete search ---
+        function sortAll() { Object.keys(groupEls).forEach(sortGroup); }
+
+        function addEntityToList(name, type, value, isNew) {
+            const key = groupKeyFor(type);
+            const g = ensureGroup(key);
+            const existing = g.rows.querySelector(`[data-entity-name="${name.toLowerCase()}"]`);
+            if (existing) {
+                revealRow(key, existing);  // already rated -- just point the user to it
+                return existing;
+            }
+            const row = buildRow(name, type, value);
+            g.rows.appendChild(row);
+            updateCount(key);
+            sortGroup(key);
+            refreshControls();
+            if (isNew) {
+                // persist the default rating immediately so the choice is saved
+                savePreference(name, type, value, row.querySelector('.entity-row-status'));
+                revealRow(key, row);  // make the just-added entity stand out
+            }
+            return row;
+        }
+
+        function refreshControls() {
+            const hasAny = Object.values(groupEls).some(g => g.rows.children.length > 0);
+            controls.style.display = hasAny ? 'flex' : 'none';
+            emptyState.style.display = hasAny ? 'none' : 'block';
+        }
+
+        // ----- initial render -----
+        initialEntities.forEach(ent => addEntityToList(ent.entity_name, ent.entity_type, ent.preference, false));
+        refreshControls();
+        sortSelect.addEventListener('change', sortAll);
+
+        // ----- autocomplete search -----
         let debounceTimer = null;
         searchInput.addEventListener('input', () => {
             const q = searchInput.value.trim();
@@ -203,7 +429,7 @@
                             item.className = 'result-item';
                             item.innerHTML = `<span>${ent.name}</span><span class="result-type">${ent.entity_type}</span>`;
                             item.addEventListener('click', () => {
-                                addEntity(ent.name, ent.entity_type);
+                                addEntityToList(ent.name, ent.entity_type, defaultVal, true);
                                 searchInput.value = '';
                                 resultsBox.style.display = 'none';
                                 resultsBox.innerHTML = '';
@@ -218,12 +444,11 @@
             }, 250);
         });
 
-        // Hide results when clicking outside.
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.entity-search-wrap')) { resultsBox.style.display = 'none'; }
         });
 
-        // --- Suggested entities (from click history / starter set) ---
+        // ----- suggested entities -----
         const suggestionsRow = document.getElementById('entity-suggestions-row');
         const suggestionsBox = document.getElementById('entity-suggestions');
         (async () => {
@@ -243,7 +468,7 @@
                     chip.className = 'btn btn-outline-secondary btn-sm';
                     chip.innerHTML = `${ent.name} <span class="entity-type-badge etype-${ent.entity_type}">${ent.entity_type}</span>`;
                     chip.addEventListener('click', () => {
-                        addEntity(ent.name, ent.entity_type);
+                        addEntityToList(ent.name, ent.entity_type, defaultVal, true);
                         chip.remove();
                         if (suggestionsBox.children.length === 0) suggestionsRow.style.display = 'none';
                     });
@@ -270,8 +495,10 @@
                 would rather avoid.
             </p>
             <p class="fw-bold">
-                Search below to add an entity, then use the slider to set your preference
-                (your changes save automatically).
+                Search below to add an entity, then pick a rating (your changes save automatically).
+                Ratings run from <span class="text-danger">strongly avoid</span> through
+                <span class="text-muted">neutral</span> to
+                <span style="color:#008e82;">strongly prefer</span>.
             </p>
         </div>
     </div>
@@ -298,44 +525,21 @@
     </div>
 
     <div class="row">
-        <div class="entity-list-controls" id="entity-list-controls" style="display:none;">
-            <label for="entity-sort" class="fw-bold mb-0" style="font-size:0.9rem;">Sort by:</label>
-            <select id="entity-sort" class="form-select form-select-sm">
-                <option value="added">Recently added</option>
-                <option value="rating-desc">Rating: high to low</option>
-                <option value="rating-asc">Rating: low to high</option>
-                <option value="name-asc">Name: A to Z</option>
-                <option value="type">Type</option>
-            </select>
-        </div>
-        <div id="entity-list">
-            {% for ent in user_entities %}
-            <div class="pref-item-block container shadow-sm rounded m-3 p-3"
-                 data-entity-name="{{ ent.entity_name|lower }}">
-                <div class="col">
-                    <div class="topic-top-row row mb-0">
-                        <div class="col">
-                            <span class="fw-bold">{{ ent.entity_name }}</span>
-                            <span class="entity-type-badge etype-{{ ent.entity_type }} ms-2">{{ ent.entity_type }}</span>
-                        </div>
-                        <div class="col text-end">
-                            <span class="current-value-text"></span>
-                        </div>
-                    </div>
-                    <div class="row m-3">
-                        <input
-                            data-entity="{{ ent.entity_name }}"
-                            value="{{ ent.preference }}"
-                            type="range" class="form-range pref-range-slider"
-                            min="{{ intlvls[0][1] }}" max="{{ intlvls[-1][1] }}" step="1" />
-                    </div>
-                    <div class="row justify-content-between mt-3">
-                        <div class="col-auto">{{ intlvls[0][0] }}</div>
-                        <div class="col-auto">{{ intlvls[-1][0] }}</div>
-                    </div>
-                </div>
+        <div class="col">
+            <div class="entity-list-controls" id="entity-list-controls" style="display:none;">
+                <label for="entity-sort" class="fw-bold mb-0" style="font-size:0.9rem;">Sort each group by:</label>
+                <select id="entity-sort" class="form-select form-select-sm">
+                    <option value="added">Recently added</option>
+                    <option value="rating-desc">Rating: high to low</option>
+                    <option value="rating-asc">Rating: low to high</option>
+                    <option value="name-asc">Name: A to Z</option>
+                </select>
             </div>
-            {% endfor %}
+            <div id="entity-groups"></div>
+            <p class="entity-empty" id="entity-empty">
+                You haven't rated any people, organizations, or places yet. Use the search box above
+                to add some.
+            </p>
         </div>
     </div>
 </div>

@@ -58,6 +58,10 @@ logger = logging.getLogger(__name__)
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
 
+# Entity types handled by the People, Organizations & Places page (topics/subjects
+# are managed on the separate Customize Newsletter page and are excluded here).
+ENTITY_PAGE_TYPES = {"person", "organization", "place"}
+
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
@@ -557,6 +561,9 @@ def topics():
 @auth.requires_login
 def entity_search():
     # autocomplete for the entities page -- topics/subjects excluded
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
     query = request.args.get("q", "").strip()
     if len(query) < 2:
         return jsonify({"entities": []}), 200
@@ -571,6 +578,9 @@ def entity_search():
 @app.route(f"{URL_PREFIX}/update-entity-preference", methods=["POST"])
 @auth.requires_login
 def update_entity_preference_api():
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
     data = request.get_json()
 
     if not data or "entity" not in data or "value" not in data:
@@ -580,6 +590,10 @@ def update_entity_preference_api():
     new_value = data["value"]
     if not new_value:
         return jsonify({"error": "Missing data"}), 400
+
+    entity_type = data.get("entity_type")
+    if entity_type not in ENTITY_PAGE_TYPES:
+        return jsonify({"error": "Invalid or missing entity_type"}), 400
 
     try:
         new_value = int(new_value)
@@ -601,7 +615,7 @@ def update_entity_preference_api():
             account_id=account_id,
             entity_id=entity_id,
             entity_name=entity_name,
-            entity_type="person",  # not stored -- storage keys on entity_id
+            entity_type=entity_type,
             preference=new_value,
             frequency=None,
         )
@@ -613,7 +627,7 @@ def update_entity_preference_api():
 
 
 @app.route(f"{URL_PREFIX}/entities", methods=["GET"])
-@auth.requires_login
+@auth.requires_experimenter  # team members only 
 def entities():
     interest_lvls = [
         ("Strongly avoid", 1),
@@ -638,8 +652,10 @@ def entities():
 @app.route(f"{URL_PREFIX}/entity-suggestions", methods=["GET"])
 @auth.requires_login
 def entity_suggestions():
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
     account_id = auth.get_account_id()
-    non_topic_types = ("person", "organization", "place")
     suggestions = []
     seen = set()
     source = "starter"  # "history" if from click data, else "starter"
@@ -662,7 +678,7 @@ def entity_suggestions():
             counts = {}
             for article in articles:
                 for mention in article.mentions:
-                    if mention.entity.entity_type not in non_topic_types:
+                    if mention.entity.entity_type not in ENTITY_PAGE_TYPES:
                         continue
                     name = mention.entity.name
                     if name.lower() in rated_names:
