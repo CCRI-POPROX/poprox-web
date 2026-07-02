@@ -115,6 +115,57 @@
         .entity-row-status { display: none; }
         .pref-range-compact { width: 120px; }
     }
+
+    /* ---- Page sections / boundaries ----
+       Make the "add" area and the saved profile read as two distinct places. */
+    .entity-section { margin-bottom: 1.75rem; }
+    .entity-section-title {
+        font-size: 1.05rem; font-weight: 700; margin: 0 0 0.15rem;
+        display: flex; align-items: center; gap: 0.5rem;
+    }
+    .entity-section-desc { color: #6c757d; font-size: 0.9rem; margin: 0 0 0.9rem; }
+    .entity-section-count {
+        background: #008e82; color: #fff; border-radius: 1rem;
+        padding: 0.05rem 0.6rem; font-size: 0.8rem; font-weight: 700;
+    }
+    /* The "add" panel visually bundles search + suggestions into one bounded area. */
+    .entity-add-panel {
+        border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8fbfb;
+        padding: 1rem 1.1rem;
+    }
+    /* Strong divider so the saved profile is unmistakably its own section. */
+    .entity-profile-section { border-top: 3px solid #008e82; padding-top: 1.1rem; }
+
+    /* ---- Staging: just-added, not-yet-rated entities ---- */
+    .entity-staging-section { margin-bottom: 1rem; }
+    .entity-staging-card {
+        border: 1px solid #ffe08a; background: #fffdf3;
+        border-radius: 0.5rem; padding: 0.4rem 0.5rem;
+    }
+    .entity-staging-title {
+        font-weight: 600; color: #8a6d00; font-size: 0.88rem;
+        display: flex; align-items: center; gap: 0.4rem; margin: 0.15rem 0.35rem 0.35rem;
+    }
+
+    /* ---- Neutral / "no opinion" area ---- */
+    .entity-neutral-section { margin-top: 1.25rem; }
+    .entity-neutral-card { border: 1px dashed #ced4da; border-radius: 0.5rem; background: #fbfcfd; }
+    .entity-neutral-header {
+        display: flex; align-items: center; gap: 0.5rem; width: 100%;
+        padding: 0.55rem 0.9rem; background: transparent; border: none;
+        font-weight: 600; color: #6c757d; cursor: pointer; text-align: left;
+    }
+    .entity-neutral-header:hover { color: #495057; }
+    .entity-neutral-header .chevron { transition: transform 0.15s ease; font-size: 0.9rem; }
+    .entity-neutral-header.collapsed .chevron { transform: rotate(-90deg); }
+    .entity-neutral-header .group-count {
+        margin-left: auto; background: #e9ecef; color: #495057;
+        border-radius: 1rem; padding: 0.05rem 0.6rem; font-size: 0.78rem; font-weight: 600;
+    }
+    .entity-neutral-body { padding: 0.25rem 0.5rem 0.5rem; }
+    /* Rows here are de-emphasised -- neutral entities don't shape the newsletter. */
+    .entity-neutral-body .entity-row { opacity: 0.72; }
+    .entity-neutral-body .entity-row .entity-row-name { font-weight: 500; }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -143,6 +194,14 @@
         const emptyState = document.getElementById('entity-empty');
         const searchInput = document.getElementById('entity-search-input');
         const resultsBox = document.getElementById('entity-search-results');
+        const profileCount = document.getElementById('entity-profile-count');
+        const stagingSection = document.getElementById('entity-staging-section');
+        const stagingList = document.getElementById('entity-staging-list');
+        const neutralSection = document.getElementById('entity-neutral-section');
+        const neutralHeader = document.getElementById('entity-neutral-header');
+        const neutralBody = document.getElementById('entity-neutral-body');
+        const neutralList = document.getElementById('entity-neutral-list');
+        const neutralCount = document.getElementById('entity-neutral-count');
 
         let orderCounter = 0;
         const groupEls = {}; // groupKey -> { card, body, rows, count, moreBtn }
@@ -159,6 +218,9 @@
             if (v === 3) return 'sent-neutral';
             return 'sent-prefer';
         }
+        // Neutral == the middle rating ("Neutral"): no opinion, kept out of the
+        // active profile so the profile only holds meaningful preferences.
+        function isNeutral(value) { return sentimentClass(value) === 'sent-neutral'; }
         // Same teal "fill" behaviour as the topics page slider.
         function setFill(slider) {
             const pct = ((parseFloat(slider.value) - minVal) / (maxVal - minVal)) * 100;
@@ -244,8 +306,20 @@
             });
             slider.addEventListener('change', () => {
                 const v = parseInt(slider.value, 10);
+                const bucket = row.dataset.bucket;
+                row.dataset.rating = v;
                 savePreference(name, type, v, status);
-                if (sortSelect.value.startsWith('rating')) sortGroup(groupKeyFor(type));
+                // A staged row files itself on its first rating; an already-filed row
+                // only moves when it crosses in or out of neutral.
+                const shouldMove = bucket === 'staging'
+                    || ((bucket === 'neutral') !== isNeutral(v));
+                if (shouldMove) {
+                    placeRow(row);   // move it and point the user to where it landed
+                    refreshAll();
+                    revealRow(row);
+                } else {
+                    refreshAll();
+                }
             });
 
             control.appendChild(lowEnd);
@@ -357,17 +431,25 @@
             refreshOverflow(key, g.expanded);
         }
 
-        // Make a row clearly visible: open its group, reveal it if hidden by the
-        // "show all" overflow, scroll to it, and flash it briefly.
-        function revealRow(key, row) {
-            const g = groupEls[key];
-            if (!g) return;
-            g.header.classList.remove('collapsed');
-            g.body.style.display = '';
-            g.header.setAttribute('aria-expanded', 'true');
-            if (row.style.display === 'none') {  // hidden behind "Show all"
-                g.expanded = true;
-                refreshOverflow(key, true);
+        // Make a row clearly visible wherever it lives: open its containing section
+        // (profile group or the neutral area), reveal it if hidden by the "show all"
+        // overflow, scroll to it, and flash it briefly.
+        function revealRow(row) {
+            const groupCard = row.closest('.entity-group');
+            if (groupCard) {
+                const key = groupCard.dataset.groupKey;
+                const g = groupEls[key];
+                if (g) {
+                    g.header.classList.remove('collapsed');
+                    g.body.style.display = '';
+                    g.header.setAttribute('aria-expanded', 'true');
+                    if (row.style.display === 'none') {  // hidden behind "Show all"
+                        g.expanded = true;
+                        refreshOverflow(key, true);
+                    }
+                }
+            } else if (row.closest('.entity-neutral-section')) {
+                openNeutral();
             }
             row.classList.remove('entity-row-new');
             void row.offsetWidth;  // restart the CSS animation if re-triggered
@@ -378,36 +460,95 @@
 
         function sortAll() { Object.keys(groupEls).forEach(sortGroup); }
 
+        // Find a row anywhere in the list (staging, profile groups, or neutral area).
+        function findRow(name) {
+            const sel = `[data-entity-name="${name.toLowerCase()}"]`;
+            return stagingList.querySelector(sel)
+                || groupsContainer.querySelector(sel)
+                || neutralList.querySelector(sel);
+        }
+
+        // Put a row where it belongs: a real rating -> its type group in the
+        // profile; neutral -> the de-emphasised "no opinion" area, out of the profile.
+        function placeRow(row) {
+            const value = row.dataset.rating;
+            const type = row.dataset.type;
+            if (row.parentElement) row.parentElement.removeChild(row);
+            if (isNeutral(value)) {
+                row.dataset.bucket = 'neutral';
+                neutralList.appendChild(row);
+            } else {
+                row.dataset.bucket = 'profile';
+                ensureGroup(groupKeyFor(type)).rows.appendChild(row);
+            }
+        }
+
+        function openNeutral() {
+            neutralHeader.classList.remove('collapsed');
+            neutralBody.style.display = '';
+            neutralHeader.setAttribute('aria-expanded', 'true');
+        }
+
+        function updateNeutralCount() {
+            const n = neutralList.children.length;
+            neutralCount.textContent = n;
+            neutralSection.style.display = n ? '' : 'none';
+        }
+
+        // Recompute counts, sorting, overflow and section visibility everywhere.
+        function refreshAll() {
+            let profileTotal = 0;
+            Object.keys(groupEls).forEach(key => {
+                const g = groupEls[key];
+                updateCount(key);
+                sortGroup(key);
+                const n = g.rows.children.length;
+                g.card.style.display = n ? '' : 'none';  // hide groups emptied by re-rating
+                profileTotal += n;
+            });
+            updateNeutralCount();
+            stagingSection.style.display = stagingList.children.length ? '' : 'none';
+            profileCount.textContent = profileTotal;
+            controls.style.display = profileTotal ? 'flex' : 'none';
+            // Hide the "nothing yet" note while items are still staged, so the two
+            // don't contradict each other.
+            emptyState.style.display =
+                (profileTotal || stagingList.children.length) ? 'none' : 'block';
+        }
+
         function addEntityToList(name, type, value, isNew) {
-            const key = groupKeyFor(type);
-            const g = ensureGroup(key);
-            const existing = g.rows.querySelector(`[data-entity-name="${name.toLowerCase()}"]`);
+            const existing = findRow(name);
             if (existing) {
-                revealRow(key, existing);  // already rated -- just point the user to it
+                revealRow(existing);  // already in the list -- just point the user to it
                 return existing;
             }
             const row = buildRow(name, type, value);
-            g.rows.appendChild(row);
-            updateCount(key);
-            sortGroup(key);
-            refreshControls();
             if (isNew) {
-                // persist the default rating immediately so the choice is saved
+                // Park just-added entities in the staging area (pinned at the top) so
+                // the user has a beat to drag a rating before it's filed away. The
+                // default rating is still saved immediately.
+                row.dataset.bucket = 'staging';
+                stagingList.appendChild(row);
                 savePreference(name, type, value, row.querySelector('.entity-row-status'));
-                revealRow(key, row);  // make the just-added entity stand out
+                refreshAll();
+                revealRow(row);  // make the just-added entity stand out
+            } else {
+                placeRow(row);   // existing saved prefs load straight into place
+                refreshAll();
             }
             return row;
         }
 
-        function refreshControls() {
-            const hasAny = Object.values(groupEls).some(g => g.rows.children.length > 0);
-            controls.style.display = hasAny ? 'flex' : 'none';
-            emptyState.style.display = hasAny ? 'none' : 'block';
-        }
+        // ----- neutral ("no opinion") area toggle -----
+        neutralHeader.addEventListener('click', () => {
+            const collapsed = neutralHeader.classList.toggle('collapsed');
+            neutralBody.style.display = collapsed ? 'none' : '';
+            neutralHeader.setAttribute('aria-expanded', String(!collapsed));
+        });
 
         // ----- initial render -----
         initialEntities.forEach(ent => addEntityToList(ent.entity_name, ent.entity_type, ent.preference, false));
-        refreshControls();
+        refreshAll();
         sortSelect.addEventListener('change', sortAll);
 
         // ----- autocomplete search -----
@@ -456,11 +597,20 @@
                 const resp = await fetch('/entity-suggestions');
                 const data = await resp.json();
                 if (!data.suggestions || data.suggestions.length === 0) return;
+                const title = document.getElementById('entity-suggestions-title');
                 const subtitle = document.getElementById('entity-suggestions-subtitle');
+                const fromHistory = data.source === 'history';
+                // Be honest about where suggestions come from: only the click-history
+                // path is personalized. The fallback is just recent/default entries.
+                if (title) {
+                    title.textContent = fromHistory
+                        ? 'Suggested from your reading'
+                        : 'Not sure where to start?';
+                }
                 if (subtitle) {
-                    subtitle.textContent = data.source === 'history'
-                        ? "Based on the articles you've read. Click one to add it."
-                        : "Popular people, organizations, and places to get you started. Click one to add it.";
+                    subtitle.textContent = fromHistory
+                        ? "People, organizations, and places from articles you've clicked. Click one to add it to your profile."
+                        : "A few people, organizations, and places from our recent news coverage — a starting point, not personalized to you. Click one to add it.";
                 }
                 data.suggestions.forEach(ent => {
                     const chip = document.createElement('button');
@@ -474,7 +624,7 @@
                     });
                     suggestionsBox.appendChild(chip);
                 });
-                suggestionsRow.style.display = 'flex';
+                suggestionsRow.style.display = '';
             } catch (err) {
                 console.error('Suggestions error:', err);
             }
@@ -489,58 +639,105 @@
         <h2 class="page-header">People, Organizations &amp; Places</h2>
         <div class="block content">
             <p>
-                Search for the people, organizations, and places (countries, cities, regions) you
-                care about, and rate how much you want to see them in your newsletter. POPROX will
-                boost articles that mention the entities you prefer and downweight the ones you
-                would rather avoid.
+                Tell POPROX which people, organizations, and places (countries, cities, regions)
+                you care about. POPROX will boost articles that mention the entities you prefer and
+                downweight the ones you would rather avoid.
             </p>
-            <p class="fw-bold">
-                Search below to add an entity, then pick a rating (your changes save automatically).
-                Ratings run from <span class="text-danger">strongly avoid</span> through
+            <p class="mb-0">
+                This page has two parts: <strong>add entities</strong> with the search and
+                suggestions below, then rate them in <strong>your entity profile</strong> further
+                down. Ratings run from <span class="text-danger">strongly avoid</span> through
                 <span class="text-muted">neutral</span> to
-                <span style="color:#008e82;">strongly prefer</span>.
+                <span style="color:#008e82;">strongly prefer</span>, and save automatically.
             </p>
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="entity-search-wrap">
-            <input id="entity-search-input" type="text" class="form-control"
-                placeholder="Search for a person, organization, or place..." autocomplete="off" />
-            <div id="entity-search-results" class="entity-search-results"></div>
-        </div>
-        <p class="text-muted mt-2" style="font-size:0.85rem; max-width:480px;">
-            We can only match people, organizations, and places that appear in recent news in our
-            system. If you can't find someone, they may not be covered yet &mdash; we're continually
-            adding more.
+    <!-- ============ 1. ADD ENTITIES (search + suggestions) ============ -->
+    <section class="entity-section">
+        <h5 class="entity-section-title">Add people, organizations &amp; places</h5>
+        <p class="entity-section-desc">
+            Find entities to add. Nothing here is in your profile yet &mdash; clicking an item drops
+            it into your profile below, where you can rate it.
         </p>
-    </div>
-
-    <div class="row mb-4" id="entity-suggestions-row" style="display:none;">
-        <div class="col">
-            <h6 class="fw-bold mb-2">Suggested for you</h6>
-            <p class="text-muted" id="entity-suggestions-subtitle" style="font-size:0.9rem;">Click one to add it.</p>
-            <div id="entity-suggestions" class="d-flex flex-wrap" style="gap:0.5rem;"></div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <div class="entity-list-controls" id="entity-list-controls" style="display:none;">
-                <label for="entity-sort" class="fw-bold mb-0" style="font-size:0.9rem;">Sort each group by:</label>
-                <select id="entity-sort" class="form-select form-select-sm">
-                    <option value="added">Recently added</option>
-                    <option value="rating-desc">Rating: high to low</option>
-                    <option value="rating-asc">Rating: low to high</option>
-                    <option value="name-asc">Name: A to Z</option>
-                </select>
+        <div class="entity-add-panel">
+            <div class="entity-search-wrap">
+                <input id="entity-search-input" type="text" class="form-control"
+                    placeholder="Search for a person, organization, or place..." autocomplete="off" />
+                <div id="entity-search-results" class="entity-search-results"></div>
             </div>
-            <div id="entity-groups"></div>
-            <p class="entity-empty" id="entity-empty">
-                You haven't rated any people, organizations, or places yet. Use the search box above
-                to add some.
+            <p class="text-muted mt-2 mb-0" style="font-size:0.85rem; max-width:480px;">
+                We can only match people, organizations, and places that appear in recent news in our
+                system. If you can't find someone, they may not be covered yet &mdash; we're
+                continually adding more.
             </p>
+
+            <div id="entity-suggestions-row" class="mt-3" style="display:none;">
+                <h6 class="fw-bold mb-1" id="entity-suggestions-title">Suggestions</h6>
+                <p class="text-muted mb-2" id="entity-suggestions-subtitle" style="font-size:0.9rem;">
+                    Click one to add it.
+                </p>
+                <div id="entity-suggestions" class="d-flex flex-wrap" style="gap:0.5rem;"></div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- ============ 2. YOUR ENTITY PROFILE (saved, rated) ============ -->
+    <section class="entity-section entity-profile-section">
+        <h5 class="entity-section-title">
+            Your entity profile
+            <span class="entity-section-count" id="entity-profile-count">0</span>
+        </h5>
+        <p class="entity-section-desc">
+            The people, organizations, and places you've rated. These are what POPROX uses to
+            personalize your newsletter.
+        </p>
+
+        <!-- Staging: just-added entities wait here until you give them a rating. -->
+        <div class="entity-staging-section" id="entity-staging-section" style="display:none;">
+            <div class="entity-staging-card">
+                <div class="entity-staging-title">
+                    <i class="bi bi-hand-index-thumb"></i>
+                    Just added &mdash; drag a rating to file each one into your profile
+                </div>
+                <div id="entity-staging-list"></div>
+            </div>
+        </div>
+
+        <div class="entity-list-controls" id="entity-list-controls" style="display:none;">
+            <label for="entity-sort" class="fw-bold mb-0" style="font-size:0.9rem;">Sort each group by:</label>
+            <select id="entity-sort" class="form-select form-select-sm">
+                <option value="added">Recently added</option>
+                <option value="rating-desc">Rating: high to low</option>
+                <option value="rating-asc">Rating: low to high</option>
+                <option value="name-asc">Name: A to Z</option>
+            </select>
+        </div>
+        <div id="entity-groups"></div>
+        <p class="entity-empty" id="entity-empty">
+            You haven't rated any people, organizations, or places yet. Use
+            <strong>Add people, organizations &amp; places</strong> above to get started.
+        </p>
+
+        <!-- Neutral / "no opinion" -- kept out of the active profile above. -->
+        <div class="entity-neutral-section" id="entity-neutral-section" style="display:none;">
+            <div class="entity-neutral-card">
+                <button type="button" class="entity-neutral-header collapsed" id="entity-neutral-header"
+                        aria-expanded="false">
+                    <i class="bi bi-chevron-down chevron"></i>
+                    <span>No opinion yet</span>
+                    <span class="group-count" id="entity-neutral-count">0</span>
+                </button>
+                <div class="entity-neutral-body" id="entity-neutral-body" style="display:none;">
+                    <p class="text-muted px-2 pt-1 mb-2" style="font-size:0.85rem;">
+                        These entities are rated <em>neutral</em>, so they don't influence your
+                        newsletter. Slide one toward <span class="text-danger">avoid</span> or
+                        <span style="color:#008e82;">prefer</span> and it rejoins your profile above.
+                    </p>
+                    <div id="entity-neutral-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}
