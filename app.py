@@ -41,6 +41,7 @@ from poprox_concepts.domain.topics import GENERAL_TOPICS
 from poprox_concepts.internals import from_hashed_base64
 from static_web.blueprint import static_web
 from util.auth import auth
+from util.config import require_secret
 from util.postgres_db import (
     DB_ENGINE,
     fetch_compensation_preferences,
@@ -62,9 +63,9 @@ DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
 
 app = Flask(__name__)
-app.secret_key = env.get("APP_SECRET_KEY", "defaultpoproxsecretkey")
+app.secret_key = require_secret("APP_SECRET_KEY", "defaultpoproxsecretkey")
 csrf = CSRFProtect(app)
-HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
+HMAC_KEY = require_secret("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 TOPIC_HINTS = {
     "U.S. news": "U.S. news and events, including politics, economy, \
