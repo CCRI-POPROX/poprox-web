@@ -15,6 +15,7 @@ if ENV_FILE:
 from poprox_storage.aws.queues import enqueue_newsletter_request
 from poprox_storage.repositories.account_interest_log import DbAccountInterestRepository
 from poprox_storage.repositories.accounts import DbAccountRepository
+from poprox_storage.repositories.articles import DbArticleRepository
 from poprox_storage.repositories.clicks import DbClicksRepository
 from poprox_storage.repositories.compensation import DbCompensationRepository
 from poprox_storage.repositories.demographics import DbDemographicsRepository
@@ -28,7 +29,7 @@ from dev.dev_blueprint import dev
 from experimenter.experimenter_blueprint import exp
 from poprox_concepts.api.recommendations.versions import ProtocolVersions
 from poprox_concepts.api.tracking import LoginLinkData, SignUpLinkData, TrackingLinkData
-from poprox_concepts.domain import AccountInterest
+from poprox_concepts.domain import Account, AccountInterest
 from poprox_concepts.domain.account import COMPENSATION_CARD_OPTIONS, COMPENSATION_CHARITY_OPTIONS
 from poprox_concepts.domain.demographics import (
     EDUCATION_OPTIONS,
@@ -56,6 +57,10 @@ from util.postgres_db import (
 logger = logging.getLogger(__name__)
 
 COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS + ["Decline payment"]
+
+# Entity types handled by the People, Organizations & Places page (topics/subjects
+# are managed on the separate Customize Newsletter page and are excluded here).
+ENTITY_PAGE_TYPES = {"person", "organization", "place"}
 
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
@@ -550,6 +555,153 @@ def topics():
         intlvls=interest_lvls,
         user_topic_preferences=user_topic_preferences,
     )
+
+
+@app.route(f"{URL_PREFIX}/entity-search", methods=["GET"])
+@auth.requires_login
+def entity_search():
+    # autocomplete for the entities page -- topics/subjects excluded
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
+    query = request.args.get("q", "").strip()
+    if len(query) < 2:
+        return jsonify({"entities": []}), 200
+
+    with DB_ENGINE.connect() as conn:
+        repo = DbAccountInterestRepository(conn)
+        results = repo.fetch_entities_by_partial_name(query, limit=10, exclude_types=["topic", "subject"])
+
+    return jsonify(results), 200
+
+
+@app.route(f"{URL_PREFIX}/update-entity-preference", methods=["POST"])
+@auth.requires_login
+def update_entity_preference_api():
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
+    data = request.get_json()
+
+    if not data or "entity" not in data or "value" not in data:
+        return jsonify({"error": "Missing data"}), 400
+
+    entity_name = data["entity"]
+    new_value = data["value"]
+    if not new_value:
+        return jsonify({"error": "Missing data"}), 400
+
+    entity_type = data.get("entity_type")
+    if entity_type not in ENTITY_PAGE_TYPES:
+        return jsonify({"error": "Invalid or missing entity_type"}), 400
+
+    try:
+        new_value = int(new_value)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Invalid value"}), 400
+
+    if new_value < 1 or new_value > 5:
+        return jsonify({"error": "Value out of range"}), 400
+
+    with DB_ENGINE.connect() as conn:
+        repo = DbAccountInterestRepository(conn)
+        account_id = auth.get_account_id()
+        entity_id = repo.fetch_entity_by_name(entity_name, exclude_types=["topic", "subject"])
+
+        if entity_id is None:
+            return jsonify({"error": "Entity not found"}), 404
+
+        acct_interest = AccountInterest(
+            account_id=account_id,
+            entity_id=entity_id,
+            entity_name=entity_name,
+            entity_type=entity_type,
+            preference=new_value,
+            frequency=None,
+        )
+
+        repo.store_topic_preferences(account_id, [acct_interest])
+        conn.commit()
+
+    return jsonify({"status": "success"}), 200
+
+
+@app.route(f"{URL_PREFIX}/entities", methods=["GET"])
+@auth.requires_experimenter  # team members only 
+def entities():
+    interest_lvls = [
+        ("Strongly avoid", 1),
+        ("Avoid", 2),
+        ("Neutral", 3),
+        ("Prefer", 4),
+        ("Strongly prefer", 5),
+    ]
+
+    with DB_ENGINE.connect() as conn:
+        repo = DbAccountInterestRepository(conn)
+        account_id = auth.get_account_id()
+        user_entities = repo.fetch_entity_preferences(account_id, exclude_types=["topic", "subject"])
+
+    return render_template(
+        "entities.html",
+        intlvls=interest_lvls,
+        user_entities=user_entities,
+    )
+
+
+@app.route(f"{URL_PREFIX}/entity-suggestions", methods=["GET"])
+@auth.requires_login
+def entity_suggestions():
+    if not auth.get_account_teams():  # team members only
+        return jsonify({"error": "forbidden"}), 403
+
+    account_id = auth.get_account_id()
+    suggestions = []
+    seen = set()
+    source = "starter"  # "history" if from click data, else "starter"
+
+    with DB_ENGINE.connect() as conn:
+        interest_repo = DbAccountInterestRepository(conn)
+        click_repo = DbClicksRepository(conn)
+        article_repo = DbArticleRepository(conn)
+
+        # skip entities the user already rated
+        rated = interest_repo.fetch_entity_preferences(account_id, exclude_types=["topic", "subject"])
+        rated_names = {r["entity_name"].lower() for r in rated}
+
+        # entities from the user's clicked articles, by frequency
+        account = Account(account_id=account_id, status="active")
+        clicks = click_repo.fetch_clicks([account]).get(account_id, [])
+        article_ids = list({click.article_id for click in clicks})[:50]
+        if article_ids:
+            articles = article_repo.fetch_article_mentions(article_repo.fetch_articles_by_id(article_ids))
+            counts = {}
+            for article in articles:
+                for mention in article.mentions:
+                    if mention.entity.entity_type not in ENTITY_PAGE_TYPES:
+                        continue
+                    name = mention.entity.name
+                    if name.lower() in rated_names:
+                        continue
+                    key = (name, mention.entity.entity_type)
+                    counts[key] = counts.get(key, 0) + 1
+            for (name, entity_type), _ in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)[:12]:
+                suggestions.append({"name": name, "entity_type": entity_type})
+                seen.add(name.lower())
+            if suggestions:
+                source = "history"
+
+        # fallback for new users with no click history
+        if not suggestions:
+            sample = interest_repo.fetch_entities_by_partial_name("a", limit=20, exclude_types=["topic", "subject"])
+            for ent in sample.get("entities", []):
+                if ent["name"].lower() in rated_names or ent["name"].lower() in seen:
+                    continue
+                suggestions.append({"name": ent["name"], "entity_type": ent["entity_type"]})
+                if len(suggestions) >= 12:
+                    break
+
+    return jsonify({"suggestions": suggestions, "source": source}), 200
 
 
 @app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET"])

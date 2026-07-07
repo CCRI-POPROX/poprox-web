@@ -1,0 +1,760 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    /* ---- Search ---- */
+    .entity-search-wrap { position: relative; max-width: 480px; }
+    .entity-search-results {
+        position: absolute; z-index: 1000; width: 100%;
+        background: #fff; border: 1px solid #dee2e6; border-top: none;
+        border-radius: 0 0 0.25rem 0.25rem; max-height: 320px; overflow-y: auto;
+        display: none;
+    }
+    .entity-search-results .result-item {
+        padding: 0.5rem 0.75rem; cursor: pointer; display: flex; justify-content: space-between;
+    }
+    .entity-search-results .result-item:hover { background: #f1f3f5; }
+    .entity-search-results .result-type { color: #868e96; font-size: 0.85rem; text-transform: capitalize; }
+
+    /* ---- Type badges ---- */
+    .entity-type-badge {
+        display: inline-block; padding: 0.1rem 0.55rem; border-radius: 1rem;
+        font-size: 0.72rem; font-weight: 600; text-transform: capitalize; vertical-align: middle;
+        background: #eceff1; color: #607d8b;
+    }
+    .etype-person       { background: #e7f1ff; color: #0d6efd; }   /* blue   */
+    .etype-organization { background: #e6f4ea; color: #198754; }   /* green  */
+    .etype-organisation { background: #e6f4ea; color: #198754; }   /* green (alt spelling) */
+    .etype-place        { background: #fff3e0; color: #fb8c00; }   /* orange */
+
+    /* ---- List controls ---- */
+    .entity-list-controls { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.75rem; flex-wrap: wrap; }
+    .entity-list-controls select { max-width: 220px; }
+
+    /* ---- Group cards (collapsible) ---- */
+    .entity-group { border: 1px solid #dee2e6; border-radius: 0.25rem; margin-bottom: 0.75rem; background: #fff; }
+    .entity-group-header {
+        display: flex; align-items: center; gap: 0.5rem; width: 100%;
+        padding: 0.6rem 0.9rem; background: #f8f9fa; border: none;
+        border-radius: 0.25rem; font-weight: 600; cursor: pointer; text-align: left;
+    }
+    .entity-group-header:hover { background: #f1f3f5; }
+    .entity-group-header .chevron { transition: transform 0.15s ease; font-size: 0.9rem; color: #6c757d; }
+    .entity-group-header.collapsed .chevron { transform: rotate(-90deg); }
+    .entity-group-header .group-count {
+        margin-left: auto; background: #e9ecef; color: #495057;
+        border-radius: 1rem; padding: 0.05rem 0.6rem; font-size: 0.78rem; font-weight: 600;
+    }
+    .entity-group-body { padding: 0.25rem 0.5rem 0.5rem; }
+
+    /* ---- Compact entity rows ---- */
+    .entity-row {
+        display: flex; align-items: center; gap: 0.75rem;
+        padding: 0.4rem 0.55rem; border-bottom: 1px solid #f1f3f5;
+        border-left: 4px solid transparent;
+    }
+    .entity-row:last-child { border-bottom: none; }
+    .entity-row:hover { background: #fbfcfd; }
+    .entity-row.sent-avoid   { border-left-color: #dc3545; }
+    .entity-row.sent-neutral { border-left-color: #ced4da; }
+    .entity-row.sent-prefer  { border-left-color: #198754; }
+    /* Brief highlight so a just-added (or re-selected) entity is easy to spot. */
+    @keyframes entityRowFlash {
+        0%   { background-color: rgba(0, 142, 130, 0.28); }
+        100% { background-color: transparent; }
+    }
+    .entity-row.entity-row-new { animation: entityRowFlash 2.2s ease-out; }
+    .entity-row .entity-new-tag {
+        display: none; margin-left: 0.4rem; font-size: 0.65rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; color: #008e82;
+    }
+    .entity-row.entity-row-new .entity-new-tag { display: inline; }
+    .entity-row-label { flex: 1 1 auto; min-width: 0; }
+    .entity-row-name {
+        font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        display: inline-block; max-width: 100%; vertical-align: middle;
+    }
+    .entity-row-control { flex: 0 0 auto; display: flex; align-items: center; gap: 0.6rem; }
+    .entity-row-status { font-size: 0.8rem; min-width: 6.5rem; text-align: left; color: #495057; }
+
+    /* ---- Compact rating slider ----
+       Same teal "fill" slider used on the Customize Newsletter (topics) page,
+       just shorter so it fits inline in a scannable row. Reuses the
+       --fill-percentage mechanism from .pref-range-slider. */
+    .pref-range-compact {
+        width: 150px; height: 1.25rem; padding: 0; vertical-align: middle;
+    }
+    .pref-range-compact::-webkit-slider-runnable-track {
+        height: 8px; margin: 0; border-radius: 5px;
+        background: linear-gradient(to right, #008e82 0%, #008e82 var(--fill-percentage), #ccc var(--fill-percentage), #ccc 100%);
+    }
+    .pref-range-compact::-moz-range-track {
+        height: 8px; margin: 0; border-radius: 5px;
+        background: linear-gradient(to right, #008e82 0%, #008e82 var(--fill-percentage), #ccc var(--fill-percentage), #ccc 100%);
+    }
+    .pref-range-compact::-webkit-slider-thumb {
+        -webkit-appearance: none; appearance: none;
+        width: 16px; height: 16px; margin-top: -4px; border-radius: 50%;
+        background: #fff; border: 2px solid #008e82; box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        cursor: pointer;
+    }
+    .pref-range-compact::-moz-range-thumb {
+        width: 16px; height: 16px; border-radius: 50%;
+        background: #fff; border: 2px solid #008e82; box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        cursor: pointer;
+    }
+    .entity-scale-end { font-size: 0.95rem; color: #adb5bd; line-height: 1; }
+
+    .entity-empty { color: #868e96; padding: 1rem 0.25rem; }
+    .group-show-more { padding: 0.35rem 0.55rem; }
+
+    @media (max-width: 575px) {
+        .entity-row { flex-wrap: wrap; }
+        .entity-row-status { display: none; }
+        .pref-range-compact { width: 120px; }
+    }
+
+    /* ---- Profile-first header ---- */
+    /* Centered like the Customize Newsletter header (.page-header is text-align:center);
+       flex + justify-content keeps the count badge inline and centered with the title. */
+    .entity-head-title {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.5rem; margin: 0 0 0.15rem;
+    }
+    .entity-head-count {
+        background: #008e82; color: #fff; border-radius: 1rem;
+        padding: 0.05rem 0.6rem; font-size: 0.85rem; font-weight: 700; vertical-align: middle;
+    }
+    .entity-head-desc { color: #6c757d; font-size: 0.9rem; margin: 0 0 0.85rem; max-width: 640px; }
+
+    /* ---- Compact toolbar: search + sort, right beside the profile ---- */
+    .entity-toolbar {
+        display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.4rem;
+    }
+    .entity-toolbar .entity-search-wrap { flex: 1 1 280px; max-width: 520px; }
+    .entity-toolbar .entity-list-controls { margin-left: auto; margin-bottom: 0; flex: 0 0 auto; }
+    /* Wide enough to show the full sort option (e.g. "Recently added"). */
+    .entity-toolbar .entity-list-controls select { min-width: 165px; width: auto; }
+    .entity-coverage { font-size: 0.8rem; color: #868e96; margin: 0 0 0.75rem; max-width: 520px; }
+
+    /* ---- Suggestions: secondary, collapsible ---- */
+    .entity-suggest { margin-bottom: 1rem; }
+    .entity-suggest-toggle {
+        display: inline-flex; align-items: center; gap: 0.45rem;
+        background: #fff; border: 1px solid #dee2e6; border-radius: 1.2rem;
+        padding: 0.3rem 0.85rem; font-size: 0.85rem; font-weight: 600; color: #495057; cursor: pointer;
+    }
+    .entity-suggest-toggle:hover { background: #f8f9fa; }
+    .entity-suggest-toggle .chevron { transition: transform 0.15s ease; font-size: 0.78rem; color: #868e96; }
+    .entity-suggest-toggle.open .chevron { transform: rotate(180deg); }
+    .entity-suggest-toggle .group-count {
+        background: #e9ecef; color: #495057; border-radius: 1rem;
+        padding: 0.02rem 0.5rem; font-size: 0.75rem; font-weight: 700;
+    }
+    .entity-suggest-panel {
+        border: 1px solid #e9ecef; border-radius: 0.5rem; background: #fbfcfd;
+        padding: 0.6rem 0.75rem; margin-top: 0.5rem;
+    }
+
+    /* ---- Staging: just-added, not-yet-rated entities ---- */
+    .entity-staging-section { margin-bottom: 1rem; }
+    .entity-staging-card {
+        border: 1px solid #ffe08a; background: #fffdf3;
+        border-radius: 0.5rem; padding: 0.4rem 0.5rem;
+    }
+    .entity-staging-title {
+        font-weight: 600; color: #8a6d00; font-size: 0.88rem;
+        display: flex; align-items: center; gap: 0.4rem; margin: 0.15rem 0.35rem 0.35rem;
+    }
+
+    /* ---- Neutral / "no opinion" area ---- */
+    .entity-neutral-section { margin-top: 1.25rem; }
+    .entity-neutral-card { border: 1px dashed #ced4da; border-radius: 0.5rem; background: #fbfcfd; }
+    .entity-neutral-header {
+        display: flex; align-items: center; gap: 0.5rem; width: 100%;
+        padding: 0.55rem 0.9rem; background: transparent; border: none;
+        font-weight: 600; color: #6c757d; cursor: pointer; text-align: left;
+    }
+    .entity-neutral-header:hover { color: #495057; }
+    .entity-neutral-header .chevron { transition: transform 0.15s ease; font-size: 0.9rem; }
+    .entity-neutral-header.collapsed .chevron { transform: rotate(-90deg); }
+    .entity-neutral-header .group-count {
+        margin-left: auto; background: #e9ecef; color: #495057;
+        border-radius: 1rem; padding: 0.05rem 0.6rem; font-size: 0.78rem; font-weight: 600;
+    }
+    .entity-neutral-body { padding: 0.25rem 0.5rem 0.5rem; }
+    /* Rows here are de-emphasised -- neutral entities don't shape the newsletter. */
+    .entity-neutral-body .entity-row { opacity: 0.72; }
+    .entity-neutral-body .entity-row .entity-row-name { font-weight: 500; }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ----- data passed from the server -----
+        const intlvls = {{ intlvls | tojson }};                 // [[label, value], ...]
+        const initialEntities = {{ user_entities | tojson }};   // [{entity_name, entity_type, preference}, ...]
+        const labels = intlvls.map(l => l[0]);
+        const values = intlvls.map(l => l[1]);
+        const minVal = values[0];
+        const maxVal = values[values.length - 1];
+        const defaultVal = values[Math.floor(values.length / 2)];
+        // Profile-first: suggestions start collapsed when the user already has a profile.
+        const hadInitialProfile = Array.isArray(initialEntities) && initialEntities.length > 0;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Type -> display group. Unknown types fall into "Other".
+        const TYPE_META = {
+            person:       { label: 'People',        order: 0 },
+            organization: { label: 'Organizations', order: 1 },
+            organisation: { label: 'Organizations', order: 1 },
+            place:        { label: 'Places',        order: 2 },
+        };
+        const COLLAPSE_LIMIT = 12; // rows shown before a "show all" toggle appears
+
+        const groupsContainer = document.getElementById('entity-groups');
+        const controls = document.getElementById('entity-list-controls');
+        const sortSelect = document.getElementById('entity-sort');
+        const emptyState = document.getElementById('entity-empty');
+        const searchInput = document.getElementById('entity-search-input');
+        const resultsBox = document.getElementById('entity-search-results');
+        const profileCount = document.getElementById('entity-profile-count');
+        const stagingSection = document.getElementById('entity-staging-section');
+        const stagingList = document.getElementById('entity-staging-list');
+        const neutralSection = document.getElementById('entity-neutral-section');
+        const neutralHeader = document.getElementById('entity-neutral-header');
+        const neutralBody = document.getElementById('entity-neutral-body');
+        const neutralList = document.getElementById('entity-neutral-list');
+        const neutralCount = document.getElementById('entity-neutral-count');
+
+        let orderCounter = 0;
+        const groupEls = {}; // groupKey -> { card, body, rows, count, moreBtn }
+
+        function labelFor(value) { return labels[values.indexOf(parseInt(value, 10))] || ''; }
+        function groupKeyFor(type) { return TYPE_META[type] ? TYPE_META[type].label : 'Other'; }
+        function groupOrderFor(key) {
+            for (const k in TYPE_META) { if (TYPE_META[k].label === key) return TYPE_META[k].order; }
+            return 99;
+        }
+        function sentimentClass(value) {
+            const v = parseInt(value, 10);
+            if (v <= 2) return 'sent-avoid';
+            if (v === 3) return 'sent-neutral';
+            return 'sent-prefer';
+        }
+        // Neutral == the middle rating ("Neutral"): no opinion, kept out of the
+        // active profile so the profile only holds meaningful preferences.
+        function isNeutral(value) { return sentimentClass(value) === 'sent-neutral'; }
+        // Same teal "fill" behaviour as the topics page slider.
+        function setFill(slider) {
+            const pct = ((parseFloat(slider.value) - minVal) / (maxVal - minVal)) * 100;
+            slider.style.setProperty('--fill-percentage', `${pct}%`);
+        }
+
+        // ----- save a rating -----
+        async function savePreference(name, type, value, statusEl) {
+            const original = statusEl.textContent;
+            statusEl.textContent = 'Saving...';
+            statusEl.style.color = '';
+            try {
+                const resp = await fetch('/update-entity-preference', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                    body: JSON.stringify({ entity: name, entity_type: type, value: value })
+                });
+                if (!resp.ok) throw new Error('network error');
+                statusEl.textContent = 'Saved';
+                statusEl.style.color = 'green';
+                setTimeout(() => {
+                    if (statusEl.textContent === 'Saved') { statusEl.textContent = labelFor(value); statusEl.style.color = ''; }
+                }, 1200);
+            } catch (err) {
+                console.error('Error saving preference:', err);
+                statusEl.textContent = 'Failed to save';
+                statusEl.style.color = 'red';
+            }
+        }
+
+        // ----- build one compact entity row -----
+        function buildRow(name, type, value) {
+            const row = document.createElement('div');
+            row.className = 'entity-row ' + sentimentClass(value);
+            row.dataset.entityName = name.toLowerCase();
+            row.dataset.name = name;
+            row.dataset.type = type;
+            row.dataset.rating = value;
+            row.dataset.order = ++orderCounter;
+
+            const label = document.createElement('div');
+            label.className = 'entity-row-label';
+            label.innerHTML =
+                `<span class="entity-row-name" title="${name}">${name}</span>` +
+                ` <span class="entity-type-badge etype-${type}">${type}</span>` +
+                `<span class="entity-new-tag">New</span>`;
+
+            const control = document.createElement('div');
+            control.className = 'entity-row-control';
+
+            const status = document.createElement('span');
+            status.className = 'entity-row-status';
+            status.textContent = labelFor(value);
+
+            // Compact version of the topics-page slider (same teal fill style).
+            const lowEnd = document.createElement('span');
+            lowEnd.className = 'entity-scale-end';
+            lowEnd.title = labels[0];
+            lowEnd.textContent = '−'; // minus sign
+
+            const highEnd = document.createElement('span');
+            highEnd.className = 'entity-scale-end';
+            highEnd.title = labels[labels.length - 1];
+            highEnd.textContent = '+';
+
+            const slider = document.createElement('input');
+            slider.type = 'range';
+            slider.className = 'form-range pref-range-slider pref-range-compact';
+            slider.min = minVal;
+            slider.max = maxVal;
+            slider.step = 1;
+            slider.value = value;
+            slider.setAttribute('data-entity', name);
+            slider.setAttribute('aria-label', 'Preference for ' + name);
+            setFill(slider);
+
+            slider.addEventListener('input', () => {
+                setFill(slider);
+                const v = parseInt(slider.value, 10);
+                row.dataset.rating = v;
+                row.className = 'entity-row ' + sentimentClass(v);
+                status.textContent = labelFor(v);
+            });
+            slider.addEventListener('change', () => {
+                const v = parseInt(slider.value, 10);
+                const bucket = row.dataset.bucket;
+                row.dataset.rating = v;
+                savePreference(name, type, v, status);
+                // A staged row files itself on its first rating; an already-filed row
+                // only moves when it crosses in or out of neutral.
+                const shouldMove = bucket === 'staging'
+                    || ((bucket === 'neutral') !== isNeutral(v));
+                if (shouldMove) {
+                    placeRow(row);   // move it and point the user to where it landed
+                    refreshAll();
+                    revealRow(row);
+                } else {
+                    refreshAll();
+                }
+            });
+
+            control.appendChild(lowEnd);
+            control.appendChild(slider);
+            control.appendChild(highEnd);
+            control.appendChild(status);
+            row.appendChild(label);
+            row.appendChild(control);
+            return row;
+        }
+
+        // ----- groups -----
+        function ensureGroup(key) {
+            if (groupEls[key]) return groupEls[key];
+
+            const card = document.createElement('div');
+            card.className = 'entity-group';
+            card.dataset.groupKey = key;
+            card.dataset.order = groupOrderFor(key);
+
+            const bodyId = 'group-body-' + key.toLowerCase().replace(/\s+/g, '-');
+            const header = document.createElement('button');
+            header.type = 'button';
+            header.className = 'entity-group-header';
+            header.setAttribute('aria-expanded', 'true');
+            header.innerHTML =
+                `<i class="bi bi-chevron-down chevron"></i>` +
+                `<span class="group-name">${key}</span>` +
+                `<span class="group-count">0</span>`;
+
+            const body = document.createElement('div');
+            body.className = 'entity-group-body';
+            body.id = bodyId;
+
+            const rows = document.createElement('div');
+            rows.className = 'entity-rows';
+
+            const moreBtn = document.createElement('button');
+            moreBtn.type = 'button';
+            moreBtn.className = 'btn btn-link btn-sm group-show-more p-0';
+            moreBtn.style.display = 'none';
+            moreBtn.addEventListener('click', () => {
+                const g = groupEls[key];
+                g.expanded = !g.expanded;
+                refreshOverflow(key, g.expanded);
+            });
+
+            header.addEventListener('click', () => {
+                const isCollapsed = header.classList.toggle('collapsed');
+                body.style.display = isCollapsed ? 'none' : '';
+                header.setAttribute('aria-expanded', String(!isCollapsed));
+            });
+
+            body.appendChild(rows);
+            body.appendChild(moreBtn);
+            card.appendChild(header);
+            card.appendChild(body);
+
+            // insert card in type order
+            const siblings = Array.from(groupsContainer.children);
+            const next = siblings.find(c => parseInt(c.dataset.order, 10) > groupOrderFor(key));
+            groupsContainer.insertBefore(card, next || null);
+
+            groupEls[key] = {
+                card, header, body, rows, moreBtn,
+                count: header.querySelector('.group-count'),
+                expanded: false,
+            };
+            return groupEls[key];
+        }
+
+        function updateCount(key) {
+            const g = groupEls[key];
+            if (!g) return;
+            g.count.textContent = g.rows.children.length;
+        }
+
+        function refreshOverflow(key, expanded) {
+            const g = groupEls[key];
+            if (!g) return;
+            const rows = Array.from(g.rows.children);
+            const overflow = rows.length - COLLAPSE_LIMIT;
+            rows.forEach((r, i) => { r.style.display = (expanded || i < COLLAPSE_LIMIT) ? '' : 'none'; });
+            if (overflow > 0) {
+                g.moreBtn.style.display = '';
+                g.moreBtn.textContent = expanded ? 'Show less' : `Show all ${rows.length}`;
+            } else {
+                g.moreBtn.style.display = 'none';
+            }
+        }
+
+        function sortGroup(key) {
+            const g = groupEls[key];
+            if (!g) return;
+            const mode = sortSelect.value;
+            const rows = Array.from(g.rows.children);
+            rows.sort((a, b) => {
+                const ra = parseInt(a.dataset.rating, 10), rb = parseInt(b.dataset.rating, 10);
+                const na = a.dataset.name.toLowerCase(), nb = b.dataset.name.toLowerCase();
+                const oa = parseInt(a.dataset.order, 10), ob = parseInt(b.dataset.order, 10);
+                switch (mode) {
+                    case 'rating-desc': return rb - ra || na.localeCompare(nb);
+                    case 'rating-asc':  return ra - rb || na.localeCompare(nb);
+                    case 'name-asc':    return na.localeCompare(nb);
+                    default:            return ob - oa; // recently added (newest first)
+                }
+            });
+            rows.forEach(r => g.rows.appendChild(r));
+            refreshOverflow(key, g.expanded);
+        }
+
+        // Make a row clearly visible wherever it lives: open its containing section
+        // (profile group or the neutral area), reveal it if hidden by the "show all"
+        // overflow, scroll to it, and flash it briefly.
+        function revealRow(row) {
+            const groupCard = row.closest('.entity-group');
+            if (groupCard) {
+                const key = groupCard.dataset.groupKey;
+                const g = groupEls[key];
+                if (g) {
+                    g.header.classList.remove('collapsed');
+                    g.body.style.display = '';
+                    g.header.setAttribute('aria-expanded', 'true');
+                    if (row.style.display === 'none') {  // hidden behind "Show all"
+                        g.expanded = true;
+                        refreshOverflow(key, true);
+                    }
+                }
+            } else if (row.closest('.entity-neutral-section')) {
+                openNeutral();
+            }
+            row.classList.remove('entity-row-new');
+            void row.offsetWidth;  // restart the CSS animation if re-triggered
+            row.classList.add('entity-row-new');
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => row.classList.remove('entity-row-new'), 2200);
+        }
+
+        function sortAll() { Object.keys(groupEls).forEach(sortGroup); }
+
+        // Find a row anywhere in the list (staging, profile groups, or neutral area).
+        function findRow(name) {
+            const sel = `[data-entity-name="${name.toLowerCase()}"]`;
+            return stagingList.querySelector(sel)
+                || groupsContainer.querySelector(sel)
+                || neutralList.querySelector(sel);
+        }
+
+        // Put a row where it belongs: a real rating -> its type group in the
+        // profile; neutral -> the de-emphasised "no opinion" area, out of the profile.
+        function placeRow(row) {
+            const value = row.dataset.rating;
+            const type = row.dataset.type;
+            if (row.parentElement) row.parentElement.removeChild(row);
+            if (isNeutral(value)) {
+                row.dataset.bucket = 'neutral';
+                neutralList.appendChild(row);
+            } else {
+                row.dataset.bucket = 'profile';
+                ensureGroup(groupKeyFor(type)).rows.appendChild(row);
+            }
+        }
+
+        function openNeutral() {
+            neutralHeader.classList.remove('collapsed');
+            neutralBody.style.display = '';
+            neutralHeader.setAttribute('aria-expanded', 'true');
+        }
+
+        function updateNeutralCount() {
+            const n = neutralList.children.length;
+            neutralCount.textContent = n;
+            neutralSection.style.display = n ? '' : 'none';
+        }
+
+        // Recompute counts, sorting, overflow and section visibility everywhere.
+        function refreshAll() {
+            let profileTotal = 0;
+            Object.keys(groupEls).forEach(key => {
+                const g = groupEls[key];
+                updateCount(key);
+                sortGroup(key);
+                const n = g.rows.children.length;
+                g.card.style.display = n ? '' : 'none';  // hide groups emptied by re-rating
+                profileTotal += n;
+            });
+            updateNeutralCount();
+            stagingSection.style.display = stagingList.children.length ? '' : 'none';
+            profileCount.textContent = profileTotal;
+            controls.style.display = profileTotal ? 'flex' : 'none';
+            // Hide the "nothing yet" note while items are still staged, so the two
+            // don't contradict each other.
+            emptyState.style.display =
+                (profileTotal || stagingList.children.length) ? 'none' : 'block';
+        }
+
+        function addEntityToList(name, type, value, isNew) {
+            const existing = findRow(name);
+            if (existing) {
+                revealRow(existing);  // already in the list -- just point the user to it
+                return existing;
+            }
+            const row = buildRow(name, type, value);
+            if (isNew) {
+                // Park just-added entities in the staging area (pinned at the top) so
+                // the user has a beat to drag a rating before it's filed away. The
+                // default rating is still saved immediately.
+                row.dataset.bucket = 'staging';
+                stagingList.appendChild(row);
+                savePreference(name, type, value, row.querySelector('.entity-row-status'));
+                refreshAll();
+                revealRow(row);  // make the just-added entity stand out
+            } else {
+                placeRow(row);   // existing saved prefs load straight into place
+                refreshAll();
+            }
+            return row;
+        }
+
+        // ----- neutral ("no opinion") area toggle -----
+        neutralHeader.addEventListener('click', () => {
+            const collapsed = neutralHeader.classList.toggle('collapsed');
+            neutralBody.style.display = collapsed ? 'none' : '';
+            neutralHeader.setAttribute('aria-expanded', String(!collapsed));
+        });
+
+        // ----- initial render -----
+        initialEntities.forEach(ent => addEntityToList(ent.entity_name, ent.entity_type, ent.preference, false));
+        refreshAll();
+        sortSelect.addEventListener('change', sortAll);
+
+        // ----- autocomplete search -----
+        let debounceTimer = null;
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.trim();
+            clearTimeout(debounceTimer);
+            if (q.length < 2) { resultsBox.style.display = 'none'; resultsBox.innerHTML = ''; return; }
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const resp = await fetch(`/entity-search?q=${encodeURIComponent(q)}`);
+                    const data = await resp.json();
+                    resultsBox.innerHTML = '';
+                    if (!data.entities || data.entities.length === 0) {
+                        resultsBox.innerHTML = '<div class="result-item text-muted">No match in our system yet &mdash; this entity may not be covered in recent news.</div>';
+                    } else {
+                        data.entities.forEach(ent => {
+                            const item = document.createElement('div');
+                            item.className = 'result-item';
+                            item.innerHTML = `<span>${ent.name}</span><span class="result-type">${ent.entity_type}</span>`;
+                            item.addEventListener('click', () => {
+                                addEntityToList(ent.name, ent.entity_type, defaultVal, true);
+                                searchInput.value = '';
+                                resultsBox.style.display = 'none';
+                                resultsBox.innerHTML = '';
+                            });
+                            resultsBox.appendChild(item);
+                        });
+                    }
+                    resultsBox.style.display = 'block';
+                } catch (err) {
+                    console.error('Search error:', err);
+                }
+            }, 250);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.entity-search-wrap')) { resultsBox.style.display = 'none'; }
+        });
+
+        // ----- suggested entities (secondary, collapsible) -----
+        const suggestArea = document.getElementById('entity-suggest');
+        const suggestToggle = document.getElementById('entity-suggest-toggle');
+        const suggestToggleLabel = document.getElementById('entity-suggest-toggle-label');
+        const suggestCountEl = document.getElementById('entity-suggest-count');
+        const suggestPanel = document.getElementById('entity-suggest-panel');
+        const suggestionsBox = document.getElementById('entity-suggestions');
+
+        function setSuggestOpen(open) {
+            suggestPanel.style.display = open ? '' : 'none';
+            suggestToggle.classList.toggle('open', open);
+            suggestToggle.setAttribute('aria-expanded', String(open));
+            suggestToggleLabel.textContent = open ? 'Hide suggestions' : 'Show suggestions';
+        }
+        suggestToggle.addEventListener('click',
+            () => setSuggestOpen(suggestPanel.style.display === 'none'));
+
+        (async () => {
+            try {
+                const resp = await fetch('/entity-suggestions');
+                const data = await resp.json();
+                if (!data.suggestions || data.suggestions.length === 0) return;  // area stays hidden
+                const subtitle = document.getElementById('entity-suggestions-subtitle');
+                const fromHistory = data.source === 'history';
+                // Be honest about where suggestions come from: only the click-history
+                // path is personalized. The fallback is just recent/default entries.
+                if (subtitle) {
+                    subtitle.textContent = fromHistory
+                        ? "People, organizations, and places from articles you've clicked. Click one to add it."
+                        : "A few people, organizations, and places from our recent news coverage — a starting point, not personalized to you. Click one to add it.";
+                }
+                data.suggestions.forEach(ent => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'btn btn-outline-secondary btn-sm';
+                    chip.innerHTML = `${ent.name} <span class="entity-type-badge etype-${ent.entity_type}">${ent.entity_type}</span>`;
+                    chip.addEventListener('click', () => {
+                        addEntityToList(ent.name, ent.entity_type, defaultVal, true);
+                        chip.remove();
+                        suggestCountEl.textContent = suggestionsBox.children.length;
+                        if (suggestionsBox.children.length === 0) suggestArea.style.display = 'none';
+                    });
+                    suggestionsBox.appendChild(chip);
+                });
+                suggestCountEl.textContent = data.suggestions.length;
+                suggestArea.style.display = '';
+                // Profile-first: open by default only when the profile is empty.
+                setSuggestOpen(!hadInitialProfile);
+            } catch (err) {
+                console.error('Suggestions error:', err);
+            }
+        })();
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- ============ PROFILE-FIRST: your current preferences lead the page ============ -->
+    <h2 class="page-header entity-head-title">
+        Your Entity Preferences
+        <span class="entity-head-count" id="entity-profile-count">0</span>
+    </h2>
+    <p class="entity-head-desc">
+        Rate the people, organizations, and places you want more or less of in your newsletter.
+        Search to add one, then set a rating &mdash; changes save automatically.
+    </p>
+
+    <!-- Search + sort, right beside the profile list -->
+    <div class="entity-toolbar">
+        <div class="entity-search-wrap">
+            <input id="entity-search-input" type="text" class="form-control"
+                placeholder="Search to add a person, organization, or place..." autocomplete="off" />
+            <div id="entity-search-results" class="entity-search-results"></div>
+        </div>
+        <div class="entity-list-controls" id="entity-list-controls" style="display:none;">
+            <label for="entity-sort" class="fw-bold mb-0" style="font-size:0.85rem;">Sort</label>
+            <select id="entity-sort" class="form-select form-select-sm">
+                <option value="added">Recently added</option>
+                <option value="rating-desc">Rating: high to low</option>
+                <option value="rating-asc">Rating: low to high</option>
+                <option value="name-asc">Name: A to Z</option>
+            </select>
+        </div>
+    </div>
+    <p class="entity-coverage">
+        We only match people, organizations, and places that appear in recent news in our system.
+    </p>
+
+    <!-- Suggestions: secondary and collapsible so they don't crowd the profile -->
+    <div class="entity-suggest" id="entity-suggest" style="display:none;">
+        <button type="button" class="entity-suggest-toggle" id="entity-suggest-toggle" aria-expanded="false">
+            <i class="bi bi-lightbulb"></i>
+            <span id="entity-suggest-toggle-label">Show suggestions</span>
+            <span class="group-count" id="entity-suggest-count">0</span>
+            <i class="bi bi-chevron-down chevron"></i>
+        </button>
+        <div class="entity-suggest-panel" id="entity-suggest-panel" style="display:none;">
+            <p class="text-muted mb-2" id="entity-suggestions-subtitle" style="font-size:0.88rem;">
+                Click one to add it.
+            </p>
+            <div id="entity-suggestions" class="d-flex flex-wrap" style="gap:0.5rem;"></div>
+        </div>
+    </div>
+
+    <!-- Staging: just-added entities wait here until you give them a rating. -->
+    <div class="entity-staging-section" id="entity-staging-section" style="display:none;">
+        <div class="entity-staging-card">
+            <div class="entity-staging-title">
+                <i class="bi bi-plus-circle"></i>
+                Just added &mdash; drag a rating to file each one into your profile
+            </div>
+            <div id="entity-staging-list"></div>
+        </div>
+    </div>
+
+    <!-- Active preferences, grouped by type -->
+    <div id="entity-groups"></div>
+    <p class="entity-empty" id="entity-empty">
+        You haven't rated any people, organizations, or places yet. Use the search box above to add
+        some.
+    </p>
+
+    <!-- Neutral / "no opinion" -- a valid state, kept visually distinct from active prefs. -->
+    <div class="entity-neutral-section" id="entity-neutral-section" style="display:none;">
+        <div class="entity-neutral-card">
+            <button type="button" class="entity-neutral-header collapsed" id="entity-neutral-header"
+                    aria-expanded="false">
+                <i class="bi bi-chevron-down chevron"></i>
+                <span>No opinion &middot; neutral</span>
+                <span class="group-count" id="entity-neutral-count">0</span>
+            </button>
+            <div class="entity-neutral-body" id="entity-neutral-body" style="display:none;">
+                <p class="text-muted px-2 pt-1 mb-2" style="font-size:0.85rem;">
+                    Rated <em>neutral</em> &mdash; a valid choice that keeps these out of your active
+                    preferences and doesn't push your newsletter either way. Slide one toward
+                    <span class="text-danger">avoid</span> or
+                    <span style="color:#008e82;">prefer</span> to make it active.
+                </p>
+                <div id="entity-neutral-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
