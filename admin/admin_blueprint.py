@@ -1,6 +1,5 @@
 from collections import defaultdict
 from datetime import date
-from os import environ as env
 from uuid import UUID, uuid4
 
 from flask import Blueprint, jsonify, redirect, render_template, request, url_for
@@ -19,12 +18,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from poprox_concepts.api.click_filtering import filter_click_histories
 from poprox_concepts.domain.click import Click
+from util.config import require_secret
 
 admin = Blueprint("admin", __name__, template_folder="templates", url_prefix="/admin")
 admin_auth = HTTPBasicAuth()
 
 users = {
-    "admin": generate_password_hash(env.get("POPROX_WEB_ADMIN_PASS", "admin")),
+    "admin": generate_password_hash(require_secret("POPROX_WEB_ADMIN_PASS", "admin")),
 }
 
 

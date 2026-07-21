@@ -10,12 +10,13 @@ from poprox_storage.aws import sqs
 from werkzeug.wrappers import Response
 
 from poprox_concepts.api.tracking import SignUpLinkData, to_hashed_base64
+from util.config import require_secret
 from util.postgres_db import create_token, get_account, get_account_by_email, get_or_make_account
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-HMAC_KEY = env.get("POPROX_HMAC_KEY", "defaultpoproxhmackey")
+HMAC_KEY = require_secret("POPROX_HMAC_KEY", "defaultpoproxhmackey")
 
 STATUS_REDIRECTS = {
     "new_account": "consent1",
