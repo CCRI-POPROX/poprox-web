@@ -11,6 +11,7 @@ from poprox_storage.repositories import (
     DbClicksRepository,
     DbExperimentRepository,
     DbNewsletterRepository,
+    DbSubscriptionRepository,
     DbTeamRepository,
 )
 from sqlalchemy.exc import IntegrityError, InternalError
@@ -228,3 +229,27 @@ def update_account_detail(account_id):
             )
 
     return render_template("admin_account_detail.html", editable=["source", "subsource", "email"], account=account)
+
+
+@admin.post("/account/<account_id>/force_unsubscribe")
+@admin_auth.login_required
+def force_unsubscribe(account_id):
+    if request.form.get("confirm"):
+        try:
+            with DB_ENGINE.connect() as conn:
+                subscription_repo = DbSubscriptionRepository(conn)
+                account_repo = DbAccountRepository(conn)
+
+                subscription_repo.remove_subscription_for_account(account_id)
+                account_repo.update_status(account_id, "admin unsubscribe")
+
+                return redirect(url_for("admin.account_detail", account_id=account_id, error="unsubbed"))
+        except (IntegrityError, InternalError) as err:
+            conn.rollback()
+            return redirect(
+                url_for("admin.account_detail", account_id=account_id, error="update not applied: " + str(err))
+            )
+    else:
+        return redirect(
+            url_for("admin.account_detail", account_id=account_id, error="update not applied. you gotta confirm")
+        )
