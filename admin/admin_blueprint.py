@@ -242,6 +242,7 @@ def force_unsubscribe(account_id):
 
                 subscription_repo.remove_subscription_for_account(account_id)
                 account_repo.update_status(account_id, "admin unsubscribe")
+                conn.commit()
 
                 return redirect(url_for("admin.account_detail", account_id=account_id, error="unsubbed"))
         except (IntegrityError, InternalError) as err:
