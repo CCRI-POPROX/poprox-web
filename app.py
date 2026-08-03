@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, send_file, url_for
 from flask_wtf.csrf import CSRFProtect
 
 ENV_FILE = find_dotenv()
@@ -628,7 +628,7 @@ def update_entity_preference_api():
 
 
 @app.route(f"{URL_PREFIX}/entities", methods=["GET"])
-@auth.requires_experimenter  # team members only 
+@auth.requires_experimenter  # team members only
 def entities():
     interest_lvls = [
         ("Strongly avoid", 1),
@@ -925,6 +925,11 @@ def track_email_click(path):
         )
 
     return redirect(params.url)
+
+
+@app.route(f"{URL_PREFIX}/track_pixel")
+def track_pixel():
+    return send_file("static/1x1.png", max_age=0)
 
 
 @app.route(f"{URL_PREFIX}/learn_more")
