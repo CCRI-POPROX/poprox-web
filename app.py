@@ -194,12 +194,14 @@ def pre_enroll_get():
 
 @app.route(f"{URL_PREFIX}/subscribe", methods=["POST"])
 def pre_enroll_post():
+    username = request.form.get("username")
+
     source = request.form.get("source", DEFAULT_SOURCE)
     subsource = request.form.get("subsource", DEFAULT_SOURCE)
     legal_age = request.form.get("legal_age")
     us_area = request.form.get("us_area")
     email = request.form.get("email")
-    if (not legal_age) or (not us_area) or (not email):
+    if (not legal_age) or (not us_area) or (not email) or username:
         return render_template("pre_enroll.html", source=source, subsource=subsource)
     else:
         return auth.send_enroll_token(source, subsource, email)
