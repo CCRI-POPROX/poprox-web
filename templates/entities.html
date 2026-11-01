@@ -548,12 +548,12 @@
             }
             const row = buildRow(name, type, value);
             if (isNew) {
-                // Park just-added entities in the staging area (pinned at the top) so
-                // the user has a beat to drag a rating before it's filed away. The
-                // default rating is still saved immediately.
+                // Park just-added entities in the staging area (pinned at the top).
+                // Nothing is saved until the user moves the slider, so an accidental
+                // search click doesn't record a preference.
                 row.dataset.bucket = 'staging';
+                row.querySelector('.entity-row-status').textContent = 'Move the slider to save';
                 stagingList.appendChild(row);
-                savePreference(name, type, value, row.querySelector('.entity-row-status'));
                 refreshAll();
                 revealRow(row);  // make the just-added entity stand out
             } else {
@@ -723,7 +723,7 @@
         <div class="entity-staging-card">
             <div class="entity-staging-title">
                 <i class="bi bi-plus-circle"></i>
-                Just added &mdash; drag a rating to file each one into your profile
+                Just added &mdash; drag a rating to save each one to your profile
             </div>
             <div id="entity-staging-list"></div>
         </div>
