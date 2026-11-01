@@ -22,6 +22,7 @@ from poprox_storage.repositories.demographics import DbDemographicsRepository
 from poprox_storage.repositories.experiments import DbExperimentRepository
 from poprox_storage.repositories.images import DbImageRepository
 from poprox_storage.repositories.newsletters import DbNewsletterRepository
+from poprox_storage.repositories.qualtrics_survey import DbQualtricsSurveyRepository
 from poprox_storage.repositories.subscriptions import DbSubscriptionRepository
 
 from admin.admin_blueprint import admin
@@ -705,6 +706,43 @@ def entity_suggestions():
                     break
 
     return jsonify({"suggestions": suggestions, "source": source}), 200
+
+
+@app.route(f"{URL_PREFIX}/study_survey/<uuid:survey_id>", methods=["GET"])
+@auth.requires_login
+def study_survey(survey_id):
+    # forward to a study's Qualtrics survey with this account's survey instance, so the
+    # response is linked back to the account; one instance per account and survey
+    account = Account(account_id=auth.get_account_id(), status="active")
+
+    with DB_ENGINE.connect() as conn:
+        survey_repo = DbQualtricsSurveyRepository(conn)
+
+        # only active surveys have their responses collected from Qualtrics
+        survey = None
+        for active_survey in survey_repo.fetch_active_surveys():
+            if active_survey.survey_id == survey_id:
+                survey = active_survey
+                break
+
+        if survey is None:
+            return redirect(url_for("home", error_description="This survey is no longer available."))
+
+        # reuse the account's earliest instance of this survey, so every click lands on the same one
+        existing_instance = None
+        for instance in survey_repo.fetch_sent_survey_instances([account]):
+            if instance.survey_id != survey_id:
+                continue
+            if existing_instance is None or instance.created_at < existing_instance.created_at:
+                existing_instance = instance
+
+        if existing_instance is not None:
+            survey_instance_id = existing_instance.survey_instance_id
+        else:
+            survey_instance_id = survey_repo.store_survey_instance(survey, account.account_id)
+            conn.commit()
+
+    return redirect(f"{survey.base_url}?survey_instance_id={survey_instance_id}")
 
 
 @app.route(f"{URL_PREFIX}/demographic_survey", methods=["GET"])
