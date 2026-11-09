@@ -1,6 +1,5 @@
-from collections import defaultdict
-from datetime import date
-from uuid import UUID, uuid4
+from datetime import date, timedelta
+from uuid import uuid4
 
 from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from flask_httpauth import HTTPBasicAuth
@@ -8,17 +7,14 @@ from poprox_storage.aws import DB_ENGINE
 from poprox_storage.concepts.experiment import Team
 from poprox_storage.repositories import (
     DbAccountRepository,
-    DbClicksRepository,
+    DbDailyStatsRepository,
     DbExperimentRepository,
-    DbNewsletterRepository,
     DbSubscriptionRepository,
     DbTeamRepository,
 )
 from sqlalchemy.exc import IntegrityError, InternalError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from poprox_concepts.api.click_filtering import filter_click_histories
-from poprox_concepts.domain.click import Click
 from util.config import require_secret
 
 admin = Blueprint("admin", __name__, template_folder="templates", url_prefix="/admin")
@@ -60,40 +56,23 @@ def show():
 def get_clicks_by_day():
     # flag parameter, include as `...&include_all&...` or `...&include_all=True&...`
     include_all = request.args.get("include_all") is not None
-    days_ago = int(request.args.get("days_ago", 31))
+    end_text = request.args.get("end")
+    start_text = request.args.get("start")
 
-    # quite frankly, this doesn't look very efficient.
+    try:
+        end = date.fromisoformat(end_text) if end_text else date.today()
+        start = date.fromisoformat(start_text) if start_text else end - timedelta(days=30)
+    except ValueError:
+        return jsonify({"error": "start and end must be dates like 2026-09-01"}), 400
+    
+    if end < start:
+        
+        return jsonify({"error": "start must not be after end"}), 400
+
     with DB_ENGINE.connect() as conn:
-        dbClicksRepository: DbClicksRepository = DbClicksRepository(conn)
-        dbNewsletterRepository: DbNewsletterRepository = DbNewsletterRepository(conn)
-        dbAccountRepository: DbAccountRepository = DbAccountRepository(conn)
-
-        print("fetching valid clicks")
-        # Fetch all valid clicks and newsletters
-        valid_accounts = dbAccountRepository.fetch_accounts()
-        if not include_all:
-            valid_accounts = [account for account in valid_accounts if account.external]
-        print(f"fetched {len(valid_accounts)} accounts")
-        newsletters = dbNewsletterRepository.fetch_newsletters_since(
-            days_ago=days_ago, accounts=valid_accounts, shallow=True
-        )
-        print(f"fetched {len(newsletters)} newsletters")
-        clicks_by_account = dbClicksRepository.fetch_clicks_by_newsletter_ids(
-            [newsletter.newsletter_id for newsletter in newsletters]
-        )
-        clicks_by_account = filter_click_histories(clicks_by_account)
-        print("fetched clicks")
-        # aggregate to counts-per-day.
-        clicks_by_newsletter: dict[UUID, list[Click]] = defaultdict(list)
-        for account, clicks in clicks_by_account.items():
-            for click in clicks:
-                clicks_by_newsletter[click.newsletter_id].append(click)
-        clicks_by_day: dict[date, int] = defaultdict(int)
-        for newsletter in newsletters:
-            newsletter_date = newsletter.created_at.date()
-            clicks_by_day[newsletter_date] += len(clicks_by_newsletter[newsletter.newsletter_id])
-        return jsonify({k.isoformat(): v for k, v in clicks_by_day.items()})
-
+        stats_repo = DbDailyStatsRepository(conn)
+        rows = stats_repo.fetch_daily_stats(start, end, include_all)
+        return jsonify([row.model_dump(mode="json") for row in rows])
 
 ### TEAM MANAGEMENT ###
 
