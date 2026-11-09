@@ -51,9 +51,9 @@ def show():
 
 
 ### DATA API ###
-@admin.get("/api/clicks/by_day")
+@admin.get("/api/stats/by_day")
 @admin_auth.login_required
-def get_clicks_by_day():
+def get_daily_stats():
     # flag parameter, include as `...&include_all&...` or `...&include_all=True&...`
     include_all = request.args.get("include_all") is not None
     end_text = request.args.get("end")
@@ -72,6 +72,7 @@ def get_clicks_by_day():
     with DB_ENGINE.connect() as conn:
         stats_repo = DbDailyStatsRepository(conn)
         rows = stats_repo.fetch_daily_stats(start, end, include_all)
+        # return newsletters sent and clicks by day
         return jsonify([row.model_dump(mode="json") for row in rows])
 
 ### TEAM MANAGEMENT ###

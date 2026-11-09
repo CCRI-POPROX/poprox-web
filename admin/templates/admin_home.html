@@ -13,7 +13,7 @@
 
 <script type="module">
   async function load_data() {
-    const result = await fetch("api/clicks/by_day")
+    const result = await fetch("api/stats/by_day")
     const data = await result.json()
     const retval = []
     for (const date in data) {
