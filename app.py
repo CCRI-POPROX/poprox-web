@@ -565,9 +565,6 @@ def topics():
 @auth.requires_login
 def entity_search():
     # autocomplete for the entities page -- topics/subjects excluded
-    if not auth.get_account_teams():  # team members only
-        return jsonify({"error": "forbidden"}), 403
-
     query = request.args.get("q", "").strip()
     if len(query) < 2:
         return jsonify({"entities": []}), 200
@@ -582,9 +579,6 @@ def entity_search():
 @app.route(f"{URL_PREFIX}/update-entity-preference", methods=["POST"])
 @auth.requires_login
 def update_entity_preference_api():
-    if not auth.get_account_teams():  # team members only
-        return jsonify({"error": "forbidden"}), 403
-
     data = request.get_json()
 
     if not data or "entity" not in data or "value" not in data:
@@ -631,7 +625,7 @@ def update_entity_preference_api():
 
 
 @app.route(f"{URL_PREFIX}/entities", methods=["GET"])
-@auth.requires_experimenter  # team members only
+@auth.requires_login
 def entities():
     interest_lvls = [
         ("Strongly avoid", 1),
@@ -656,9 +650,6 @@ def entities():
 @app.route(f"{URL_PREFIX}/entity-suggestions", methods=["GET"])
 @auth.requires_login
 def entity_suggestions():
-    if not auth.get_account_teams():  # team members only
-        return jsonify({"error": "forbidden"}), 403
-
     account_id = auth.get_account_id()
     suggestions = []
     seen = set()
