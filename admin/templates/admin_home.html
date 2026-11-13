@@ -65,6 +65,39 @@
   );
 </script>
 
+<h2>Potential experiment-eligible accounts</h2>
+<p>Current subscribers with a recorded consent and no overlapping experiment assignment. This is a potential count; study-specific requirements are not included.</p>
+
+<form id="experiment-eligibility-form">
+  <label for="eligibility-start">Experiment start</label>
+  <input id="eligibility-start" name="start" type="date" required>
+  <label for="eligibility-end">Experiment end</label>
+  <input id="eligibility-end" name="end" type="date" required>
+  <button type="submit">Check eligibility</button>
+</form>
+<p id="experiment-eligibility-result" role="status" aria-live="polite"></p>
+
+<script type="module">
+  const form = document.getElementById('experiment-eligibility-form')
+  const result = document.getElementById('experiment-eligibility-result')
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    result.textContent = 'Loading...'
+    try {
+      const params = new URLSearchParams(new FormData(form))
+      const response = await fetch(`{{ url_for('admin.get_experiment_eligibility') }}?${params}`)
+      const data = await response.json()
+      if (!response.ok) {
+        result.textContent = data.error || 'Unable to load eligibility count.'
+        return
+      }
+      result.textContent = `Total: ${data.total}; external: ${data.external}; internal: ${data.internal}; unclassified source: ${data.unclassified}.`
+    } catch {
+      result.textContent = 'Unable to load eligibility count.'
+    }
+  })
+</script>
+
 <h2>Running Experiments</h2>
 
 {% if experiments|length > 0 %}

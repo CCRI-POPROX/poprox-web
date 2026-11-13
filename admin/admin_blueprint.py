@@ -54,6 +54,42 @@ def show():
     )
 
 
+@admin.get("/api/experiment-eligibility")
+@admin_auth.login_required
+def get_experiment_eligibility():
+    start_text = request.args.get("start")
+    end_text = request.args.get("end")
+    if not start_text or not end_text:
+        return jsonify({"error": "start and end dates are required"}), 400
+
+    try:
+        start = date.fromisoformat(start_text)
+        end = date.fromisoformat(end_text)
+        if start.isoformat() != start_text or end.isoformat() != end_text:
+            raise ValueError("dates must use YYYY-MM-DD")
+    except ValueError:
+        return jsonify({"error": "start and end must use YYYY-MM-DD"}), 400
+
+    if end < start:
+        return jsonify({"error": "start must not be after end"}), 400
+
+    with DB_ENGINE.connect() as conn:
+        accounts = DbAccountRepository(conn).fetch_expt_eligible_accounts(start, end)
+
+    external = sum(account.external for account in accounts)
+    internal = sum(account.internal for account in accounts)
+    return jsonify(
+        {
+            "start": start.isoformat(),
+            "end": end.isoformat(),
+            "total": len(accounts),
+            "external": external,
+            "internal": internal,
+            "unclassified": len(accounts) - external - internal,
+        }
+    )
+
+
 ### DATA API ###
 @admin.get("/api/clicks/by_day")
 @admin_auth.login_required
