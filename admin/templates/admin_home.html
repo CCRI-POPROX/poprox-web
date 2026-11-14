@@ -65,6 +65,26 @@
   );
 </script>
 
+<h2>Entity study recruitment</h2>
+<button id="entity-study-refresh" type="button">Refresh counts</button>
+<p id="entity-study-counts" role="status" aria-live="polite"></p>
+
+<script type="module">
+  const button = document.getElementById('entity-study-refresh')
+  const counts = document.getElementById('entity-study-counts')
+  button.addEventListener('click', async () => {
+    counts.textContent = 'Loading...'
+    try {
+      const response = await fetch("{{ url_for('admin.get_entity_study_eligibility') }}")
+      if (!response.ok) throw new Error('Request failed')
+      const data = await response.json()
+      counts.textContent = `Subscribed and consented: ${data.subscribed_and_consented}; pre-study survey completed: ${data.finished_pre_study_survey}; survey plus five entity ratings: ${data.rated_enough_entities}.`
+    } catch {
+      counts.textContent = 'Unable to load study counts.'
+    }
+  })
+</script>
+
 <h2>Running Experiments</h2>
 
 {% if experiments|length > 0 %}
