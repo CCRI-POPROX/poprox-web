@@ -7,10 +7,12 @@ from flask_httpauth import HTTPBasicAuth
 from poprox_storage.aws import DB_ENGINE
 from poprox_storage.concepts.experiment import Team
 from poprox_storage.repositories import (
+    DbAccountInterestRepository,
     DbAccountRepository,
     DbClicksRepository,
     DbExperimentRepository,
     DbNewsletterRepository,
+    DbQualtricsSurveyRepository,
     DbSubscriptionRepository,
     DbTeamRepository,
 )
@@ -27,6 +29,8 @@ admin_auth = HTTPBasicAuth()
 users = {
     "admin": generate_password_hash(require_secret("POPROX_WEB_ADMIN_PASS", "admin")),
 }
+PRE_STUDY_SURVEY_ID = UUID("6ba2e7f9-b63c-4abd-8823-d45eeb564a1d")
+ENTITY_TYPES = {"person", "organization", "place"}
 
 
 @admin_auth.verify_password
@@ -51,6 +55,71 @@ def show():
         error=error,
         active_experiments=active_experiments,
         today=today,
+    )
+
+
+@admin.get("/api/entity-study-eligibility")
+@admin_auth.login_required
+def get_entity_study_eligibility():
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+        subscriber_ids = DbSubscriptionRepository(conn).fetch_subscriber_account_ids()
+        subscribers = account_repo.fetch_accounts(subscriber_ids)
+        external_accounts = []
+        for account in subscribers:
+            if account.external:
+                external_accounts.append(account)
+
+        candidates = []
+        if external_accounts:
+            external_ids = []
+            for account in external_accounts:
+                external_ids.append(account.account_id)
+
+            consented_ids = set()
+            for log in account_repo.fetch_consent_logs_by_account_ids(external_ids):
+                if log.ended_at is None:
+                    consented_ids.add(log.account_id)
+
+            for account in external_accounts:
+                if account.account_id in consented_ids:
+                    candidates.append(account)
+
+        finished_accounts = []
+        if candidates:
+            survey_repo = DbQualtricsSurveyRepository(conn)
+            instance_ids = []
+            for instance in survey_repo.fetch_sent_survey_instances(candidates):
+                if instance.survey_id == PRE_STUDY_SURVEY_ID:
+                    instance_ids.append(instance.survey_instance_id)
+
+            if instance_ids:
+                finished_ids = set()
+                for response in survey_repo.fetch_clean_responses_by_instance_ids(instance_ids):
+                    if str(response.response_values.get("finished")).lower() in ("1", "true"):
+                        finished_ids.add(response.account_id)
+
+                for account in candidates:
+                    if account.account_id in finished_ids:
+                        finished_accounts.append(account)
+
+        rated_enough = 0
+        if finished_accounts:
+            interest_repo = DbAccountInterestRepository(conn)
+            for account in finished_accounts:
+                rating_count = 0
+                for interest in interest_repo.fetch_account_interests(account.account_id):
+                    if interest.entity_type in ENTITY_TYPES:
+                        rating_count += 1
+                if rating_count >= 5:
+                    rated_enough += 1
+
+    return jsonify(
+        {
+            "subscribed_and_consented": len(candidates),
+            "finished_pre_study_survey": len(finished_accounts),
+            "rated_enough_entities": rated_enough,
+        }
     )
 
 
