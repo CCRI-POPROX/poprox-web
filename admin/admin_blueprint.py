@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from flask_httpauth import HTTPBasicAuth
@@ -10,7 +10,6 @@ from poprox_storage.repositories import (
     DbAccountRepository,
     DbDailyStatsRepository,
     DbExperimentRepository,
-    DbNewsletterRepository,
     DbQualtricsSurveyRepository,
     DbSubscriptionRepository,
     DbTeamRepository,
@@ -116,10 +115,11 @@ def get_entity_study_eligibility():
             "subscribed_and_consented": len(candidates),
             "finished_pre_study_survey": len(finished_accounts),
             "rated_enough_entities": rated_enough,
-         }
+        }
     )
 
- @admin.get("/api/experiment-eligibility")
+
+@admin.get("/api/experiment-eligibility")
 @admin_auth.login_required
 def get_experiment_eligibility():
     start_text = request.args.get("start")
@@ -169,9 +169,8 @@ def get_daily_stats():
         start = date.fromisoformat(start_text) if start_text else end - timedelta(days=30)
     except ValueError:
         return jsonify({"error": "start and end must be dates like 2026-09-01"}), 400
-    
+
     if end < start:
-        
         return jsonify({"error": "start must not be after end"}), 400
 
     with DB_ENGINE.connect() as conn:
@@ -179,6 +178,7 @@ def get_daily_stats():
         rows = stats_repo.fetch_daily_stats(start, end, include_all)
         # return newsletters sent and clicks by day
         return jsonify([row.model_dump(mode="json") for row in rows])
+
 
 ### TEAM MANAGEMENT ###
 
