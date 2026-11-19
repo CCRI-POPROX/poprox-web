@@ -968,5 +968,9 @@ def learn_more():
     return render_template("learn_more.html")
 
 
+@app.route(f"{URL_PREFIX}/share/<newsletter_id>")
+def share(newsletter_id):
+    return render_template("share.html", headline="Test headline", subhead="Test subhead")
+
 if __name__ == "__main__":
     app.run(debug=True)
