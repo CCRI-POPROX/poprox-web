@@ -972,17 +972,13 @@ def learn_more():
 
 @app.route(f"{URL_PREFIX}/share/<newsletter_id>")
 def share(newsletter_id):
-    return render_template(
-        "share.html", newsletter_id=newsletter_id, headline="Test headline", subhead="Test subhead"
-    )
+    return render_template("share.html", newsletter_id=newsletter_id)
 
 
 @app.route(f"{URL_PREFIX}/share/<newsletter_id>/image.png")
 def share_image(newsletter_id):
     # replace the HTML with the internal newsletter render later
-    html = render_template(
-        "share.html", newsletter_id=newsletter_id, headline="Test headline", subhead="Test subhead"
-    )
+    html = render_template("share.html", newsletter_id=newsletter_id)
     png = render_share_image(html)
     return Response(png, mimetype="image/png")
 
