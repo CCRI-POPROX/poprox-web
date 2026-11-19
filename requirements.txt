@@ -10,7 +10,7 @@ tqdm
 markdown
 stamina
 flask-wtf
-
+playwright
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git
