@@ -7,7 +7,7 @@
   <meta property="og:description" content="{{ subhead }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ request.url }}">
-  <meta property="og:image" content="https://poprox.ai/assets/images/logos_and_icons/logo_white.png">
+  <meta property="og:image" content="{{ url_for('share_image', newsletter_id=newsletter_id, _external=True) }}">
   <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
