@@ -11,6 +11,7 @@ markdown
 stamina
 flask-wtf
 playwright
+beautifulsoup4
 
 git+https://github.com/CCRI-POPROX/poprox-concepts.git
 git+https://github.com/CCRI-POPROX/poprox-storage.git

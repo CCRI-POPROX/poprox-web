@@ -8,7 +8,7 @@ from dotenv import find_dotenv, load_dotenv
 from flask import Flask, Response, abort, jsonify, redirect, render_template, request, send_file, url_for
 from flask_wtf.csrf import CSRFProtect
 
-from util.share_image import render_share_image
+from util.share_image import clean_for_share, render_share_image
 from uuid import UUID
 
 ENV_FILE = find_dotenv()
@@ -67,7 +67,7 @@ COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS 
 # are managed on the separate Customize Newsletter page and are excluded here).
 ENTITY_PAGE_TYPES = {"person", "organization", "place"}
 
-SHARE_ACCOUNT_ID = env.get("SHARE_NEWSLETTER_ACCOUNT_ID")
+SHARE_ACCOUNT_ID = env.get("POPROX_SAMPLE_NEWSLETTER_ACCOUNT_ID")
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
@@ -985,7 +985,7 @@ def share_image(newsletter_id):
         html = DbNewsletterRepository(conn).fetch_newsletter_preview(account_id=UUID(SHARE_ACCOUNT_ID))
     if html is None:
         abort(404)
-    png = render_share_image(html)
+    png = render_share_image(clean_for_share(html))
     return Response(png, mimetype="image/png")
 
 if __name__ == "__main__":
