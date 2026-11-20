@@ -33,7 +33,7 @@ body {
     letter-spacing: 1px;
 }
 
-.navbar .logo {
+.navbar .site-logo {
     max-height: 70px;
 }
 
@@ -45,6 +45,174 @@ body {
 .nav-link:hover {
     color: rgb(46, 128, 119) !important;
     text-decoration: none;
+}
+
+.preview-card-body {
+    display: flex;
+    justify-content: center;
+}
+
+.sample-newsletter-shell {
+    border: 1px solid #212A37;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.sample-newsletter-tabs {
+    align-items: stretch;
+    border-bottom: 1px solid #212A37;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.sample-newsletter-tab {
+    background-color: #f8f8ff;
+    border: 0;
+    border-right: 1px solid #212A37;
+    color: #000;
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1.1;
+    min-height: 46px;
+    padding: 2% 1.5%;
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.sample-newsletter-tab:last-child {
+    border-right: 0;
+}
+
+.sample-newsletter-tab.active {
+    background-color: #fff;
+    box-shadow: inset 0 -3px 0 #008f83;
+    font-weight: 600;
+}
+
+.sample-newsletter-tab-link {
+    background-color: #fff7d6;
+    display: block;
+}
+
+.sample-newsletter-tab:hover,
+.sample-newsletter-tab:focus-visible {
+    background-color: #e9f6f4;
+    outline: none;
+}
+
+.sample-newsletter-tab:active {
+    transform: translateY(1px);
+}
+
+.sample-newsletter-tab-link:hover,
+.sample-newsletter-tab-link:focus-visible {
+    background-color: #ffe8a3;
+    color: #000;
+}
+
+.sample-newsletter-preview {
+    background-color: #f8f8ff;
+    border: 0;
+    box-sizing: border-box;
+    font-size: 0.7rem;
+    height: 760px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.sample-newsletter-panel {
+    display: none;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    width: 72%;
+}
+
+.sample-newsletter-panel.active {
+    display: block;
+}
+
+.sample-newsletter-panel.tab-changed {
+    animation: sample-preview-tab-change 180ms ease;
+}
+
+@keyframes sample-preview-tab-change {
+    0% {
+        opacity: 0.72;
+        transform: translateY(2px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sample-newsletter-preview .body-content,
+.sample-newsletter-preview .logo,
+.sample-newsletter-preview .section_title {
+    box-sizing: border-box;
+    margin-bottom: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.sample-newsletter-preview * {
+    max-width: 100%;
+}
+
+.sample-newsletter-preview .article {
+    box-sizing: border-box;
+    max-width: 100% !important;
+    width: auto !important;
+}
+
+.sample-newsletter-preview .article:last-of-type,
+.sample-newsletter-preview .divider:last-of-type,
+.sample-newsletter-preview .body-content > :last-child {
+    margin-bottom: 0 !important;
+}
+
+.sample-newsletter-preview div.article .label,
+.sample-newsletter-preview div.article .subhead,
+.sample-newsletter-preview div.article .content {
+    font-size: 0.65rem !important;
+}
+
+.sample-newsletter-preview div.article .headline {
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
+}
+
+.sample-newsletter-preview h2.section_title table,
+.sample-newsletter-preview .section_title table {
+    font-size: 0.85rem !important;
+    margin-left: 5%;
+}
+
+.sample-newsletter-preview img,
+.sample-newsletter-preview table {
+    max-width: 100% !important;
+}
+
+.sample-newsletter-preview img {
+    height: auto !important;
+}
+
+@media (max-width: 767px) {
+    .sample-newsletter-preview {
+        height: 70vh;
+        min-height: 480px;
+    }
+
+    .sample-newsletter-panel {
+        width: 100%;
+    }
 }
 
 .nav-tabs .nav-link {
@@ -74,6 +242,10 @@ footer {
     flex-grow: 0;
 }
 
+.row{
+    padding-top: 2%;
+}
+
 
 /* Cards */
 .card {
@@ -82,14 +254,12 @@ footer {
     background-color: #a3abbd22;
     color: #212A37;
     box-shadow: 0 6px 12px #a3abbd99;
-    padding: 15px;
-    /* text-align: center; */
     transition: all 0.3s ease-in-out;
     margin-bottom: 20px;
 }
 
-.card-body {
-    padding: 10px;
+.card-title {
+    padding-bottom: 5px;
 }
 
 /* Buttons */
