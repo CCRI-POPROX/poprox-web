@@ -5,10 +5,11 @@ from datetime import datetime, timezone
 from os import environ as env
 
 from dotenv import find_dotenv, load_dotenv
-from flask import Flask, Response, jsonify, redirect, render_template, request, send_file, url_for
+from flask import Flask, Response, abort, jsonify, redirect, render_template, request, send_file, url_for
 from flask_wtf.csrf import CSRFProtect
 
 from util.share_image import render_share_image
+from uuid import UUID
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -66,6 +67,7 @@ COMPENSATION_OPTIONS = COMPENSATION_CARD_OPTIONS + COMPENSATION_CHARITY_OPTIONS 
 # are managed on the separate Customize Newsletter page and are excluded here).
 ENTITY_PAGE_TYPES = {"person", "organization", "place"}
 
+SHARE_ACCOUNT_ID = env.get("SHARE_NEWSLETTER_ACCOUNT_ID")
 DEFAULT_RECS_ENDPOINT_URL = env.get("POPROX_DEFAULT_RECS_ENDPOINT_URL")
 DEFAULT_SOURCE = "website"
 URL_PREFIX = env.get("URL_PREFIX", "/")
@@ -970,15 +972,19 @@ def learn_more():
     return render_template("learn_more.html")
 
 
-@app.route(f"{URL_PREFIX}/share/<newsletter_id>")
+@app.route(f"{URL_PREFIX}/share/<uuid:newsletter_id>")
 def share(newsletter_id):
     return render_template("share.html", newsletter_id=newsletter_id)
 
 
-@app.route(f"{URL_PREFIX}/share/<newsletter_id>/image.png")
+@app.route(f"{URL_PREFIX}/share/<uuid:newsletter_id>/image.png")
 def share_image(newsletter_id):
-    # replace the HTML with the internal newsletter render later
-    html = render_template("share.html", newsletter_id=newsletter_id)
+    if not SHARE_ACCOUNT_ID:
+        abort(404)
+    with DB_ENGINE.connect() as conn:
+        html = DbNewsletterRepository(conn).fetch_newsletter_preview(account_id=UUID(SHARE_ACCOUNT_ID))
+    if html is None:
+        abort(404)
     png = render_share_image(html)
     return Response(png, mimetype="image/png")
 
