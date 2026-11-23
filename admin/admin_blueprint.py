@@ -156,7 +156,7 @@ def get_entity_study_eligibility_v2():
     candidate_ids = set(account.account_id for account in candidates)
     finished_ids = set(account.account_id for account in finished_accounts)
     enough_ids = set(account.account_id for account in rated_enough)
-    eligable = candidate_ids.intersection(finished_accounts).intersection(enough_ids)
+    eligable = candidate_ids.intersection(finished_ids).intersection(enough_ids)
 
     return jsonify(
         {
