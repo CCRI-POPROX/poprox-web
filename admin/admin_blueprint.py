@@ -119,6 +119,56 @@ def get_entity_study_eligibility():
     )
 
 
+@admin.get("/api/entity-study-eligibility_v2")
+@admin_auth.login_required
+def get_entity_study_eligibility_v2():
+    with DB_ENGINE.connect() as conn:
+        account_repo = DbAccountRepository(conn)
+
+        today = date.today()
+        candidates = account_repo.fetch_expt_eligible_accounts(today, today)
+
+        finished_accounts = []
+        survey_repo = DbQualtricsSurveyRepository(conn)
+        instance_ids = []
+        for instance in survey_repo.fetch_sent_survey_instances(candidates):
+            if instance.survey_id == PRE_STUDY_SURVEY_ID:
+                instance_ids.append(instance.survey_instance_id)
+
+        finished_ids = list()
+        for response in survey_repo.fetch_clean_responses_by_instance_ids(instance_ids):
+            if str(response.response_values.get("finished")).lower() in ("1", "true"):
+                finished_ids.append(response.account_id)
+        finished_accounts = account_repo.fetch_accounts(finished_ids)
+
+        rated_enough = list()
+        rating_counts = {}
+        interest_repo = DbAccountInterestRepository(conn)
+        for account in candidates:
+            rating_count = 0
+            for interest in interest_repo.fetch_account_interests(account.account_id):
+                if interest.entity_type in ENTITY_TYPES:
+                    rating_count += 1
+            if rating_count >= 5:
+                rated_enough.append(account)
+            rating_counts[rating_count] = rating_counts.get(rating_count, 0) + 1
+
+    candidate_ids = set(account.account_id for account in candidates)
+    finished_ids = set(account.account_id for account in finished_accounts)
+    enough_ids = set(account.account_id for account in rated_enough)
+    eligable = candidate_ids.intersection(finished_accounts).intersection(enough_ids)
+
+    return jsonify(
+        {
+            "subscribed_and_consented": len(candidates),
+            "finished_pre_study_survey": len(finished_accounts),
+            "rated_enough_entities": len(rated_enough),
+            "rating_counts": rating_counts,
+            "eligable": len(eligable),
+        }
+    )
+
+
 @admin.get("/api/experiment-eligibility")
 @admin_auth.login_required
 def get_experiment_eligibility():
