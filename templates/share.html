@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>POPROX News</title>
+  <meta property="og:title" content="Today's POPROX News">
+  <meta property="og:description" content="A personalized, ad-free daily newsletter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{{ url_for('share_image', newsletter_id=newsletter_id, _external=True) }}">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <p><a href="{{ url_for('pre_enroll_get', source='invite', subsource=newsletter_id) }}">Sign up for POPROX News</a></p>
+</body>
+</html>
